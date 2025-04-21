@@ -13,14 +13,11 @@ public class EnemySpawner : MonoBehaviour
     public Image level_selector;
     public GameObject button;
     public GameObject enemy;
-<<<<<<< Updated upstream
-    public SpawnPoint[] SpawnPoints;    
-=======
+
     public SpawnPoint[] SpawnPoints;
     private Dictionary <string, Enemy> enemies;
     private Dictionary <string, Level> levels; 
     public RPN rpn;   
->>>>>>> Stashed changes
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -58,8 +55,6 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator SpawnWave(Spawn waveSpawn, int currentWave)
     {
-<<<<<<< Updated upstream
-=======
         Enemy toSpawn = enemies[waveSpawn.enemy];
         Dictionary<string, int> spawnAttributes = new Dictionary<string, int>();
         int toSpawn_count = rpn.calculateRPN(waveSpawn.count, new Dictionary<string, int> {{"wave", currentWave}});
@@ -104,7 +99,6 @@ public class EnemySpawner : MonoBehaviour
 //           if n == count: break
 //     yield return new WaitForSeconds(delay)
 // done
->>>>>>> Stashed changes
         GameManager.Instance.state = GameManager.GameState.COUNTDOWN;
         GameManager.Instance.countdown = 3;
         for (int i = 3; i > 0; i--)
@@ -115,21 +109,13 @@ public class EnemySpawner : MonoBehaviour
         GameManager.Instance.state = GameManager.GameState.INWAVE;
         for (int i = 0; i < 10; ++i)
         {
-<<<<<<< Updated upstream
-            yield return SpawnZombie();
-=======
             yield return SpawnEnemy(toSpawn); // add spawn attributes 
->>>>>>> Stashed changes
         }
         yield return new WaitWhile(() => GameManager.Instance.enemy_count > 0);
         GameManager.Instance.state = GameManager.GameState.WAVEEND;
     }
 
-<<<<<<< Updated upstream
-    IEnumerator SpawnZombie()
-=======
     IEnumerator SpawnEnemy(Enemy toSpawn, Dictionary<string, int> spawnAttributes)
->>>>>>> Stashed changes
     {
         SpawnPoint spawn_point = SpawnPoints[Random.Range(0, SpawnPoints.Length)];
         Vector2 offset = Random.insideUnitCircle * 1.8f;
@@ -139,13 +125,10 @@ public class EnemySpawner : MonoBehaviour
 
         new_enemy.GetComponent<SpriteRenderer>().sprite = GameManager.Instance.enemySpriteManager.Get(0);
         EnemyController en = new_enemy.GetComponent<EnemyController>();
-<<<<<<< Updated upstream
-        en.hp = new Hittable(50, Hittable.Team.MONSTERS, new_enemy);
-        en.speed = 10;
-=======
+
         en.hp = new Hittable(spawnAttributes.ContainsKey("hp") ? spawnAttributes["hp"] : toSpawn.hp, Hittable.Team.MONSTERS, new_enemy);
         en.speed = spawnAttributes.ContainsKey("speed") ? spawnAttributes["speed"] : toSpawn.speed;
->>>>>>> Stashed changes
+        
         GameManager.Instance.AddEnemy(new_enemy);
         yield return new WaitForSeconds(0.5f);
         /* SpawnPoint spawn_point = SpawnPoints[Random.Range(0, SpawnPoints.Length)];
