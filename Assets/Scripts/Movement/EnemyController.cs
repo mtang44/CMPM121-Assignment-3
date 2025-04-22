@@ -9,10 +9,12 @@ public class EnemyController : MonoBehaviour
     public HealthBar healthui;
     public bool dead;
 
+
     public float last_attack;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
         target = GameManager.Instance.player.transform;
         hp.OnDeath += Die;
         healthui.SetHealth(hp);

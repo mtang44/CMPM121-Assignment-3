@@ -16,6 +16,7 @@ public class GameManager
     public GameState state;
 
     public int countdown;
+   
     private static GameManager theInstance;
     public static GameManager Instance {  get
         {
@@ -35,6 +36,7 @@ public class GameManager
 
     private List<GameObject> enemies;
     public int enemy_count { get { return enemies.Count; } }
+    public int numEnemiesKilled = 0;
 
     public void AddEnemy(GameObject enemy)
     {
@@ -42,6 +44,7 @@ public class GameManager
     }
     public void RemoveEnemy(GameObject enemy)
     {
+        numEnemiesKilled++;
         enemies.Remove(enemy);
     }
 
