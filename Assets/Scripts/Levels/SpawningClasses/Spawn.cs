@@ -6,7 +6,7 @@ public class Spawn
     public string count;
     public string hp;
     public int delay;
-    public List<int> sequence;
+    public List<int> sequence = new List<int>() {1};
     public string location;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

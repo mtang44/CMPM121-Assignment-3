@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 public class RPN
 {
 
-    public int calculateRPN(string expression, Dictionary<string, int> variables)
+    public static int calculateRPN(string expression, Dictionary<string, int> variables)
     {
         Stack<int> stack = new Stack<int>();
         // Dictionary<string, int> variables = new Dictionary<string, int>();
@@ -29,7 +29,7 @@ public class RPN
         return stack.Pop();
 
     }
-    public int applyOperator(string token, int b, int a)
+    public static int applyOperator(string token, int b, int a)
     {
         if(token == "+")
         {
