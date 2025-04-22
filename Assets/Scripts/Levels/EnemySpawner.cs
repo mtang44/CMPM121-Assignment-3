@@ -15,6 +15,7 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemy;
 
     public SpawnPoint[] SpawnPoints;
+    private List<GameObject> levelButtons = new List<GameObject>();
     private Dictionary <string, Enemy> enemies;
     private Dictionary <string, Level> levels;    
 
@@ -28,20 +29,33 @@ public class EnemySpawner : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GameObject easy_selector = Instantiate(button, level_selector.transform);
-        easy_selector.transform.localPosition = new Vector3(0, 130);
-        GameObject medium_selector = Instantiate(button, level_selector.transform);
-        medium_selector.transform.localPosition = new Vector3(0, 70);
-        GameObject endless_selector = Instantiate(button, level_selector.transform);
-        endless_selector.transform.localPosition = new Vector3(0, 190);
-        easy_selector.GetComponent<MenuSelectorController>().spawner = this;
-        medium_selector.GetComponent<MenuSelectorController>().spawner = this;
-        endless_selector.GetComponent<MenuSelectorController>().spawner = this;
-        easy_selector.GetComponent<MenuSelectorController>().SetLevel("Easy");
-        medium_selector.GetComponent<MenuSelectorController>().SetLevel("Medium");
-        endless_selector.GetComponent<MenuSelectorController>().SetLevel("Endless");
         enemies = readEnemiesJson();
         levels = readLevelsJson();
+        int i = 0;
+        foreach (var l in levels){
+            Debug.Log(l);
+            GameObject level_button = new GameObject();
+            level_button = Instantiate(button, level_selector.transform);
+            level_button.transform.localPosition = new Vector3(0, 100 + (40 * i));
+            level_button.GetComponent<MenuSelectorController>().spawner = this;
+            level_button.GetComponent<MenuSelectorController>().SetLevel(l.Key);
+            levelButtons.Add(level_button);
+            i++;
+        }
+        
+        // GameObject easy_selector =
+        // easy_selector
+        // GameObject medium_selector = Instantiate(button, level_selector.transform);
+        // medium_selector.transform.localPosition = new Vector3(0, 70);
+        // GameObject endless_selector = Instantiate(button, level_selector.transform);
+        // endless_selector.transform.localPosition = new Vector3(0, 190);
+       
+        // medium_selector.GetComponent<MenuSelectorController>().spawner = this;
+        // endless_selector.GetComponent<MenuSelectorController>().spawner = this;
+        // easy_selector.GetComponent<MenuSelectorController>().SetLevel("Easy");
+       
+        // endless_selector.GetComponent<MenuSelectorController>().SetLevel("Endless");
+       
     }
 
     // Update is called once per frame
@@ -64,6 +78,7 @@ public class EnemySpawner : MonoBehaviour
 
     public void NextWave() {
         wave_count++;
+        Debug.Log("wave: " + wave_count);
         StartCoroutine(SpawnWave());
     }
     IEnumerator SpawnWave()
@@ -77,13 +92,15 @@ public class EnemySpawner : MonoBehaviour
         }
         GameManager.Instance.state = GameManager.GameState.INWAVE;
         foreach (Spawn item in currentLevel.spawns) {
+          
             Spawn enemy_spawn = item;
+            
             StartCoroutine(SpawnEnemyType(item));
         }
         
         yield return new WaitUntil(() => spawnsRunning == 0);
         yield return new WaitUntil(() => GameManager.Instance.enemy_count == 0);
-        wave_count++;
+        
 
         
 
@@ -115,9 +132,10 @@ public class EnemySpawner : MonoBehaviour
     IEnumerator SpawnEnemyType(Spawn waveSpawn) {
         spawnsRunning++;
         Enemy toSpawn = enemies[waveSpawn.enemy];
+        Debug.Log("Name: " + toSpawn.name);
         Dictionary<string, int> spawnAttributes = new Dictionary<string, int>();
         int toSpawn_count = RPN.calculateRPN(waveSpawn.count, new Dictionary<string, int> {{"wave", wave_count}});
-        Debug.Log("" + toSpawn_count);
+        Debug.Log("Count: " + toSpawn_count);
         spawnAttributes["hp"] = RPN.calculateRPN(waveSpawn.hp, new Dictionary<string, int> {{"wave", wave_count}, {"base", toSpawn.hp}});
         toSpawn.speed = enemies[waveSpawn.enemy].speed;
         toSpawn.damage = enemies[waveSpawn.enemy].damage;
@@ -153,9 +171,9 @@ public class EnemySpawner : MonoBehaviour
         Vector3 initial_position = spawn_point.transform.position + new Vector3(offset.x, offset.y, 0);
         GameObject new_enemy = Instantiate(enemy, initial_position, Quaternion.identity);
 
-        new_enemy.GetComponent<SpriteRenderer>().sprite = GameManager.Instance.enemySpriteManager.Get(0);
+        new_enemy.GetComponent<SpriteRenderer>().sprite = GameManager.Instance.enemySpriteManager.Get(toSpawn.sprite);
         EnemyController en = new_enemy.GetComponent<EnemyController>();
-        Debug.Log("" + spawnAttributes["hp"]);
+        Debug.Log("with hp of: " + spawnAttributes["hp"]);
         en.hp = new Hittable(spawnAttributes.ContainsKey("hp") ? spawnAttributes["hp"] : toSpawn.hp, Hittable.Team.MONSTERS, new_enemy);
         en.speed = spawnAttributes.ContainsKey("speed") ? spawnAttributes["speed"] : toSpawn.speed;
         

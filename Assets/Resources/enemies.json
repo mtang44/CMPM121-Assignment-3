@@ -19,6 +19,13 @@
        "hp": 30,
        "speed": 7,
        "damage": 10
-   }
+    },
+    {
+        "name": "leprechaun",
+        "sprite": 9,
+        "hp": 10,
+        "speed": 10,
+        "damage": 15
+    }
  
 ]
