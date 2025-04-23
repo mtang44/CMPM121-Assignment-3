@@ -26,6 +26,13 @@
         "hp": 10,
         "speed": 10,
         "damage": 15
+    },
+    {
+        "name": "giant",
+        "sprite": 14,
+        "hp": 50,
+        "speed": 2,
+        "damage": 20
     }
  
 ]

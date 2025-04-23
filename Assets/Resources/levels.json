@@ -29,7 +29,14 @@
                 "count": "wave 7 / 1 wave 7 % - *",
                 "hp": "100 30 wave *",
                 "location": "random"
+            }, 
+            {
+                "enemy": "giant",
+                "count": "wave 6 / 1 wave 6 % - *",
+                "hp": "100 30 wave *",
+                "location": "random"
             }
+
         ]
    },
    {   
@@ -63,7 +70,13 @@
                 "count": "wave 7 / 1 wave 7 % - *",
                 "hp": "100 30 wave *",
                 "location": "random"
-            }    
+            },
+            {
+                "enemy": "giant",
+                "count": "wave 10 / 1 wave 10 % - *",
+                "hp": "100 40 wave *",
+                "location": "random"
+            }
         ]
    },
    {   
@@ -96,16 +109,22 @@
                 "count": "wave / 14 1 wave 14 % - *",
                 "hp": "100 30 wave *",
                 "location": "random"
-            }      
+            }, 
+            {
+                "enemy": "giant",
+                "count": "wave 11 / 1 wave 11 % - *",
+                "hp": "100 45 wave *",
+                "location": "random"
+            }
         
         ]
    },
    {   
-       "name": "test Level",
+       "name": "Test Level",
        "waves": 10,
        "spawns": [
             {
-                "enemy": "skeleton",
+                "enemy": "giant",
                 "count": "5 wave +",
                 "hp": "base 5 wave * +",
                 "delay": "5",
