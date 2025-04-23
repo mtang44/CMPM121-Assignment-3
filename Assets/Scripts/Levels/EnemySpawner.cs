@@ -61,7 +61,11 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+       if (GameManager.Instance.state == GameManager.GameState.PREGAME)
+        {   
+           level_selector.gameObject.SetActive(true);
+        }
+       
     }
 
     public void StartLevel(string level_name)
@@ -103,8 +107,10 @@ public class EnemySpawner : MonoBehaviour
         
 
         
-
-        GameManager.Instance.state = GameManager.GameState.WAVEEND;
+        if(  GameManager.Instance.state != GameManager.GameState.GAMEOVER)
+        {
+            GameManager.Instance.state = GameManager.GameState.WAVEEND;
+        }
 
         //      while n < count:
         //      required = next in sequence

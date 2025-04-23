@@ -47,7 +47,6 @@ public class GameManager
         numEnemiesKilled++;
         enemies.Remove(enemy);
     }
-
     public GameObject GetClosestEnemy(Vector3 point)
     {
         if (enemies == null || enemies.Count == 0) return null;
