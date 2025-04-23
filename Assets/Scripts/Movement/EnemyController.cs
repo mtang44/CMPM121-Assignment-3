@@ -32,7 +32,7 @@ public class EnemyController : MonoBehaviour
         {
             GetComponent<Unit>().movement = direction.normalized * speed;
         }
-        if (GameManager.Instance.state == GameManager.GameState.GAMEOVER || GameManager.Instance.state == GameManager.GameState.WAVEEND || GameManager.Instance.state == GameManager.GameState.PREGAME) 
+        if (GameManager.Instance.state == GameManager.GameState.GAMEOVER) 
         {
          Die();
         }

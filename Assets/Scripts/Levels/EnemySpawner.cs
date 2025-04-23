@@ -72,7 +72,7 @@ public class EnemySpawner : MonoBehaviour
     {
         level_selector.gameObject.SetActive(false);
         // this is not nice: we should not have to be required to tell the player directly that the level is starting
-        wave_count = 0;
+        wave_count = 1;
         Debug.Log(level_name);
         currentLevel = levels[level_name];
         GameManager.Instance.player.GetComponent<PlayerController>().StartLevel();
