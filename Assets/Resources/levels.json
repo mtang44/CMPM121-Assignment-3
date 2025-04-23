@@ -21,7 +21,7 @@
             {
                 "enemy": "warlock",
                 "count": "wave 5 / 1 wave 5 % - *",
-                "hp": "100 25 wave *",
+                "hp": "100 25 wave * +",
                 "location": "random bone"
             },
             {
@@ -106,14 +106,14 @@
             },
             {
                 "enemy": "leprechaun",
-                "count": "wave / 14 1 wave 14 % - *",
-                "hp": "100 30 wave *",
+                "count": "wave 14 / 1 wave 14 % - *",
+                "hp": "100 30 wave * +",
                 "location": "random"
             }, 
             {
                 "enemy": "giant",
                 "count": "wave 11 / 1 wave 11 % - *",
-                "hp": "100 45 wave *",
+                "hp": "100 45 wave * +",
                 "location": "random"
             }
         

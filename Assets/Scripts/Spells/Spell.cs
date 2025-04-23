@@ -2,12 +2,21 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using TMPro;
 
 public class Spell 
 {
     public float last_cast;
     public SpellCaster owner;
     public Hittable.Team team;
+
+    private string name;
+    private string description;
+    private int icon;
+    private string mana_cost;
+    private Dictionary<string, int> damage;
+    private int cooldown;
+    private Dictionary<string, string> projectile;
 
     public Spell(SpellCaster owner)
     {
@@ -16,16 +25,20 @@ public class Spell
 
     public string GetName()
     {
-        return "Bolt";
+        return "name";
+        // return this.name;
     }
 
     public int GetManaCost()
     {
-        return 10;
+        return 1;
+        // return int.Parse(this.mana_cost);
     }
 
     public int GetDamage()
     {
+        // need some calculateDamage()
+        // return calculateDamage();
         return 100;
     }
 
@@ -36,7 +49,7 @@ public class Spell
 
     public virtual int GetIcon()
     {
-        return 0;
+        return 1;
     }
 
     public bool IsReady()

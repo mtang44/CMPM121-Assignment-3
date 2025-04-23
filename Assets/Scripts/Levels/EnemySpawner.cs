@@ -25,6 +25,7 @@ public class EnemySpawner : MonoBehaviour
     private Spawn currentSpawn;
     private int spawnsRunning = 0;
     private int wave_count;
+    private string location;
  
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -143,6 +144,7 @@ public class EnemySpawner : MonoBehaviour
         int toSpawn_count = RPN.calculateRPN(waveSpawn.count, new Dictionary<string, int> {{"wave", wave_count}});
         Debug.Log("Count: " + toSpawn_count);
         spawnAttributes["hp"] = RPN.calculateRPN(waveSpawn.hp, new Dictionary<string, int> {{"wave", wave_count}, {"base", toSpawn.hp}});
+        // toSpawn.location = enemies[waveSpawn.enemy].location;
         toSpawn.speed = enemies[waveSpawn.enemy].speed;
         toSpawn.damage = enemies[waveSpawn.enemy].damage;
         int numSpawned = 0;
