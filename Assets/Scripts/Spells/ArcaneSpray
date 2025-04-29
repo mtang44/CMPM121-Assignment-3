@@ -2,7 +2,9 @@ public class ArcaneSpray : Spell {
 
 
     public ArcaneSpray () {
-        
+        private string N;
+        private string spray;
+
     }
 
     public void override SetAttributes(JObject attributes) {

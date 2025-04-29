@@ -18,4 +18,8 @@ public classs ModifierSpell : Spell {
         GameManager.Instance.projectileManager.CreateProjectile(0, "straight", where, target - where, 15f, OnHit);
         yield return new WaitForEndOfFrame();
     }
+    public void addChild()
+    {
+        // implement later
+    }
 }

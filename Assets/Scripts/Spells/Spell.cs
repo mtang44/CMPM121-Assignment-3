@@ -59,13 +59,7 @@ public class Spell
     }
      public virtual void SetAttributes(JObject attributes)
     {
-         "name": "Arcane Bolt",
-       "description": "A straight-flying bolt.",
-    
-       "damage": {"amount": "25 power 5 / +", "type": "arcane"},
-       "mana_cost": "10",
-       "cooldown": "2",
-       "projectile":
+       
         name = attributes["name"].ToString();
         description = attributes["description"].ToString();
         icon = attributes["icon"].ToObject<int>();
@@ -75,7 +69,6 @@ public class Spell
         projectile = attributes["projectile"].ToObject<Projectile>();
       
       //...
-}
     }
     public virtual IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team, ValueModifier? mods = null)
     {

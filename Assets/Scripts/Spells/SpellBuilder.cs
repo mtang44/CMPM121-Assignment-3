@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine.Rendering.Universal;
+using Unity.VisualScripting;
 
 
 public class SpellBuilder 
@@ -30,7 +31,7 @@ public class SpellBuilder
             return new MagicMissile();
         }
         if(name == "arcane_blast"){
-            return new arcaneBlact();
+            return new ArcaneBlast();
         }
         if(name == "arcane_spray"){
             return new ArcaneSpray();
@@ -39,7 +40,7 @@ public class SpellBuilder
             return new arcaneBolt();
         }
         if(name == "damage-amplified"){
-            return new damageAmplifier();
+            return new DamageAmp();
         }
         if(name == "speed-amplified"){
             return new speedAmplified();
