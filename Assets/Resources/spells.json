@@ -76,6 +76,15 @@
        "damage_multiplier": "0.75",
        "mana_adder": "10",
        "projectile_trajectory": "homing"
+   },
+   "piercing": {
+        "name": "piercing",
+        "description":"A bolt that when shot can travels through multiple enemies, piercing each one in it's path. Does less damage and costs more",
+        "damage_multiplier": "0.50",
+        "icon": 1,
+        "cooldown": "1.5",
+        "mana_cost": "20"
+
    }
 
 }

@@ -1,0 +1,13 @@
+public class ArcaneSpray : Spell {
+
+
+    public ArcaneSpray () {
+        
+    }
+
+    public void override SetAttributes(JObject attributes) {
+        base.SetAttributes();
+        N = attributes["N"].ToString();
+        spray = attributes["spray"].ToString();
+    }
+}
