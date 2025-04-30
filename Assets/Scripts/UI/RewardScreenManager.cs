@@ -19,6 +19,7 @@ public class RewardScreenManager : MonoBehaviour
         {   
             rewardUI.SetActive(true);
            // enemiesKilledLabel.text = "Enemies Killed: " + GameManager.Instance.numEnemiesKilled;
+           Spell newRewardSpell = MakeRandomSpell();
         }
         else
         {

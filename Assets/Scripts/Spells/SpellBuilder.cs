@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine.Rendering.Universal;
 using Unity.VisualScripting;
+using System.Random;
 
 
 public class SpellBuilder 
@@ -23,7 +24,7 @@ public class SpellBuilder
    
     public SpellBuilder()
     {        
-        readSpellsJson();
+        spell_attributes = readSpellsJson();
     }
 
     private Spell MakeSpell(string name) {
@@ -37,37 +38,54 @@ public class SpellBuilder
             return new ArcaneSpray();
         }
         if(name == "arcane_bolt"){
-            return new arcaneBolt();
+            return new ArcaneBolt();
         }
-        if(name == "damage-amplified"){
+        if(name == "damage-amplified"){ 
             return new DamageAmp();
         }
         if(name == "speed-amplified"){
-            return new speedAmplified();
+            return new SpeedAmp();
         }
-        if(name == "doubled"){
+        if(name == "doubled"){// not made
             return new doubled();
         }
-        if(name == "split"){
+        if(name == "split"){// not made
             return new split();
         }
-        if(name == "chaotic"){
+        if(name == "chaotic"){// not made
             return new chaotic();
         }
-        if(name == "homing"){
+        if(name == "homing"){ // not made
             return new homing();
         }
+
+    }
+    public Spell makeRandomSpell()
+    {
+        Random rnd = new Random();
+        int index = rnd.Next(spell_names.Count);
+
+        // create random spell
+        Spell s = buildSpell(spell_names[index]);
+        // if spell is modifier then loop to create random spell again until we get a base spell
+        if (s.IsModifierSpell())
+        {
+            s.AddChild(makeRandomSpell(spell_names))
+        }
+        return s;
     }
 
-    public void readSpellsJson()
+    public Dictionary<string, JObject> readSpellsJson()
      {
+        Dictionary<string, JObject> spell_types = new Dictionary<string, JObject>();
         var spelltext = Resources.Load<TextAsset>("spells");
         
-        spell_attributes = JObject.Parse(spelltext.text);
+        spell_types = JObject.Parse(spelltext.text);
         foreach(var a in spell_attributes)
         {
             spell_names.Add(a.Key);
         }
+        return spell_types;
     }
 }
 

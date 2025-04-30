@@ -1,9 +1,8 @@
 public class ArcaneSpray : Spell {
 
-
+    private string N;
+    private string spray;
     public ArcaneSpray () {
-        private string N;
-        private string spray;
 
     }
 

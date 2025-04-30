@@ -1,0 +1,11 @@
+public class ArcaneBolt : Spell {
+
+
+    public ArcaneBolt () {
+
+    }
+
+    public void override SetAttributes(JObject attributes) {
+        base.SetAttributes(attributes);
+    }
+}

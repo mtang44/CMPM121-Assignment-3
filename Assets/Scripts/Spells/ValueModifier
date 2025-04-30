@@ -13,12 +13,4 @@ public class ValueModifier {
     void update()
     {
     }
-    // added this to value Modifier class from spell class
-    public virtual void SetAttributes(JObject attributes)
-    {
-       
-        name = attributes["name"].ToString();
-        description = attributes["description"].ToString();
-      
-    }
 }

@@ -1,15 +1,15 @@
 public class ArcaneBlast : Spell {
 
+private string secondaryDamage;
+private string N;
+private string secondaryProjectile;
+private string secondary_projectile_trajectory;
+private string secondary_projectile_speed;
+private string secondary_projectile_lifetime;
+private int secondary_projectile_sprite;
 
     public ArcaneBlast () {
-        private string secondaryDamage;
-        private string N;
-        private string secondaryProjectile;
-        private string secondary_projectile_trajectory;
-        private string secondary_projectile_speed;
-        private string secondary_projectile_lifetime;
-        private int secondary_projectile_sprite;
-
+      
         
     }
 
@@ -24,4 +24,5 @@ public class ArcaneBlast : Spell {
         projectile = attributes["projectile"].ToObject<Projectile>();
       
     }
+    
 }

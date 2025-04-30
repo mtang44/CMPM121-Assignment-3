@@ -18,6 +18,7 @@ public class Spell
     public Damage.Type damage_type;
     public string cooldown;
     public Dictionary<string, string> projectile;
+    public bool isModifier = false;
 
     public Spell(SpellCaster owner)
     {
@@ -51,6 +52,10 @@ public class Spell
     public virtual int GetIcon()
     {
         return 1;
+    }
+    public virtual bool IsModifierSpell() // able to be overrided by modifier spell
+    {
+       return false;
     }
 
     public bool IsReady()
