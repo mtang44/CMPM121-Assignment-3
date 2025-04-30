@@ -47,10 +47,10 @@ public class SpellBuilder
             return new SpeedAmp();
         }
         if(name == "doubled"){// not made
-            return new doubled();
+            return new Doubler();
         }
         if(name == "split"){// not made
-            return new split();
+            return new Splitter();
         }
         if(name == "chaotic"){// not made
             return new chaotic();
