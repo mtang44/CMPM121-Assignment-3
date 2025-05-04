@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using TMPro;
@@ -31,16 +32,18 @@ public class Spell
         // return this.name;
     }
 
-    public int GetManaCost()
+    public virtual int GetManaCost()
     {
-        return 1;
-        // return int.Parse(this.mana_cost);
+        return GetRPN("mana_cost");
+    }
+
+    public virtual int GetManaCost(ValueModifier mods) {
+        float value = ApplyStatMods(mods, mana_cost, "mana_cost");
+        return (int)Math.Ceiling(value);
     }
 
     public int GetDamage()
     {
-        // need some calculateDamage()
-        // return calculateDamage();
         return 100;
     }
 
@@ -51,7 +54,7 @@ public class Spell
 
     public virtual int GetIcon()
     {
-        return 1;
+        return icon;
     }
     public virtual bool IsModifierSpell() // able to be overrided by modifier spell
     {
@@ -74,13 +77,11 @@ public class Spell
     }
 
     public virtual IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
-        ApplyMods(mods);
         CoroutineManager.Instance.Run((Cast(where, target, team)));
         yield return new WaitForEndOfFrame();
     }
 
     public virtual IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team) {
-
         this.team = team;
         GameManager.Instance.projectileManager.CreateProjectile(0, "straight", where, target - where, 15f, OnHit);
         yield return new WaitForEndOfFrame();
@@ -92,15 +93,38 @@ public class Spell
         }
 
     }
-    public void ApplyMods (ValueModifier mods) {
-        
+    public float ApplyStatMods (ValueModifier mods, string stat, string stat_name) {
+        float value = GetRPNFloat(stat);
+        value = ApplyAdd(mods.modifiers[stat_name + "_add"], value);
+        value = ApplyMult(mods.modifiers[stat_name + "_mult"], value);
+        return value;
     }
 
-    public void ApplyMod (string stat, List<string> stat_mods) {
-        float value = RPN.calculateRPNFloat(stat, new Dictionary<string, float> {{"wave", GameManager.Instance.currentWave}});
-        for (int i = 0; i < stat_mods.Count; i++) {
-
+    public float ApplyAdd (List<string> stat_mods, float val) {
+        float value = val;
+        if (stat_mods != null) {
+            for (int i = stat_mods.Count - 1; i >= 0; i--) {
+                value += GetRPN(stat_mods[i]);
+            }
         }
+        return value;
+    }
+
+    public float ApplyMult (List<string> stat_mods, float val) {
+        float value = val;
+        if (stat_mods != null) {
+            for (int i = stat_mods.Count - 1; i >= 0; i--) {
+                value *= RPN.calculateRPNFloat(stat_mods[i]);
+            }
+        }
+        return value;
+    }
+
+    public float GetRPNFloat (string stat) {
+        return RPN.calculateRPNFloat(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}});
+    }
+    public int GetRPN (string stat) {
+        return RPN.calculateRPN(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}});
     }
 
 }

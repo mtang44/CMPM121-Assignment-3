@@ -20,8 +20,8 @@ private string mana_multiplier;
     }
 
     public override ValueModifier AddMods (ValueModifier mods) {
-        mods.damage_mult.Add(damage_multiplier);
-        mods.mana_mult.Add(mana_multiplier);
+        mods.AddMod("damage_mult", damage_multiplier);
+        mods.AddMod("mana_cost_mult", mana_multiplier);
         return mods;
     }
 

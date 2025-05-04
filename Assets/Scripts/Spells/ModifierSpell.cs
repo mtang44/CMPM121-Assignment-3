@@ -17,6 +17,24 @@ public class ModifierSpell : Spell {
         return true;
     }
 
+    public override int GetManaCost()
+    {
+        ValueModifier total_mods = new ValueModifier();
+        total_mods = AddMods(total_mods);
+        return child.GetManaCost(total_mods);
+    }
+    public override int GetManaCost(ValueModifier current_mods) {
+        ValueModifier total_mods = current_mods;
+        total_mods = AddMods(total_mods);
+        return child.GetManaCost(total_mods);
+    }
+
+    public override int GetIcon() {
+        return child.GetIcon();
+    }
+
+    
+
     public virtual ValueModifier AddMods (ValueModifier mods) {
         return mods;
     }

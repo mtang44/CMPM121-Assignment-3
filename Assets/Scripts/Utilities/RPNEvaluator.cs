@@ -30,9 +30,9 @@ public class RPN
         return stack.Pop();
     }
 
-    public static float calculateRPNFloat(string expression, Dictionary<string, float>? vars = null) {
+    public static float calculateRPNFloat(string expression, Dictionary<string, int>? vars = null) {
         Stack<float> stack = new Stack<float>();
-        Dictionary<string, float> variables = vars ?? new Dictionary<string, float>();
+        Dictionary<string, int> variables = vars ?? new Dictionary<string, int>();
         string[] operations = {"+", "-", "*", "/", "%"};
         foreach (string token in expression.Split(" "))
         {
