@@ -15,6 +15,11 @@ public class RewardScreenManager : MonoBehaviour
         if (GameManager.Instance.state == GameManager.GameState.WAVEEND)
         {
             rewardUI.SetActive(true);
+<<<<<<< Updated upstream
+=======
+           // enemiesKilledLabel.text = "Enemies Killed: " + GameManager.Instance.numEnemiesKilled;
+            //    Spell newRewardSpell = MakeRandomSpell();
+>>>>>>> Stashed changes
         }
         else
         {
