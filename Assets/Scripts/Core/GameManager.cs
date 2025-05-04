@@ -35,11 +35,8 @@ public class GameManager
 
     private List<GameObject> enemies;
     public int enemy_count { get { return enemies.Count; } }
-<<<<<<< Updated upstream
-=======
     public int numEnemiesKilled = 0;
     public int currentWave;
->>>>>>> Stashed changes
 
     public void AddEnemy(GameObject enemy)
     {

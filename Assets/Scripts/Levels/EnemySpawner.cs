@@ -34,14 +34,10 @@ public class EnemySpawner : MonoBehaviour
         
     }
 
-    public void StartLevel(string levelname)
+    public void StartLevel(string level_name)
     {
         level_selector.gameObject.SetActive(false);
         // this is not nice: we should not have to be required to tell the player directly that the level is starting
-<<<<<<< Updated upstream
-        GameManager.Instance.player.GetComponent<PlayerController>().StartLevel();
-        StartCoroutine(SpawnWave());
-=======
         wave_count = 1;
         GameManager.Instance.currentWave = wave_count;
         Debug.Log(level_name);
@@ -169,10 +165,8 @@ public class EnemySpawner : MonoBehaviour
         en.hp = new Hittable(50, Hittable.Team.MONSTERS, new_enemy);
         en.speed = 10;
         GameManager.Instance.AddEnemy(new_enemy);*/
->>>>>>> Stashed changes
     }
 
-    //==================================================
     public Dictionary<string, Enemy> readEnemiesJson()
     {
         Dictionary<string, Enemy> enemy_types = new Dictionary<string, Enemy>();
@@ -186,7 +180,7 @@ public class EnemySpawner : MonoBehaviour
         }
         return enemy_types;
     }
-     public Dictionary<string, Level >readLevelsJson()
+     public Dictionary<string, Level> readLevelsJson()
      {
         Dictionary<string, Level> level_types = new Dictionary<string, Level>();
         var leveltext = Resources.Load<TextAsset>("levels");
@@ -199,46 +193,4 @@ public class EnemySpawner : MonoBehaviour
         }
         return level_types;
      }
-
-    public void NextWave()
-    {
-        StartCoroutine(SpawnWave());
-    }
-
-
-    IEnumerator SpawnWave()
-    {
-        Enemy toSpawn = new Enemy(); //ERASE THIS
-        GameManager.Instance.state = GameManager.GameState.COUNTDOWN;
-        GameManager.Instance.countdown = 3;
-        for (int i = 3; i > 0; i--)
-        {
-            yield return new WaitForSeconds(1);
-            GameManager.Instance.countdown--;
-        }
-        GameManager.Instance.state = GameManager.GameState.INWAVE;
-        for (int i = 0; i < 10; ++i)
-        {
-            yield return SpawnZombie(toSpawn);
-        }
-        yield return new WaitWhile(() => GameManager.Instance.enemy_count > 0);
-        GameManager.Instance.state = GameManager.GameState.WAVEEND;
-    }
-
-    IEnumerator SpawnZombie(Enemy toSpawn)
-    {
-        SpawnPoint spawn_point = SpawnPoints[Random.Range(0, SpawnPoints.Length)];
-        Vector2 offset = Random.insideUnitCircle * 1.8f;
-
-        Vector3 initial_position = spawn_point.transform.position + new Vector3(offset.x, offset.y, 0);
-        GameObject new_enemy = Instantiate(enemy, initial_position, Quaternion.identity);
-
-        new_enemy.GetComponent<SpriteRenderer>().sprite = GameManager.Instance.enemySpriteManager.Get(0);
-        EnemyController en = new_enemy.GetComponent<EnemyController>();
-        en.hp = new Hittable(toSpawn.hp, Hittable.Team.MONSTERS, new_enemy);
-        en.speed = 10;
-        GameManager.Instance.AddEnemy(new_enemy);
-        yield return new WaitForSeconds(0.5f);
-    }
-
 }

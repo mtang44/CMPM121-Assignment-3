@@ -12,11 +12,6 @@ public class ModifierSpell : Spell {
 
     }
 
-    public override bool IsModifierSpell()
-    {
-        return true;
-    }
-
     public virtual ValueModifier AddMods (ValueModifier mods) {
         return mods;
     }

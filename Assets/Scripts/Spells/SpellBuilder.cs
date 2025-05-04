@@ -3,12 +3,6 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-<<<<<<< Updated upstream
-
-
-public class SpellBuilder 
-{
-=======
 using UnityEngine.Rendering.Universal;
 using Unity.VisualScripting;
 
@@ -16,26 +10,17 @@ public class SpellBuilder
 {
     private JObject spell_attributes;
     private List <string> spell_names;
->>>>>>> Stashed changes
 
     public Spell Build(SpellCaster owner)
     {
-<<<<<<< Updated upstream
-        return new Spell(owner);
-=======
         Spell spell = MakeSpell(name, owner);
         spell.SetAttributes((JObject)spell_attributes[name]);
         return spell;
->>>>>>> Stashed changes
     }
 
    
     public SpellBuilder()
     {        
-<<<<<<< Updated upstream
-    }
-
-=======
         spell_attributes = ReadSpellsJson();
     }
 
@@ -99,5 +84,4 @@ public class SpellBuilder
         }
         return spell_types;
     }
->>>>>>> Stashed changes
 }

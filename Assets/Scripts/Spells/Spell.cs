@@ -10,8 +10,6 @@ public class Spell
     public SpellCaster owner;
     public Hittable.Team team;
 
-<<<<<<< Updated upstream
-=======
     public string name;
     public string description;
     public int icon;
@@ -22,7 +20,6 @@ public class Spell
     public Projectile projectile;
     public bool isModifier = false;
 
->>>>>>> Stashed changes
     public Spell(SpellCaster owner)
     {
         this.owner = owner;
@@ -57,11 +54,6 @@ public class Spell
     {
         return (last_cast + GetCooldown() < Time.time);
     }
-<<<<<<< Updated upstream
-
-    public virtual IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team)
-    {
-=======
     
     public virtual void SetAttributes(JObject attributes) {  
         this.name = attributes["name"].ToString();
@@ -80,7 +72,6 @@ public class Spell
 
     public virtual IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team) {
 
->>>>>>> Stashed changes
         this.team = team;
         GameManager.Instance.projectileManager.CreateProjectile(0, "straight", where, target - where, 15f, OnHit);
         yield return new WaitForEndOfFrame();

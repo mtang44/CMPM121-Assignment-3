@@ -9,11 +9,7 @@ using System.Linq;
 public class RPN
 {
 
-<<<<<<< Updated upstream
-    public int calculateRPN(string expression, Dictionary<string, int> variables)
-=======
     public static int calculateRPN(string expression, Dictionary<string, int>? vars = null)
->>>>>>> Stashed changes
     {
         Stack<int> stack = new Stack<int>();
         Dictionary<string, int> variables = vars ?? new Dictionary<string,int>();
