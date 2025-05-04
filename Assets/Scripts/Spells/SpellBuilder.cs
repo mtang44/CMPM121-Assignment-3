@@ -79,7 +79,7 @@ public class SpellBuilder
      {
         var spelltext = Resources.Load<TextAsset>("spells");
         JObject spell_types = JObject.Parse(spelltext.text);
-        foreach(var a in spell_attributes)
+        foreach(var a in spell_types)
         {
             spell_names.Add(a.Key);
         }
