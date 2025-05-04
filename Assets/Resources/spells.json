@@ -17,6 +17,15 @@
        "cooldown": "3",
        "projectile": {"trajectory": "homing", "speed": "10", "sprite": 0}
    },
+   "arcane_railgun": {
+        "name": "Arcane Railgun",
+        "description":"A bolt that when shot can travels through multiple enemies, piercing each one in it's path. Does less damage and costs more",
+        "icon": 1,
+        "damage": {"amount": "25 power 5 / +", "type": "arcane"},
+        "mana_cost": "20",
+        "cooldown": "2.5",
+        "projectile": {"trajectory": "straight", "speed": "40", "sprite": 0}
+   },
    "arcane_blast":  {
        "name": "Arcane Blast",
        "description": "A bolt that explodes into smaller bolts on impact.",
@@ -86,5 +95,6 @@
         "mana_cost": "20"
 
    }
+   
 
 }

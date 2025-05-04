@@ -1,44 +1,58 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-public classs ModifierSpell : Spell {
-    public Spell child;
-    public int child_count;
-    public ValueModifier total_mods;
-    private string name;
-    private string description;
+using Newtonsoft.Json.Linq;
+using TMPro;
 
-    public ModifierSpell (SpellCaster owner, ValueModifier? current_mods = null) : base(owner) {
-        if (current_mods != null) {
-            total_mods = current_mods;
-        } else {
-            total_mods = new ValueModifier;
-        }
+public class ModifierSpell : Spell {
+    public Spell child;
+    public int child_count = 0;
+
+    public ModifierSpell (SpellCaster owner) : base(owner) {
+
     }
 
-    public virtual void AddMods () {
-        // add specific multipliers to total mods.
+    public override bool IsModifierSpell()
+    {
+        return true;
+    }
+
+    public virtual ValueModifier AddMods (ValueModifier mods) {
+        return mods;
     }
 
     public int GetChildCount () {
-        if (child_count > 1) {
-            return child_count + child.GetChildCount();
-        } else {
-            return child_count;
+        int count = child_count;
+        if (child != null && child is ModifierSpell modifierSpell) {
+            count += modifierSpell.GetChildCount();
         }
+        return count;
     }
-    IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team)
-    {
-        
-        this.team = team;
-        GameManager.Instance.projectileManager.CreateProjectile(0, "straight", where, target - where, 15f, OnHit);
+
+    public override IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team, ValueModifier current_mods) {
+        ValueModifier total_mods = current_mods;
+        total_mods = AddMods(total_mods);
+        CoroutineManager.Instance.Run(this.child.Cast(where, target, team, total_mods));
+        yield return new WaitForEndOfFrame();
+        // this.team = team;
+        // GameManager.Instance.projectileManager.CreateProjectile(0, "straight", where, target - where, 15f, OnHit);
+        // yield return new WaitForEndOfFrame();
+    }
+
+    public override IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team) {
+        ValueModifier total_mods = new ValueModifier();
+        total_mods = AddMods(total_mods);
+        CoroutineManager.Instance.Run(this.child.Cast(where, target, team, total_mods));
         yield return new WaitForEndOfFrame();
     }
+
     public void AddChild(Spell childSpell)
     {
         this.child = childSpell;
+        this.child_count++;
     }
-    public virtual void SetAttributes(JObject attributes)
+
+    public override void SetAttributes(JObject attributes)
     {
         name = attributes["name"].ToString();
         description = attributes["description"].ToString();

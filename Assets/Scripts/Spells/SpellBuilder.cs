@@ -5,87 +5,86 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine.Rendering.Universal;
 using Unity.VisualScripting;
-using System.Random;
-
 
 public class SpellBuilder 
 {
-    private Dictionary <string, JObject> spell_attributes;
+    private JObject spell_attributes;
     private List <string> spell_names;
 
 
     public Spell BuildSpell(string name, SpellCaster owner)
     {
-        Spell spell = MakeSpell(name);
-        spell.SetAttributes(spell_attributes[name]);
+        Spell spell = MakeSpell(name, owner);
+        spell.SetAttributes((JObject)spell_attributes[name]);
         return spell;
     }
 
    
     public SpellBuilder()
     {        
-        spell_attributes = readSpellsJson();
+        spell_attributes = ReadSpellsJson();
     }
 
-    private Spell MakeSpell(string name) {
-        if (name == "magic_missile") {
-            return new MagicMissile();
+    private Spell MakeSpell(string name, SpellCaster owner) {
+        if (name == "") {
+            return new MagicMissile(owner);
         }
-        if(name == "arcane_blast"){
-            return new ArcaneBlast();
+        if (name == "Arcane Blast") {
+            return new ArcaneBlast(owner);
         }
-        if(name == "arcane_spray"){
-            return new ArcaneSpray();
+        if (name == "Arcane Railgun") {
+            return new ArcaneRailgun(owner);
         }
-        if(name == "arcane_bolt"){
-            return new ArcaneBolt();
+        if (name == "Arcane Spray") {
+            return new ArcaneSpray(owner);
         }
-        if(name == "damage-amplified"){ 
-            return new DamageAmp();
+        if (name == "Arcane Bolt") {
+            return new ArcaneBolt(owner);
         }
-        if(name == "speed-amplified"){
-            return new SpeedAmp();
+        if (name == "damage-amplified") { 
+            return new DamageAmp(owner);
         }
-        if(name == "doubled"){// not made
-            return new Doubler();
+        if (name == "speed-amplified") {
+            return new SpeedAmp(owner);
         }
-        if(name == "split"){// not made
-            return new Splitter();
+        if (name == "doubled") {// not made
+            return new Doubler(owner);
         }
-        if(name == "chaotic"){// not made
-            return new chaotic();
+        if (name == "split") {// not made
+            return new Splitter(owner);
         }
-        if(name == "homing"){ // not made
-            return new homing();
+        if (name == "chaotic") {// not made
+            return new Chaotic(owner);
         }
+        if (name == "homing") { // not made
+            return new Homing(owner);
+        }
+        return null;
 
     }
-    public Spell makeRandomSpell()
-    {
-        Random rnd = new Random();
+    public Spell MakeRandomSpell(SpellCaster owner) {
+        System.Random rnd = new System.Random();
         int index = rnd.Next(spell_names.Count);
 
         // create random spell
-        Spell s = buildSpell(spell_names[index]);
+        Spell s = BuildSpell(spell_names[index], owner);
         // if spell is modifier then loop to create random spell again until we get a base spell
-        if (s.IsModifierSpell())
-        {
-            s.AddChild(makeRandomSpell(spell_names))
+        if (s is ModifierSpell modifierSpell) {
+            modifierSpell.AddChild(MakeRandomSpell(owner));
         }
         return s;
     }
 
-    public Dictionary<string, JObject> readSpellsJson()
+    public JObject ReadSpellsJson()
      {
-        Dictionary<string, JObject> spell_types = new Dictionary<string, JObject>();
         var spelltext = Resources.Load<TextAsset>("spells");
-        
-        spell_types = JObject.Parse(spelltext.text);
+        JObject spell_types = JObject.Parse(spelltext.text);
         foreach(var a in spell_attributes)
         {
             spell_names.Add(a.Key);
         }
         return spell_types;
     }
+
 }
 

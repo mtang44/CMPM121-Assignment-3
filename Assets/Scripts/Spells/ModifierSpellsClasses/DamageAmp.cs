@@ -1,26 +1,28 @@
+using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+using TMPro;
+
 public class DamageAmp : ModifierSpell {
 
 private string damage_multiplier;
-        private string mana_multiplier;
+private string mana_multiplier;
     
-    public DamageAmp () {
+    public DamageAmp (SpellCaster owner) : base(owner) {
     
-        
     }
 
-    public void override SetAttributes(JObject attributes) {
-        base.SetAttributes();
+    public override void SetAttributes(JObject attributes) {
+        base.SetAttributes(attributes);
         damage_multiplier = attributes["damage_multiplier"].ToString();
-        mana_multiplier = aattributes["mana_multiplier"].ToString();
-      
+        mana_multiplier = attributes["mana_multiplier"].ToString();
     }
-    public bool override IsModifierSpell()
-    {
-        return true;
+
+    public override ValueModifier AddMods (ValueModifier mods) {
+        mods.damage_mult.Add(damage_multiplier);
+        mods.mana_mult.Add(mana_multiplier);
+        return mods;
     }
-    public void override Cast()
-    {
-        // will call override of base spell to implement modifier's attributes. 
-    }
+
 }
