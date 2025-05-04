@@ -73,18 +73,16 @@ public class EnemySpawner : MonoBehaviour
     {
         level_selector.gameObject.SetActive(false);
         // this is not nice: we should not have to be required to tell the player directly that the level is starting
-
         wave_count = 1;
-        GameManager.Instance.currentWave = wave_count;
         Debug.Log(level_name);
         currentLevel = levels[level_name];
         GameManager.Instance.player.GetComponent<PlayerController>().StartLevel();
         StartCoroutine(SpawnWave());
+        
     }
 
     public void NextWave() {
         wave_count++;
-        GameManager.Instance.currentWave++;
         Debug.Log("wave: " + wave_count);
         StartCoroutine(SpawnWave());
     }
@@ -200,7 +198,6 @@ public class EnemySpawner : MonoBehaviour
         en.hp = new Hittable(50, Hittable.Team.MONSTERS, new_enemy);
         en.speed = 10;
         GameManager.Instance.AddEnemy(new_enemy);*/
-
     }
 
     public Dictionary<string, Enemy> readEnemiesJson()

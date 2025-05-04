@@ -1,29 +1,27 @@
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-using TMPro;
-
 public class Doubler : ModifierSpell {
 
     private string delay;
     private string mana_multiplier;
     private string cooldown_multiplier;
-
-    public Doubler (SpellCaster owner) : base(owner) {       
+    public Doubler () {
+        
         
     }
 
-    public override void SetAttributes(JObject attributes) {
-        base.SetAttributes(attributes);
+    public void override SetAttributes(JObject attributes) {
+        base.SetAttributes();
         delay = attributes["delay"].ToString();
         cooldown_multiplier = attributes["cooldown_multiplier"].ToString();
-        mana_multiplier = attributes["mana_multiplier"].ToString();
+        mana_multiplier = aattributes["mana_multiplier"].ToString();
       
     }
-    
-    public override ValueModifier AddMods (ValueModifier mods) {
-        
-        return mods;
+    public bool override IsModifierSpell()
+    {
+        return true;
+    }
+    public void override Cast()
+    {
+        // will call override of base spell to implement modifier's attributes. 
     }
 }

@@ -36,9 +36,7 @@ public class GameManager
 
     private List<GameObject> enemies;
     public int enemy_count { get { return enemies.Count; } }
-
     public int numEnemiesKilled = 0;
-    public int currentWave;
 
     public void AddEnemy(GameObject enemy)
     {

@@ -1,25 +1,23 @@
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-using TMPro;
-
 public class SpeedAmp : ModifierSpell {
 
     private string speed_multiplier;
-    public SpeedAmp (SpellCaster owner) : base(owner) {
+    public SpeedAmp () {
         
         
     }
 
-    public override void SetAttributes(JObject attributes) {
-        base.SetAttributes(attributes);
+    public void override SetAttributes(JObject attributes) {
+        base.SetAttributes();
         speed_multiplier = attributes["speed_multiplier"].ToString();
       
     }
-    
-    public override ValueModifier AddMods (ValueModifier mods) {
-        
-        return mods;
+    public bool override IsModifierSpell()
+    {
+        return true;
+    }
+    public void override Cast()
+    {
+        // will call override of base spell to implement modifier's attributes. 
     }
 }
