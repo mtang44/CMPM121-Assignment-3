@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     public HealthBar healthui;
     public ManaBar manaui;
 
+    public string class_name;
+    public JObject class_stats;
+
     public SpellCaster spellcaster;
     public SpellUI spellui;
 
@@ -23,11 +26,13 @@ public class PlayerController : MonoBehaviour
     {
         unit = GetComponent<Unit>();
         GameManager.Instance.player = gameObject;
+
     }
 
     public void StartLevel()
     {
-        spellcaster = new SpellCaster(125, 8, Hittable.Team.PLAYER);
+        ReadClassesJson("mage");
+        spellcaster = new SpellCaster(class_stats["mana"].ToString(), class_stats["mana_regeneration"].ToString(), class_stats["spell_power"].ToString(), Hittable.Team.PLAYER);
         StartCoroutine(spellcaster.ManaRegeneration());
         
         hp = new Hittable(100, Hittable.Team.PLAYER, gameObject);
@@ -64,6 +69,11 @@ public class PlayerController : MonoBehaviour
     void Die()
     {
         GameManager.Instance.state = GameManager.GameState.GAMEOVER;
+    }
+
+    public void ReadClassesJson(string class_name) {
+        var classtext = Resources.Load<TextAsset>("classes");
+        JObject class_stats = (JObject)JObject.Parse(classtext.text)[class_name];
     }
 
 }
