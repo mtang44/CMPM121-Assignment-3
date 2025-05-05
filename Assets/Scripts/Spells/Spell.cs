@@ -34,6 +34,7 @@ public class Spell
     public int GetManaCost()
     {
         return 1;
+        //this.mana_cost;
         // return int.Parse(this.mana_cost);
     }
 
@@ -51,7 +52,7 @@ public class Spell
 
     public virtual int GetIcon()
     {
-        return 1;
+        return this.icon;
     }
     public virtual bool IsModifierSpell() // able to be overrided by modifier spell
     {

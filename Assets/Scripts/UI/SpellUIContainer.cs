@@ -21,5 +21,6 @@ public class SpellUIContainer : MonoBehaviour
     {
         
     }
+    // have a function here that calls spell: setSpell with the spell we are adding. 
 
 }
