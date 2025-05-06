@@ -63,6 +63,7 @@ public class ModifierSpell : Spell {
     }
 
     public override IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team, ValueModifier current_mods) {
+        Debug.Log(GetName());
         CoroutineManager.Instance.Run(this.child.Cast(where, target, team, AddMods(current_mods)));
         yield return new WaitForEndOfFrame();
         // this.team = team;

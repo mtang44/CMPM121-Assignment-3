@@ -33,8 +33,8 @@ public class PlayerController : MonoBehaviour
 
     public void StartLevel()
     {
-        ReadClassesJson("mage");
-        spellcaster = new SpellCaster(class_stats["mana"].ToString(), class_stats["mana_regeneration"].ToString(), class_stats["spell_power"].ToString(), Hittable.Team.PLAYER);
+        class_stats = ReadClassesJson("mage");
+        spellcaster = new SpellCaster(class_stats["mana"].ToString(), class_stats["mana_regeneration"].ToString(), class_stats["spellpower"].ToString(), Hittable.Team.PLAYER);
         StartCoroutine(spellcaster.ManaRegeneration());
         
         hp = new Hittable(100, Hittable.Team.PLAYER, gameObject);
@@ -73,9 +73,11 @@ public class PlayerController : MonoBehaviour
         GameManager.Instance.state = GameManager.GameState.GAMEOVER;
     }
 
-    public void ReadClassesJson(string class_name) {
+    public JObject ReadClassesJson(string class_name) {
         var classtext = Resources.Load<TextAsset>("classes");
-        JObject class_stats = (JObject)JObject.Parse(classtext.text)[class_name];
+        JObject classes = JObject.Parse(classtext.text);
+        return (JObject)classes[class_name];
+
     }
 
 }

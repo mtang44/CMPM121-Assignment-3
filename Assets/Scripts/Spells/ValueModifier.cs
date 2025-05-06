@@ -24,7 +24,7 @@ public class ValueModifier {
     }
 
     public void AddMod (string key, string modifier) {
-        if (modifiers[key] == null) {
+        if (!modifiers.ContainsKey(key)) {
             modifiers[key] = new List<string>();
         }
         modifiers[key].Add(modifier);
