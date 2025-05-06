@@ -21,7 +21,8 @@ public class Chaotic : ModifierSpell {
     }
 
     public override ValueModifier AddMods (ValueModifier mods) {
-        
+        mods.AddMod("damage_mult", damage_multiplier);
+        mods.AddMod("trajectory", projectile_trajectory);
         return mods;
     }
 }

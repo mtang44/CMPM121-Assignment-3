@@ -23,7 +23,9 @@ public class Homing : ModifierSpell {
     }
     
     public override ValueModifier AddMods (ValueModifier mods) {
-        
+        mods.AddMod("damage_mult", damage_multiplier);
+        mods.AddMod("mana_cost_add", mana_adder);
+        mods.AddMod("trajectory", projectile_trajectory);
         return mods;
     }
 }
