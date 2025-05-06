@@ -19,28 +19,20 @@ public class ArcaneSpray : Spell {
         spray = attributes["spray"].ToString();
         lifetime = attributes["projectile"]["lifetime"].ToString();
     }
-
-    public override int GetDamage(ValueModifier mods) {
-        return base.GetDamage(mods) * GetRPN(N);
-    }
-
     public override IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
         this.team = team;
-        Vector3 direction = (target - where);
+        Vector3 direction = target - where;
+        float centerAngle = Mathf.Atan2(direction.y, direction.x);
+        float halfCone = (GetRPNFloat(spray)) * 360f * Mathf.Deg2Rad / 2f;
+
         for (int i = 0; i < GetRPN(N); i++) {
-            Vector3 randomDir = GetRandomDirection(direction, GetRPNFloat(spray));
-             GameManager.Instance.projectileManager.CreateProjectile(sprite, GetTrajectory(mods), where, where + randomDir, GetSpeed(mods), MakeOnHit(mods), lifetime: GetRPNFloat(lifetime));
+            float randomOffset = Random.Range(-halfCone, halfCone);
+            float finalAngle = centerAngle + randomOffset;
+            Vector3 dir = new Vector3(Mathf.Cos(finalAngle), Mathf.Sin(finalAngle), 0);
+            GameManager.Instance.projectileManager.CreateProjectile(sprite, GetTrajectory(mods), where, where + dir, GetSpeed(mods), MakeOnHit(mods), lifetime: GetRPNFloat(lifetime));
         }
+
         yield return new WaitForEndOfFrame();
     }
 
-    public Vector3 GetRandomDirection(Vector3 centerDir, float coneWidth) {
-        float angle = Mathf.Atan2(centerDir.y, centerDir.x) * Mathf.Rad2Deg;
-        float halfWidth = coneWidth / 2f;
-        float randomAngle = Random.Range(angle - halfWidth, angle + halfWidth);
-        float rad = randomAngle * Mathf.Deg2Rad;
-        Vector3 dir = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0);
-
-        return dir;
-    }
 }
