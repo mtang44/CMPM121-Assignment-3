@@ -23,7 +23,19 @@ public class Doubler : ModifierSpell {
     }
     
     public override ValueModifier AddMods (ValueModifier mods) {
-        
+        mods.AddMod("cooldown_mult", cooldown_multiplier);
+        mods.AddMod("mana_cost_mult", mana_multiplier);
         return mods;
+    }
+
+    public override IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team, ValueModifier current_mods) {
+
+        CoroutineManager.Instance.Run(this.child.Cast(where, target, team, AddMods(current_mods)));
+        yield return new WaitForSeconds(GetRPNFloat(delay));
+        CoroutineManager.Instance.Run(this.child.Cast(where, target, team, AddMods(current_mods)));
+        yield return new WaitForEndOfFrame();
+        // this.team = team;
+        // GameManager.Instance.projectileManager.CreateProjectile(0, "straight", where, target - where, 15f, OnHit);
+        // yield return new WaitForEndOfFrame();
     }
 }

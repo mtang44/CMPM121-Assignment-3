@@ -17,22 +17,24 @@ public class ModifierSpell : Spell {
         return true;
     }
 
-    public override int GetManaCost() {
-        ValueModifier total_mods = AddMods();
-        return child.GetManaCost(total_mods);
-    }
-    public override int GetManaCost(ValueModifier current_mods) {
-        ValueModifier total_mods = AddMods(current_mods);
-        return child.GetManaCost(total_mods);
+    public override int GetManaCost(ValueModifier mods) {
+        return child.GetManaCost(AddMods(mods));
     }
 
-    public override int GetDamage() {
-        ValueModifier total_mods = AddMods();
-        return child.GetDamage(total_mods);
+    public override int GetDamage(ValueModifier mods) {
+        return child.GetDamage(AddMods(mods));
+    } 
+
+    public override float GetCooldown(ValueModifier mods) {
+        return child.GetCooldown(AddMods(mods));
     }
-    public override int GetDamage(ValueModifier current_mods) {
-        ValueModifier total_mods = AddMods(current_mods);
-        return child.GetDamage(total_mods);
+    
+    public override float GetSpeed(ValueModifier mods) {
+        return child.GetSpeed(AddMods(mods));
+    }
+
+    public override string GetTrajectory(ValueModifier mods) {
+        return child.GetTrajectory(AddMods(mods));
     }
 
     public override int GetIcon() {
@@ -43,16 +45,13 @@ public class ModifierSpell : Spell {
         return this.name + " " + child.GetName();
     }
     
-    public virtual ValueModifier AddMods() {
-        ValueModifier total_mods = new ValueModifier();
-        total_mods = AddMods(total_mods);
-        return total_mods;
-    }    
 
-    public virtual ValueModifier AddMods (ValueModifier mods) {
-        ValueModifier total_mods = mods;
-        total_mods = AddMods(total_mods);
-        return total_mods;
+    public virtual ValueModifier AddMods() {
+        return AddMods(new ValueModifier());
+    }
+
+    public virtual ValueModifier AddMods(ValueModifier mods) {
+        return mods;
     }
 
     public int GetChildCount () {
@@ -64,9 +63,7 @@ public class ModifierSpell : Spell {
     }
 
     public override IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team, ValueModifier current_mods) {
-        ValueModifier total_mods = current_mods;
-        total_mods = AddMods(total_mods);
-        CoroutineManager.Instance.Run(this.child.Cast(where, target, team, total_mods));
+        CoroutineManager.Instance.Run(this.child.Cast(where, target, team, AddMods(current_mods)));
         yield return new WaitForEndOfFrame();
         // this.team = team;
         // GameManager.Instance.projectileManager.CreateProjectile(0, "straight", where, target - where, 15f, OnHit);
@@ -74,9 +71,7 @@ public class ModifierSpell : Spell {
     }
 
     public override IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team) {
-        ValueModifier total_mods = new ValueModifier();
-        total_mods = AddMods(total_mods);
-        CoroutineManager.Instance.Run(this.child.Cast(where, target, team, total_mods));
+        CoroutineManager.Instance.Run(Cast(where, target, team, new ValueModifier()));
         yield return new WaitForEndOfFrame();
     }
 

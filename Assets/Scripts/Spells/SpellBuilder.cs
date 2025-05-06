@@ -26,7 +26,7 @@ public class SpellBuilder
     }
 
     private Spell MakeSpell(string name, SpellCaster owner) {
-        if (name == "") {
+        if (name == "magic_missile") {
             return new MagicMissile(owner);
         }
         if (name == "arcane_blast") {

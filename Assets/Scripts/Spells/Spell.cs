@@ -18,7 +18,10 @@ public class Spell
     public string damage;
     public Damage.Type damage_type;
     public string cooldown;
-    public Projectile projectile;
+
+    public string trajectory;
+    public string speed;
+    public int sprite;
     public bool isModifier = false;
     public ValueModifier mods;
     public Spell(SpellCaster owner)
@@ -33,33 +36,29 @@ public class Spell
     }
 
 
-
-       public virtual int GetManaCost() {
-        return GetRPN(mana_cost);
-    }
-
     public virtual int GetManaCost(ValueModifier mods) {
-        float value = ApplyStatMods(mods, mana_cost, "mana_cost");
-        return (int)Math.Ceiling(value);
+        return (int)Math.Ceiling(ApplyStatMods(mods, mana_cost, "mana_cost"));
     }
-
-    public virtual int GetDamage() {
-        return GetRPN(damage);
-    }
-
 
     public virtual int GetDamage(ValueModifier mods) {
-        float value = ApplyStatMods(mods, damage, "damage");
-        return (int)Math.Ceiling(value);
+        return (int)Math.Ceiling(ApplyStatMods(mods, damage, "damage"));
     }
 
-    public virtual float GetCooldown() {
-        return GetRPNFloat(cooldown);
+    public virtual float GetCooldown(ValueModifier mods) {
+        return ApplyStatMods(mods, cooldown, "cooldown");
     }
 
-    public virtual int GetCooldown(ValueModifier mods) {
-        float value = ApplyStatMods(mods, cooldown, "cooldown");
-        return (int)Math.Ceiling(value);
+    public virtual float GetSpeed(ValueModifier mods) {
+        return ApplyStatMods(mods, speed, "speed");
+    }
+
+    public virtual string GetTrajectory(ValueModifier mods) {
+        string currentTrajectory = trajectory;
+        List<string> trajectoryMods = mods.modifiers["trajectory"];
+        if (trajectoryMods != null) {
+            currentTrajectory = trajectoryMods[-1];
+        }
+        return currentTrajectory;
     }
 
     public virtual int GetIcon() {
@@ -82,22 +81,24 @@ public class Spell
         this.damage = attributes["damage"]["amount"].ToString();
         this.damage_type = Damage.TypeFromString(attributes["damage"]["type"].ToString());
         this.cooldown = attributes["cooldown"].ToString();
-        this.projectile = attributes["projectile"].ToObject<Projectile>();
+        this.trajectory = attributes["projectile"]["trajectory"].ToString();
+        this.speed = attributes["projectile"]["speed"].ToString();
+        this.sprite = attributes["projectile"]["sprite"].ToObject<int>();
     }
 
     public virtual IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
         this.team = team;
-        GameManager.Instance.projectileManager.CreateProjectile(0, "straight", where, target - where, 15f, MakeOnHit(mods));
+        GameManager.Instance.projectileManager.CreateProjectile(sprite, GetTrajectory(mods), where, target - where, GetSpeed(mods), MakeOnHit(mods));
         yield return new WaitForEndOfFrame();
     }
 
     public virtual IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team) {
-        this.team = team;
-        GameManager.Instance.projectileManager.CreateProjectile(0, "straight", where, target - where, 15f, OnHit);
+        CoroutineManager.Instance.Run(Cast(where, target, team, new ValueModifier()));
         yield return new WaitForEndOfFrame();
     }
 
-    public Action<Hittable,Vector3> MakeOnHit(ValueModifier mods)
+ 
+    public virtual Action<Hittable,Vector3> MakeOnHit(ValueModifier mods)
     {
         void OnHit(Hittable other, Vector3 impact) {
             if (other.team != team) {
@@ -111,8 +112,8 @@ public class Spell
         if (other.team != team) {
             other.Damage(new Damage(GetDamage(), Damage.Type.ARCANE));
         }
-
     }
+
     public float ApplyStatMods (ValueModifier mods, string stat, string stat_name) {
         float value = GetRPNFloat(stat);
         value = ApplyAdd(mods.modifiers[stat_name + "_add"], value);
@@ -146,5 +147,12 @@ public class Spell
     public int GetRPN (string stat) {
         return RPN.calculateRPN(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}, {"power", owner.power}});
     }
+
+    
+    public int GetManaCost() { return GetManaCost(new ValueModifier()); }
+    public int GetDamage() { return GetDamage(new ValueModifier()); }
+    public float GetCooldown() { return GetCooldown(new ValueModifier()); }
+    public float GetSpeed() { return GetSpeed(new ValueModifier()); }
+    public string GetTrajectory() { return GetTrajectory(new ValueModifier()); }
 
 }

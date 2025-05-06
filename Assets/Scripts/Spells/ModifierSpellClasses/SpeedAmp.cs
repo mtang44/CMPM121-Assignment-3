@@ -19,7 +19,7 @@ public class SpeedAmp : ModifierSpell {
     }
     
     public override ValueModifier AddMods (ValueModifier mods) {
-        
+        mods.AddMod("speed_mult", speed_multiplier);
         return mods;
     }
 }
