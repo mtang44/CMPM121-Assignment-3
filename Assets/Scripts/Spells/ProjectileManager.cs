@@ -1,6 +1,6 @@
 using UnityEngine;
 using System;
-
+#nullable enable
 public class ProjectileManager : MonoBehaviour
 {
     public GameObject[] projectiles;
@@ -17,19 +17,15 @@ public class ProjectileManager : MonoBehaviour
         
     }
 
-    public void CreateProjectile(int which, string trajectory, Vector3 where, Vector3 direction, float speed, Action<Hittable,Vector3> onHit)
-    {
-        GameObject new_projectile = Instantiate(projectiles[which], where + direction.normalized*1.1f, Quaternion.Euler(0,0,Mathf.Atan2(direction.y, direction.x)*Mathf.Rad2Deg));
-        new_projectile.GetComponent<ProjectileController>().movement = MakeMovement(trajectory, speed);
-        new_projectile.GetComponent<ProjectileController>().OnHit += onHit;
-    }
-
-    public void CreateProjectile(int which, string trajectory, Vector3 where, Vector3 direction, float speed, Action<Hittable, Vector3> onHit, float lifetime)
+    public void CreateProjectile(int which, string trajectory, Vector3 where, Vector3 direction, float speed, Action<Hittable,Vector3> onHit, float? lifetime = null, int? pierce = null)
     {
         GameObject new_projectile = Instantiate(projectiles[which], where + direction.normalized * 1.1f, Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg));
         new_projectile.GetComponent<ProjectileController>().movement = MakeMovement(trajectory, speed);
         new_projectile.GetComponent<ProjectileController>().OnHit += onHit;
-        new_projectile.GetComponent<ProjectileController>().SetLifetime(lifetime);
+        if (lifetime != null) {
+            new_projectile.GetComponent<ProjectileController>().SetLifetime(lifetime.Value);
+        }
+        new_projectile.GetComponent<ProjectileController>().collision.AddPierce(pierce ?? 0);
     }
 
     public ProjectileMovement MakeMovement(string name, float speed)
@@ -46,7 +42,7 @@ public class ProjectileManager : MonoBehaviour
         {
             return new SpiralingProjectileMovement(speed);
         }
-        return null;
+        return new StraightProjectileMovement(speed);
     }
 
 }

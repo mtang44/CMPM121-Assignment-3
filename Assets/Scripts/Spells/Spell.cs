@@ -37,25 +37,29 @@ public class Spell
 
 
     public virtual int GetManaCost(ValueModifier mods) {
-        return (int)Math.Ceiling(ApplyStatMods(mods, mana_cost, "mana_cost"));
+        Debug.Log("Final Mana Cost: " + ApplyStatMods(mods, this.mana_cost, "mana_cost"));
+        return (int)Math.Ceiling(ApplyStatMods(mods, this.mana_cost, "mana_cost"));
     }
 
     public virtual int GetDamage(ValueModifier mods) {
-        return (int)Math.Ceiling(ApplyStatMods(mods, damage, "damage"));
+        Debug.Log("Final Damage: " + ApplyStatMods(mods, this.damage, "damage"));
+        return (int)Math.Ceiling(ApplyStatMods(mods, this.damage, "damage"));
     }
 
     public virtual float GetCooldown(ValueModifier mods) {
-        return ApplyStatMods(mods, cooldown, "cooldown");
+        Debug.Log("Final Cooldown: " + ApplyStatMods(mods, this.cooldown, "cooldown"));
+        return ApplyStatMods(mods, this.cooldown, "cooldown");
     }
 
     public virtual float GetSpeed(ValueModifier mods) {
-        return ApplyStatMods(mods, speed, "speed");
+        Debug.Log("Final Speed: " + ApplyStatMods(mods, this.speed, "speed"));
+        return ApplyStatMods(mods, this.speed, "speed");
     }
 
     public virtual string GetTrajectory(ValueModifier mods) {
-        string currentTrajectory = trajectory;
-        List<string> trajectoryMods = mods.modifiers["trajectory"];
-        if (trajectoryMods != null) {
+        string currentTrajectory = this.trajectory;
+        if (mods.modifiers.ContainsKey("trajectory")) {
+            List<string> trajectoryMods = mods.modifiers["trajectory"];
             currentTrajectory = trajectoryMods[-1];
         }
         return currentTrajectory;
@@ -80,6 +84,7 @@ public class Spell
         this.icon = attributes["icon"].ToObject<int>();
         this.damage = attributes["damage"]["amount"].ToString();
         this.damage_type = Damage.TypeFromString(attributes["damage"]["type"].ToString());
+        this.mana_cost = attributes["mana_cost"].ToString();
         this.cooldown = attributes["cooldown"].ToString();
         this.trajectory = attributes["projectile"]["trajectory"].ToString();
         this.speed = attributes["projectile"]["speed"].ToString();
@@ -102,7 +107,7 @@ public class Spell
     {
         void OnHit(Hittable other, Vector3 impact) {
             if (other.team != team) {
-                other.Damage(new Damage(GetDamage(mods), Damage.Type.ARCANE));
+                other.Damage(new Damage(GetDamage(mods), damage_type));
             }
         }
         return OnHit;
@@ -110,32 +115,34 @@ public class Spell
     
     void OnHit(Hittable other, Vector3 impact) {
         if (other.team != team) {
-            other.Damage(new Damage(GetDamage(), Damage.Type.ARCANE));
+            other.Damage(new Damage(GetDamage(), damage_type));
         }
     }
 
     public float ApplyStatMods (ValueModifier mods, string stat, string stat_name) {
         float value = GetRPNFloat(stat);
-        value = ApplyAdd(mods.modifiers[stat_name + "_add"], value);
-        value = ApplyMult(mods.modifiers[stat_name + "_mult"], value);
+        value = ApplyAdd(mods, value, stat_name + "_add");
+        value = ApplyMult(mods, value, stat_name + "_mult");
         return value;
     }
 
-    public float ApplyAdd (List<string> stat_mods, float val) {
+    public float ApplyAdd (ValueModifier mods, float val, string mod_name) {
         float value = val;
-        if (stat_mods != null) {
-            for (int i = 0; i < stat_mods.Count; i++) {
-                value += GetRPNFloat(stat_mods[i]);
+        if (mods.modifiers.ContainsKey(mod_name)) {
+            for (int i = 0; i < mods.modifiers[mod_name].Count; i++) {
+                Debug.Log("ApplyAdd Current Mod to Add: " + mods.modifiers[mod_name][i]);
+                value += GetRPNFloat(mods.modifiers[mod_name][i]);
             }
         }
         return value;
     }
 
-    public float ApplyMult (List<string> stat_mods, float val) {
+    public float ApplyMult (ValueModifier mods, float val, string mod_name) {
         float value = val;
-        if (stat_mods != null) {
-            for (int i = 0; i < stat_mods.Count; i++) {
-                value *= GetRPNFloat(stat_mods[i]);
+         if (mods.modifiers.ContainsKey(mod_name)) {
+            for (int i = 0; i < mods.modifiers[mod_name].Count; i++) {
+                Debug.Log("ApplyMult Current Mod to Mult: " + mods.modifiers[mod_name][i]);
+                value *= GetRPNFloat(mods.modifiers[mod_name][i]);
             }
         }
         return value;
