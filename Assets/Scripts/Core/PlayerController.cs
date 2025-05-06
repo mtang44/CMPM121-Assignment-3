@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     public int speed;
 
     public Unit unit;
+     
+    public List<Spell> activeSpells = new List<Spell>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
