@@ -14,6 +14,7 @@ public class RewardScreenManager : MonoBehaviour
     public GameObject spell_2_drop;
     public GameObject spell_3_drop;
     public GameObject spell_4_drop;
+    public bool running = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,33 +26,40 @@ public class RewardScreenManager : MonoBehaviour
     {
         if (GameManager.Instance.state == GameManager.GameState.WAVEEND)
         {   
-            rewardUI.SetActive(true);
-           // enemiesKilledLabel.text = "Enemies Killed: " + GameManager.Instance.numEnemiesKilled;
-            foreach(var s in GameManager.Instance.player.GetComponent<PlayerController>().activeSpells)
+            if(!running)
             {
-                GameManager.Instance.player.GetComponent<SpellUI>().SetSpell(s);
+                running = true;
+                rewardUI.SetActive(true);
+            // enemiesKilledLabel.text = "Enemies Killed: " + GameManager.Instance.numEnemiesKilled;
+                foreach(var s in GameManager.Instance.player.GetComponent<PlayerController>().activeSpells)
+                {
+                    GameManager.Instance.player.GetComponent<SpellUI>().SetSpell(s);
+                }
+                newRewardSpell =  new SpellBuilder().MakeRandomSpell(GameManager.Instance.player.GetComponent<PlayerController>().spellcaster);   
+                Debug.Log(newRewardSpell.description);
+                SpellDescription.text = "Spell Description " + newRewardSpell.description;
+                SpellName.text = "Spell Name " + newRewardSpell.name;
+                GameManager.Instance.spellIconManager.PlaceSprite(newRewardSpell.GetIcon(), icon.GetComponent<Image>());
+                // deactivates spell drop button if spell is 
+                if(GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Count < 4){
+                spell_1_drop.SetActive(false);
+                spell_2_drop.SetActive(false);
+                spell_3_drop.SetActive(false);
+                spell_4_drop.SetActive(false);
+                }
             }
-            newRewardSpell =  new SpellBuilder().MakeRandomSpell(GameManager.Instance.player.GetComponent<SpellCaster>());   
-            SpellDescription.text = "Spell Description " + newRewardSpell.description;
-            SpellName.text = "Spell Name " + newRewardSpell.name;
-            GameManager.Instance.spellIconManager.PlaceSprite(newRewardSpell.GetIcon(), icon.GetComponent<Image>());
-            // deactivates spell drop button if spell is 
-            if(GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Count < 4){
-            spell_1_drop.SetActive(false);
-            spell_2_drop.SetActive(false);
-            spell_3_drop.SetActive(false);
-            spell_4_drop.SetActive(false);
-            }
+           
         }
         else
         {
-            rewardUI.SetActive(false);
+                rewardUI.SetActive(false);
         }
     }
     public void gainSpell()
     {   
         if(GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Count < 4){
             GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Add(newRewardSpell);
+            Debug.Log(GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Count);
         }
         else{
 
@@ -61,6 +69,11 @@ public class RewardScreenManager : MonoBehaviour
             spell_4_drop.SetActive(true);
         }
     } 
+    public void nextWave()
+    {
+        running = false;
+        GameManager.Instance.player.GetComponent<EnemySpawner>().NextWave();
+    }
 
     public void dropSpell(int i)
     {
