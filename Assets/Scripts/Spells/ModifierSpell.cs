@@ -17,26 +17,42 @@ public class ModifierSpell : Spell {
         return true;
     }
 
-    public override int GetManaCost()
-    {
-        ValueModifier total_mods = new ValueModifier();
-        total_mods = AddMods(total_mods);
+    public override int GetManaCost() {
+        ValueModifier total_mods = AddMods();
         return child.GetManaCost(total_mods);
     }
     public override int GetManaCost(ValueModifier current_mods) {
-        ValueModifier total_mods = current_mods;
-        total_mods = AddMods(total_mods);
+        ValueModifier total_mods = AddMods(current_mods);
         return child.GetManaCost(total_mods);
+    }
+
+    public override int GetDamage() {
+        ValueModifier total_mods = AddMods();
+        return child.GetDamage(total_mods);
+    }
+    public override int GetDamage(ValueModifier current_mods) {
+        ValueModifier total_mods = AddMods(current_mods);
+        return child.GetDamage(total_mods);
     }
 
     public override int GetIcon() {
         return child.GetIcon();
     }
 
+    public override string GetName() {
+        return this.name + " " + child.GetName();
+    }
     
+    public virtual ValueModifier AddMods() {
+        ValueModifier total_mods = new ValueModifier();
+        total_mods = AddMods(total_mods);
+        return total_mods;
+    }    
 
     public virtual ValueModifier AddMods (ValueModifier mods) {
-        return mods;
+        ValueModifier total_mods = mods;
+        total_mods = AddMods(total_mods);
+        return total_mods;
     }
 
     public int GetChildCount () {

@@ -26,15 +26,14 @@ public class Spell
         this.owner = owner;
     }
 
-    public string GetName()
+    public virtual string GetName()
     {
         return this.name;
         // return this.name;
     }
 
-    public virtual int GetManaCost()
-    {
-        return GetRPN("mana_cost");
+       public virtual int GetManaCost() {
+        return GetRPN(mana_cost);
     }
 
     public virtual int GetManaCost(ValueModifier mods) {
@@ -42,18 +41,25 @@ public class Spell
         return (int)Math.Ceiling(value);
     }
 
-    public int GetDamage()
-    {
-        return 100;
+    public virtual int GetDamage() {
+        return GetRPN(damage);
     }
 
-    public float GetCooldown()
-    {
-        return 0.75f;
+    public virtual int GetDamage(ValueModifier mods) {
+        float value = ApplyStatMods(mods, damage, "damage");
+        return (int)Math.Ceiling(value);
     }
 
-    public virtual int GetIcon()
-    {
+    public virtual float GetCooldown() {
+        return GetRPNFloat(cooldown);
+    }
+
+    public virtual int GetCooldown(ValueModifier mods) {
+        float value = ApplyStatMods(mods, cooldown, "cooldown");
+        return (int)Math.Ceiling(value);
+    }
+
+    public virtual int GetIcon() {
         return icon;
     }
     public virtual bool IsModifierSpell() // able to be overrided by modifier spell
@@ -77,7 +83,8 @@ public class Spell
     }
 
     public virtual IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
-        CoroutineManager.Instance.Run((Cast(where, target, team)));
+        this.team = team;
+        GameManager.Instance.projectileManager.CreateProjectile(0, "straight", where, target - where, 15f, MakeOnHit(mods));
         yield return new WaitForEndOfFrame();
     }
 
@@ -87,6 +94,16 @@ public class Spell
         yield return new WaitForEndOfFrame();
     }
 
+    public Action<Hittable,Vector3> MakeOnHit(ValueModifier mods)
+    {
+        void OnHit(Hittable other, Vector3 impact) {
+            if (other.team != team) {
+                other.Damage(new Damage(GetDamage(mods), Damage.Type.ARCANE));
+            }
+        }
+        return OnHit;
+    }
+    
     void OnHit(Hittable other, Vector3 impact) {
         if (other.team != team) {
             other.Damage(new Damage(GetDamage(), Damage.Type.ARCANE));
@@ -103,8 +120,8 @@ public class Spell
     public float ApplyAdd (List<string> stat_mods, float val) {
         float value = val;
         if (stat_mods != null) {
-            for (int i = stat_mods.Count - 1; i >= 0; i--) {
-                value += GetRPN(stat_mods[i]);
+            for (int i = 0; i < stat_mods.Count; i++) {
+                value += GetRPNFloat(stat_mods[i]);
             }
         }
         return value;
@@ -113,8 +130,8 @@ public class Spell
     public float ApplyMult (List<string> stat_mods, float val) {
         float value = val;
         if (stat_mods != null) {
-            for (int i = stat_mods.Count - 1; i >= 0; i--) {
-                value *= RPN.calculateRPNFloat(stat_mods[i]);
+            for (int i = 0; i < stat_mods.Count; i++) {
+                value *= GetRPNFloat(stat_mods[i]);
             }
         }
         return value;
