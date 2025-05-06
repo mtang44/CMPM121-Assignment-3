@@ -14,7 +14,7 @@ public class ArcaneRailgun : Spell {
 
     public override void SetAttributes(JObject attributes) {
         base.SetAttributes(attributes);
-        pierce = attributes["secondary_damage"].ToString();
+        pierce = attributes["pierce"].ToString();
     }
 
     public override IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {

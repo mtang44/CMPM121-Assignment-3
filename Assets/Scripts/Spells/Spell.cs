@@ -38,12 +38,12 @@ public class Spell
 
 
     public virtual int GetManaCost(ValueModifier mods) {
-        Debug.Log("Final Mana Cost: " + ApplyStatMods(mods, this.mana_cost, "mana_cost"));
+        Debug.Log("Final Mana Cost: " + (int)Math.Ceiling(ApplyStatMods(mods, this.mana_cost, "mana_cost")));
         return (int)Math.Ceiling(ApplyStatMods(mods, this.mana_cost, "mana_cost"));
     }
 
     public virtual int GetDamage(ValueModifier mods) {
-        Debug.Log("Final Damage: " + ApplyStatMods(mods, this.damage, "damage"));
+        Debug.Log("Final Damage: " + (int)Math.Ceiling(ApplyStatMods(mods, this.damage, "damage")));
         return (int)Math.Ceiling(ApplyStatMods(mods, this.damage, "damage"));
     }
 
@@ -61,7 +61,7 @@ public class Spell
         string currentTrajectory = this.trajectory;
         if (mods.modifiers.ContainsKey("trajectory")) {
             List<string> trajectoryMods = mods.modifiers["trajectory"];
-            currentTrajectory = trajectoryMods[-1];
+            currentTrajectory = trajectoryMods[trajectoryMods.Count - 1];
         }
         return currentTrajectory;
     }

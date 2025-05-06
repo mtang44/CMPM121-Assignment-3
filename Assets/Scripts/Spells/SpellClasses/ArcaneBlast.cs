@@ -29,10 +29,6 @@ public class ArcaneBlast : Spell {
         secondary_projectile_lifetime = attributes["secondary_projectile"]["lifetime"].ToString();
         secondary_projectile_sprite = attributes["secondary_projectile"]["sprite"].ToObject<int>();
     }
-
-    public override int GetDamage(ValueModifier mods) {
-        return base.GetDamage(mods) + ((int)Math.Ceiling(GetRPNFloat(secondary_damage)) * GetRPN(N));
-    }
     
     public override IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
         this.team = team;
@@ -48,7 +44,7 @@ public class ArcaneBlast : Spell {
                 int n = GetRPN(N);
                 for (int i = 0; i < n; i++) {
                     float angle = (360f / n) * i;
-                    GameManager.Instance.projectileManager.CreateProjectile(secondary_projectile_sprite, secondary_projectile_trajectory, impact, impact + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0), GetRPNFloat(secondary_projectile_speed), SecondaryOnHit(mods), lifetime: GetRPNFloat(secondary_projectile_lifetime));
+                    GameManager.Instance.projectileManager.CreateProjectile(secondary_projectile_sprite, secondary_projectile_trajectory, impact, impact + new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0), GetRPNFloat(secondary_projectile_speed), SecondaryOnHit(mods), lifetime: GetRPNFloat(secondary_projectile_lifetime));
                 }  
             }
         }
