@@ -108,7 +108,7 @@ public class Spell
     {
         void OnHit(Hittable other, Vector3 impact) {
             if (other.team != team) {
-                other.Damage(new Damage(GetDamage(mods), Damage.Type.ARCANE));
+                other.Damage(new Damage(GetDamage(mods), damage_type));
             }
         }
         return OnHit;
@@ -116,7 +116,7 @@ public class Spell
     
     void OnHit(Hittable other, Vector3 impact) {
         if (other.team != team) {
-            other.Damage(new Damage(GetDamage(), Damage.Type.ARCANE));
+            other.Damage(new Damage(GetDamage(), damage_type));
         }
     }
 
