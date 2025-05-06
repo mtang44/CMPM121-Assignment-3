@@ -25,10 +25,11 @@ public class ArcaneSpray : Spell {
     }
 
     public override IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
+        this.team = team;
         Vector3 direction = (target - where);
         for (int i = 0; i < GetRPN(N); i++) {
             Vector3 randomDir = GetRandomDirection(direction, GetRPNFloat(spray));
-             GameManager.Instance.projectileManager.CreateProjectile(sprite, GetTrajectory(mods), where, where + randomDir, GetSpeed(mods), MakeOnHit(mods), GetRPNFloat(lifetime));
+             GameManager.Instance.projectileManager.CreateProjectile(sprite, GetTrajectory(mods), where, where + randomDir, GetSpeed(mods), MakeOnHit(mods), lifetime: GetRPNFloat(lifetime));
         }
         yield return new WaitForEndOfFrame();
     }

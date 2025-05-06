@@ -35,6 +35,7 @@ public class ArcaneBlast : Spell {
     }
     
     public override IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
+        this.team = team;
         GameManager.Instance.projectileManager.CreateProjectile(sprite, GetTrajectory(mods), where, target - where, GetSpeed(mods), MakeOnHit(mods));
         yield return new WaitForEndOfFrame();
     }
@@ -47,7 +48,7 @@ public class ArcaneBlast : Spell {
                 int n = GetRPN(N);
                 for (int i = 0; i < n; i++) {
                     float angle = (360f / n) * i;
-                    GameManager.Instance.projectileManager.CreateProjectile(secondary_projectile_sprite, secondary_projectile_trajectory, impact, impact + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0), GetRPNFloat(secondary_projectile_speed), SecondaryOnHit(mods), GetRPNFloat(secondary_projectile_lifetime));
+                    GameManager.Instance.projectileManager.CreateProjectile(secondary_projectile_sprite, secondary_projectile_trajectory, impact, impact + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0), GetRPNFloat(secondary_projectile_speed), SecondaryOnHit(mods), lifetime: GetRPNFloat(secondary_projectile_lifetime));
                 }  
             }
         }

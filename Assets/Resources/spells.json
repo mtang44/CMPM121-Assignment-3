@@ -24,6 +24,7 @@
         "damage": {"amount": "25 power 5 / +", "type": "arcane"},
         "mana_cost": "20",
         "cooldown": "2.5",
+        "pierce": "4",
         "projectile": {"trajectory": "straight", "speed": "40", "sprite": 0}
    },
    "arcane_blast":  {

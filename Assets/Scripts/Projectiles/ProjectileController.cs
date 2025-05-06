@@ -7,6 +7,7 @@ public class ProjectileController : MonoBehaviour
     public float lifetime;
     public event Action<Hittable,Vector3> OnHit;
     public ProjectileMovement movement;
+    public ProjectileCollision collision = new ProjectileCollision();
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -39,9 +40,12 @@ public class ProjectileController : MonoBehaviour
                     OnHit(pc.hp, transform.position);
                 }
             }
+            this.collision.LogCollision(collision.gameObject);
 
         }
-        Destroy(gameObject);
+        if (this.collision.HitLimit()) {
+            Destroy(gameObject);
+        }
     }
 
     public void SetLifetime(float lifetime)
