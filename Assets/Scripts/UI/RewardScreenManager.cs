@@ -15,6 +15,7 @@ public class RewardScreenManager : MonoBehaviour
     public GameObject spell_3_drop;
     public GameObject spell_4_drop;
     public bool running = false;
+    public EnemySpawner spawner;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -72,7 +73,7 @@ public class RewardScreenManager : MonoBehaviour
     public void nextWave()
     {
         running = false;
-        GameManager.Instance.player.GetComponent<EnemySpawner>().NextWave();
+        spawner.NextWave();
     }
 
     public void dropSpell(int i)
