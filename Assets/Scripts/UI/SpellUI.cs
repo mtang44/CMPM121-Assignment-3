@@ -25,6 +25,7 @@ public class SpellUI : MonoBehaviour
         this.spell = spell;
         GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), icon.GetComponent<Image>());
     }
+    
 
     // Update is called once per frame
     void Update()

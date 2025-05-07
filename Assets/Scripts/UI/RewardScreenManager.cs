@@ -86,14 +86,15 @@ public class RewardScreenManager : MonoBehaviour
             rewardUI.SetActive(false);
         }
     }
+    // when button is pressed spell is stored in spell list, and updated to reward screen display
     public void gainSpell()
     {   
         if(GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Count < 4){
             GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Add(newRewardSpell);
-            // SpellUI rewardSpellUI = new SpellUI();
+            //  SpellUI rewardSpellUI = new SpellUI();
             // rewardSpellUI.SetSpell(newRewardSpell);
             // GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Add(rewardSpellUI);
-             spellAcquiredTxt.text = "Too many spells Please Drop one";
+            spellAcquiredTxt.text = "Spell Acquired";
             acquiredButton.SetActive(false);
              var activeSpells = GameManager.Instance.player.GetComponent<PlayerController>().activeSpells;
              for (int i = 0; i < Mathf.Min(activeSpells.Count, spellDisplayIcons.Count); i++)
@@ -102,8 +103,6 @@ public class RewardScreenManager : MonoBehaviour
                     Image iconImage = spellDisplayIcons[i].GetComponent<Image>();
                     GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), iconImage);
                 }
-
-            Debug.Log(GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Count);
         }
         else{
             spellAcquiredTxt.text = "Too many spells In Inventory Must drop one";

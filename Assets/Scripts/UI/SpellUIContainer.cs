@@ -10,6 +10,7 @@ public class SpellUIContainer : MonoBehaviour
 {
     public GameObject[] spellUIs;
     public PlayerController player;
+    public List<GameObject> spellDisplayIcons = new List<GameObject>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,18 +20,25 @@ public class SpellUIContainer : MonoBehaviour
         {
             spellUIs[i].SetActive(true);
         }
+        updateDisplay();
     }
 
     // Update is called once per frame
     void Update()
     {
-    // var activeSpells = GameManager.Instance.player.GetComponent<PlayerController>().activeSpells;
-    //    for (int j = 0; j < Mathf.Min(activeSpells.Count, spellUIs.Length); j++)
-    //     {
-    //         Spell spell = activeSpells[j];
-    //         Image iconImage = spellUIs[j].GetComponent<Image>();
-    //         GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), iconImage);
-    //     }
+        // updates inventory icons 
+        updateDisplay();
+    }
+    public void updateDisplay()
+    {
+        var activeSpells = GameManager.Instance.player.GetComponent<PlayerController>().activeSpells;
+       for (int j = 0; j < Mathf.Min(activeSpells.Count, spellDisplayIcons.Count); j++)
+        {
+            Spell spell = activeSpells[j];
+            Image iconImage = spellDisplayIcons[j].GetComponent<Image>();
+           GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), iconImage);
+        }
+        
     }
     // have a function here that calls spell: setSpell with the spell we are adding. 
 

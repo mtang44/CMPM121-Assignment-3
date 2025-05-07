@@ -4,6 +4,8 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.IO;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -16,10 +18,13 @@ public class PlayerController : MonoBehaviour
 
     public SpellCaster spellcaster;
     public SpellUI spellui; // need a list of spellUI
+    public SpellUIContainer spellContainer;
+    public GameObject activeSpell;
 
     public int speed;
 
     public Unit unit;
+    
 
     // public List<SpellUI> activeSpellsUI = new List<SpellUI>();// stores spell for UI display while playing
 
@@ -92,6 +97,11 @@ void spellCycle()
         int nextSpell = ((activeSpells.IndexOf(spellcaster.spell)) + 1) % activeSpells.Count;
         spellcaster.SetSpell(activeSpells[nextSpell]);
         spellui.SetSpell(spellcaster.spell);
+        Image iconImage = activeSpell.GetComponent<Image>();
+        GameManager.Instance.spellIconManager.PlaceSprite(activeSpells[nextSpell].GetIcon(), iconImage);
+        
+        
+
     }
     else return;
 }
