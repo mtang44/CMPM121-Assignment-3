@@ -1,6 +1,11 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.IO;
+using System.Collections.Generic;
 
 public class RewardScreenManager : MonoBehaviour
 {
@@ -8,6 +13,11 @@ public class RewardScreenManager : MonoBehaviour
     public TMP_Text SpellDescription;
     public TMP_Text SpellName;
     public GameObject icon;
+    public GameObject DisplayIcon1;
+    public GameObject DisplayIcon2;
+    public GameObject DisplayIcon3;
+    public GameObject DisplayIcon4;
+    
     public Spell spell;
     public Spell newRewardSpell;
     public GameObject spell_1_drop;
@@ -15,7 +25,9 @@ public class RewardScreenManager : MonoBehaviour
     public GameObject spell_3_drop;
     public GameObject spell_4_drop;
     public bool running = false;
-    public EnemySpawner spawner;
+    public List<GameObject> spellDisplayIcons = new List<GameObject>();
+    
+    public int counter = 1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,14 +39,22 @@ public class RewardScreenManager : MonoBehaviour
     {
         if (GameManager.Instance.state == GameManager.GameState.WAVEEND)
         {   
+            rewardUI.SetActive(true);
+            Debug.Log("Current state" + running);
             if(!running)
             {
+                
                 running = true;
-                rewardUI.SetActive(true);
-            // enemiesKilledLabel.text = "Enemies Killed: " + GameManager.Instance.numEnemiesKilled;
-                foreach(var s in GameManager.Instance.player.GetComponent<PlayerController>().activeSpells)
+                
+                // enemiesKilledLabel.text = "Enemies Killed: " + GameManager.Instance.numEnemiesKilled;
+                // Then, in your method:
+                var activeSpells = GameManager.Instance.player.GetComponent<PlayerController>().activeSpells;
+                // sets existing spell icons in bottom left
+                for (int i = 0; i < Mathf.Min(activeSpells.Count, spellDisplayIcons.Count); i++)
                 {
-                    GameManager.Instance.player.GetComponent<SpellUI>().SetSpell(s);
+                    Spell spell = activeSpells[i];
+                    Image iconImage = spellDisplayIcons[i].GetComponent<Image>();
+                    GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), iconImage);
                 }
                 newRewardSpell =  new SpellBuilder().MakeRandomSpell(GameManager.Instance.player.GetComponent<PlayerController>().spellcaster);   
                 Debug.Log(newRewardSpell.description);
@@ -53,7 +73,7 @@ public class RewardScreenManager : MonoBehaviour
         }
         else
         {
-                rewardUI.SetActive(false);
+            rewardUI.SetActive(false);
         }
     }
     public void gainSpell()
@@ -72,8 +92,8 @@ public class RewardScreenManager : MonoBehaviour
     } 
     public void nextWave()
     {
+        Debug.Log("Setting running to false");
         running = false;
-        spawner.NextWave();
     }
 
     public void dropSpell(int i)

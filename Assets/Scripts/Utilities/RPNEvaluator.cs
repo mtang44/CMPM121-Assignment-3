@@ -23,7 +23,7 @@ public class RPN
                 int b = stack.Pop();
                 stack.Push(applyOperator(token, b, a));
             } else {
-                Debug.Log("trying to parse " + token);
+                //Debug.Log("trying to parse " + token);
                 stack.Push(int.Parse(token));
             }
         }
