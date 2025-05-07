@@ -74,7 +74,7 @@ public class Spell
        return false;
     }
 
-    public bool IsReady()
+    public virtual bool IsReady()
     {
         return (last_cast + GetCooldown() < Time.time);
     }
@@ -94,6 +94,7 @@ public class Spell
 
     public virtual IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
         this.team = team;
+        last_cast = Time.time;
         GameManager.Instance.projectileManager.CreateProjectile(sprite, GetTrajectory(mods), where, target - where, GetSpeed(mods), MakeOnHit(mods));
         yield return new WaitForEndOfFrame();
     }

@@ -19,6 +19,7 @@ public class ArcaneRailgun : Spell {
 
     public override IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
         this.team = team;
+        last_cast = Time.time;
         GameManager.Instance.projectileManager.CreateProjectile(sprite, GetTrajectory(mods), where, target - where, GetSpeed(mods), MakeOnHit(mods), pierce: GetRPN(pierce));
         yield return new WaitForEndOfFrame();
     }  

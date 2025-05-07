@@ -44,6 +44,10 @@ public class ModifierSpell : Spell {
     public override string GetName() {
         return this.name + " " + child.GetName();
     }
+
+    public override bool IsReady() {
+        return child.IsReady();
+    }
     
 
     public virtual ValueModifier AddMods() {

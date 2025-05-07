@@ -28,6 +28,7 @@ public class ArcaneSpray : Spell {
 
     public override IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
         this.team = team;
+        last_cast = Time.time;
         Vector3 direction = target - where;
         float centerAngle = Mathf.Atan2(direction.y, direction.x);
         float halfCone = (GetRPNFloat(spray)) * 360f * Mathf.Deg2Rad / 2f;
