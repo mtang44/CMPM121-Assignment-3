@@ -23,14 +23,11 @@ public class PlayerController : MonoBehaviour
      
     public List<Spell> activeSpells = new List<Spell>();
 
-    public List<Spell> activeSpells = new List<Spell>();
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         unit = GetComponent<Unit>();
         GameManager.Instance.player = gameObject;
-
     }
 
     public void StartLevel()
@@ -53,7 +50,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(Keyboard.current[Key.Tab].wasPressedThisFrame)
+        {
+            spellCycle();
+        }
     }
 
     void OnAttack(InputValue value)
@@ -83,4 +83,14 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    void spellCycle()
+    {
+        if (activeSpells.Count > 0)
+        {
+            int nextSpell = ((activeSpells.IndexOf(spellcaster.spell)) + 1) % activeSpells.Count;
+            spellcaster.SetSpell(activeSpells[nextSpell]);
+            spellui.SetSpell(spellcaster.spell);
+        }
+        else return;
+    }
 }

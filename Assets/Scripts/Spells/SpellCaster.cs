@@ -14,6 +14,11 @@ public class SpellCaster
     public Hittable.Team team;
     public Spell spell;
 
+    public void SetSpell(Spell spell)
+    {
+        this.spell = spell;
+    }
+
     public IEnumerator ManaRegeneration()
     {
         while (true)

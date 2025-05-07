@@ -564,6 +564,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rewardUI: {fileID: 1709288111}
+  SpellDescription: {fileID: 0}
+  SpellName: {fileID: 0}
+  icon: {fileID: 0}
+  spell_1_drop: {fileID: 0}
+  spell_2_drop: {fileID: 0}
+  spell_3_drop: {fileID: 0}
+  spell_4_drop: {fileID: 0}
 --- !u!4 &220180078
 Transform:
   m_ObjectHideFlags: 0
@@ -5833,8 +5840,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthui: {fileID: 765025204}
   manaui: {fileID: 71109453}
+  class_name: 
   spellui: {fileID: 2085212185}
-  speed: 5
+  speed: 25
   unit: {fileID: 0}
 --- !u!4 &1718273953
 Transform:
