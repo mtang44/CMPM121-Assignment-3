@@ -47,7 +47,7 @@ public class RewardScreenManager : MonoBehaviour
             Debug.Log("Current state" + running);
             if(!running)
             {
-                spellAcquiredTxt.SetActive(false);
+                spellAcquiredTxt.text = "";
                 acquiredButton.SetActive(true);
                 running = true;
                 
@@ -61,7 +61,12 @@ public class RewardScreenManager : MonoBehaviour
                     Image iconImage = spellDisplayIcons[i].GetComponent<Image>();
                     GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), iconImage);
                 }
-                newRewardSpell =  new SpellBuilder().MakeRandomSpell(GameManager.Instance.player.GetComponent<PlayerController>().spellcaster);   
+                
+                newRewardSpell =  new SpellBuilder().MakeRandomSpell(GameManager.Instance.player.GetComponent<PlayerController>().spellcaster); 
+                
+
+
+
                 Debug.Log(newRewardSpell.description);
                 SpellDescription.text = "Spell Description " + newRewardSpell.description;
                 SpellName.text = "Spell Name " + newRewardSpell.name;
@@ -85,7 +90,10 @@ public class RewardScreenManager : MonoBehaviour
     {   
         if(GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Count < 4){
             GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Add(newRewardSpell);
-            spellAcquiredTxt.SetActive(true);
+            // SpellUI rewardSpellUI = new SpellUI();
+            // rewardSpellUI.SetSpell(newRewardSpell);
+            // GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Add(rewardSpellUI);
+             spellAcquiredTxt.text = "Too many spells Please Drop one";
             acquiredButton.SetActive(false);
              var activeSpells = GameManager.Instance.player.GetComponent<PlayerController>().activeSpells;
              for (int i = 0; i < Mathf.Min(activeSpells.Count, spellDisplayIcons.Count); i++)
@@ -117,11 +125,11 @@ public class RewardScreenManager : MonoBehaviour
        GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.RemoveAt(i);
        var activeSpells = GameManager.Instance.player.GetComponent<PlayerController>().activeSpells;
        for (int j = 0; j < Mathf.Min(activeSpells.Count, spellDisplayIcons.Count); j++)
-                {
-                    Spell spell = activeSpells[j];
-                    Image iconImage = spellDisplayIcons[j].GetComponent<Image>();
-                    GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), iconImage);
-                }
+        {
+            Spell spell = activeSpells[j];
+            Image iconImage = spellDisplayIcons[j].GetComponent<Image>();
+            GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), iconImage);
+        }
 
     }
     

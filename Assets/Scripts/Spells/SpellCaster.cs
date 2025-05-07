@@ -31,9 +31,22 @@ public class SpellCaster
         this.mana_reg_data = mana_reg;
         this.power_data = power;
         this.team = team;
-        spell = new SpellBuilder().MakeRandomSpell(this);
-    }
+        this.spell = new SpellBuilder().MakeRandomSpell(this);
 
+        GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Add(spell);
+        // SpellUI UIspell = new SpellUI();
+        // UIspell.SetSpell(spell);
+        // for(int i = 0; i < GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Count;i++)
+        // {
+        //  GameManager.Instance.player.GetComponent<SpellUIContainer>().spellUIs[i] = UIspell;
+        // }
+        // GameManager.Instance.player.GetComponent<SpellUI>().SetSpell(spell);
+       
+    }
+    public void SetSpell(Spell spell)
+    {
+        this.spell = spell;
+    }
     public IEnumerator Cast(Vector3 where, Vector3 target)
     {        
         if (mana >= spell.GetManaCost() && spell.IsReady())

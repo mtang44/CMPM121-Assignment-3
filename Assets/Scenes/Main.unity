@@ -932,7 +932,7 @@ GameObject:
   - component: {fileID: 170584799}
   - component: {fileID: 170584798}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Current Spells (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -954,7 +954,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 70}
+  m_AnchoredPosition: {x: 0, y: 83.6}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &170584798
@@ -1209,16 +1209,16 @@ MonoBehaviour:
   rewardUI: {fileID: 1709288111}
   SpellDescription: {fileID: 1866181954}
   SpellName: {fileID: 1623737862}
+  spellAcquiredTxt: {fileID: 1956196222}
   icon: {fileID: 1364682887}
-  DisplayIcon1: {fileID: 0}
-  DisplayIcon2: {fileID: 0}
-  DisplayIcon3: {fileID: 0}
-  DisplayIcon4: {fileID: 0}
+  DisplayIcon1: {fileID: 860389620}
+  DisplayIcon2: {fileID: 1850259192}
+  DisplayIcon3: {fileID: 1688298327}
+  DisplayIcon4: {fileID: 848534321}
   spell_1_drop: {fileID: 1285872192}
   spell_2_drop: {fileID: 1631101700}
   spell_3_drop: {fileID: 445639311}
   spell_4_drop: {fileID: 1142718323}
-  spellAcquiredTxt: {fileID: 1956196220}
   acquiredButton: {fileID: 1504929920}
   running: 0
   spellDisplayIcons: []
@@ -8825,7 +8825,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1512587193
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10276,6 +10276,7 @@ MonoBehaviour:
   rewardUI: {fileID: 1709288111}
   SpellDescription: {fileID: 1866181954}
   SpellName: {fileID: 1623737862}
+  spellAcquiredTxt: {fileID: 1956196222}
   icon: {fileID: 1364682887}
   DisplayIcon1: {fileID: 1364682887}
   DisplayIcon2: {fileID: 1850259192}
@@ -10285,7 +10286,6 @@ MonoBehaviour:
   spell_2_drop: {fileID: 1631101700}
   spell_3_drop: {fileID: 445639311}
   spell_4_drop: {fileID: 1142718323}
-  spellAcquiredTxt: {fileID: 1956196220}
   acquiredButton: {fileID: 1504929920}
   running: 0
   spellDisplayIcons:

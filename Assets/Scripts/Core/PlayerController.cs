@@ -15,20 +15,21 @@ public class PlayerController : MonoBehaviour
     public JObject class_stats;
 
     public SpellCaster spellcaster;
-    public SpellUI spellui;
+    public SpellUI spellui; // need a list of spellUI
 
     public int speed;
 
     public Unit unit;
-     
-    public List<Spell> activeSpells = new List<Spell>();
+
+    // public List<SpellUI> activeSpellsUI = new List<SpellUI>();// stores spell for UI display while playing
+
+    public List<Spell> activeSpells = new List<Spell>(); // this list stores for RewardScreen Manager
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         unit = GetComponent<Unit>();
         GameManager.Instance.player = gameObject;
-
     }
 
     public void StartLevel()
@@ -36,26 +37,26 @@ public class PlayerController : MonoBehaviour
         class_stats = ReadClassesJson("mage");
         spellcaster = new SpellCaster(class_stats["mana"].ToString(), class_stats["mana_regeneration"].ToString(), class_stats["spellpower"].ToString(), Hittable.Team.PLAYER);
         StartCoroutine(spellcaster.ManaRegeneration());
-        
-        hp = new Hittable(100, Hittable.Team.PLAYER, gameObject);
+
+        int currentHealth = RPN.calculateRPN(class_stats["health"].ToString(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave });
+        hp = new Hittable(currentHealth, Hittable.Team.PLAYER, gameObject);
         hp.OnDeath += Die;
         hp.team = Hittable.Team.PLAYER;
 
         // tell UI elements what to show
         healthui.SetHealth(hp);
         manaui.SetSpellCaster(spellcaster);
-        spellui.SetSpell(spellcaster.spell);
     }
 
     // Update is called once per frame
     void Update()
     {
-    
         if(Keyboard.current[Key.Tab].wasPressedThisFrame)
         {
             spellCycle();
         }
     }
+    
 
     void OnAttack(InputValue value)
     {
@@ -69,7 +70,7 @@ public class PlayerController : MonoBehaviour
     void OnMove(InputValue value)
     {
         if (GameManager.Instance.state == GameManager.GameState.PREGAME || GameManager.Instance.state == GameManager.GameState.GAMEOVER) return;
-        unit.movement = value.Get<Vector2>()*speed;
+        unit.movement = value.Get<Vector2>() * speed;
     }
 
     void Die()
@@ -83,7 +84,8 @@ public class PlayerController : MonoBehaviour
         return (JObject)classes[class_name];
 
     }
-    void spellCycle()
+
+void spellCycle()
 {
     if (activeSpells.Count > 0)
     {
@@ -93,5 +95,4 @@ public class PlayerController : MonoBehaviour
     }
     else return;
 }
-
 }
