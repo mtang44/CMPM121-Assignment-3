@@ -30,12 +30,6 @@ public class ArcaneBlast : Spell {
         secondary_projectile_sprite = attributes["secondary_projectile"]["sprite"].ToObject<int>();
     }
     
-    public override IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
-        this.team = team;
-        GameManager.Instance.projectileManager.CreateProjectile(sprite, GetTrajectory(mods), where, target - where, GetSpeed(mods), MakeOnHit(mods));
-        yield return new WaitForEndOfFrame();
-    }
-
     public override Action<Hittable,Vector3> MakeOnHit(ValueModifier mods)
     {
         void OnHit(Hittable other, Vector3 impact) {

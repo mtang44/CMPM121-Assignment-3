@@ -59,6 +59,12 @@ public class SpellBuilder
         if (name == "homing") { // not made
             return new Homing(owner);
         }
+        if (name == "heavy") {
+            return new Heavy(owner);
+        }
+        if (name == "caffeinate") {
+            return new Caffeinated(owner);
+        }
         return null;
 
     }
