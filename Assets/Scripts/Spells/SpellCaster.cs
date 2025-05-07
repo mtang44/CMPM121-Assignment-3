@@ -6,11 +6,11 @@ public class SpellCaster
 {
     public int mana;
     public string max_mana_data;
-    public int max_mana { get { return GetRPN(max_mana_data); } }
+    public int max_mana { get { return GetRPN(max_mana_data);}}
     public string mana_reg_data;
-    public int mana_reg { get { return GetRPN(mana_reg_data); } }
+    public int mana_reg { get { return GetRPN(mana_reg_data);}}
     public string power_data;
-    public int power { get { return GetRPN(power_data); } }
+    public int power { get { return GetRPN(power_data);}}
     public Hittable.Team team;
     public Spell spell;
 
@@ -43,12 +43,10 @@ public class SpellCaster
         }
         yield break;
     }
-    public float GetRPNFloat(string stat)
-    {
-        return RPN.calculateRPNFloat(stat, new Dictionary<string, float> { { "wave", GameManager.Instance.currentWave } });
+    public float GetRPNFloat (string stat) {
+        return RPN.calculateRPNFloat(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}});
     }
-    public int GetRPN(string stat)
-    {
-        return RPN.calculateRPN(stat, new Dictionary<string, int> { { "wave", GameManager.Instance.currentWave } });
+    public int GetRPN (string stat) {
+        return RPN.calculateRPN(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}});
     }
 }

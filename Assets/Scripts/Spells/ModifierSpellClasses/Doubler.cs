@@ -23,7 +23,17 @@ public class Doubler : ModifierSpell {
     }
     
     public override ValueModifier AddMods (ValueModifier mods) {
-        
+        mods.AddMod("cooldown_mult", cooldown_multiplier);
+        mods.AddMod("mana_cost_mult", mana_multiplier);
         return mods;
+    }
+
+    public override IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
+        this.team = team;
+        ValueModifier new_mods = AddMods(mods);
+        CoroutineManager.Instance.Run(this.child.Cast(where, target, team, new_mods));
+        yield return new WaitForSeconds(GetRPNFloat(delay));
+        CoroutineManager.Instance.Run(this.child.Cast(where, target, team, new_mods));
+        yield return new WaitForEndOfFrame();
     }
 }

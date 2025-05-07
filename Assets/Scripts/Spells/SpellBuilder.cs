@@ -8,8 +8,8 @@ using Unity.VisualScripting;
 
 public class SpellBuilder 
 {
-    private JObject spell_attributes;
-    private List <string> spell_names;
+    private JObject spell_attributes = new JObject();
+    private List<string> spell_names = new List<string>();
 
 
     public Spell BuildSpell(string name, SpellCaster owner)
@@ -26,38 +26,44 @@ public class SpellBuilder
     }
 
     private Spell MakeSpell(string name, SpellCaster owner) {
-        if (name == "") {
+        if (name == "magic_missile") {
             return new MagicMissile(owner);
         }
-        if (name == "Arcane Blast") {
+        if (name == "arcane_blast") {
             return new ArcaneBlast(owner);
         }
-        if (name == "Arcane Railgun") {
+        if (name == "arcane_railgun") {
             return new ArcaneRailgun(owner);
         }
-        if (name == "Arcane Spray") {
+        if (name == "arcane_spray") {
             return new ArcaneSpray(owner);
         }
-        if (name == "Arcane Bolt") {
+        if (name == "arcane_bolt") {
             return new ArcaneBolt(owner);
         }
-        if (name == "damage-amplified") { 
+        if (name == "damage_amp") { 
             return new DamageAmp(owner);
         }
-        if (name == "speed-amplified") {
+        if (name == "speed_amp") {
             return new SpeedAmp(owner);
         }
-        if (name == "doubled") {// not made
+        if (name == "doubler") {// not made
             return new Doubler(owner);
         }
-        if (name == "split") {// not made
+        if (name == "splitter") {// not made
             return new Splitter(owner);
         }
-        if (name == "chaotic") {// not made
+        if (name == "chaos") {// not made
             return new Chaotic(owner);
         }
         if (name == "homing") { // not made
             return new Homing(owner);
+        }
+        if (name == "heavy") {
+            return new Heavy(owner);
+        }
+        if (name == "caffeinate") {
+            return new Caffeinated(owner);
         }
         return null;
 
@@ -72,19 +78,19 @@ public class SpellBuilder
         if (s is ModifierSpell modifierSpell) {
             modifierSpell.AddChild(MakeRandomSpell(owner));
         }
+        Debug.Log("Our new spell's name: " + s.GetName());
         return s;
     }
 
     public JObject ReadSpellsJson()
-     {
+    {
         var spelltext = Resources.Load<TextAsset>("spells");
         JObject spell_types = JObject.Parse(spelltext.text);
-        foreach(var a in spell_attributes)
+        foreach(var a in spell_types)
         {
             spell_names.Add(a.Key);
         }
         return spell_types;
     }
-
 }
 

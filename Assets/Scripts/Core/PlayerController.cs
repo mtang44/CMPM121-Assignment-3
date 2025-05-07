@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     public int speed;
 
     public Unit unit;
+     
+    public List<Spell> activeSpells = new List<Spell>();
 
     public List<Spell> activeSpells = new List<Spell>();
 
@@ -34,12 +36,8 @@ public class PlayerController : MonoBehaviour
     public void StartLevel()
     {
         class_stats = ReadClassesJson("mage");
-        string currentMana = RPN.calculateRPN(class_stats["mana"].ToString(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave } ).ToString();
-        string currentManaReg = RPN.calculateRPN(class_stats["mana_regeneration"].ToString(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave }).ToString();
-        string currentSpellPower = RPN.calculateRPN(class_stats["spellpower"].ToString(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave }).ToString();
-        spellcaster = new SpellCaster(currentMana, currentManaReg, currentSpellPower, Hittable.Team.PLAYER);
+        spellcaster = new SpellCaster(class_stats["mana"].ToString(), class_stats["mana_regeneration"].ToString(), class_stats["spellpower"].ToString(), Hittable.Team.PLAYER);
         StartCoroutine(spellcaster.ManaRegeneration());
-
 
         int currentHealth = RPN.calculateRPN(class_stats["health"].ToString(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave });
         hp = new Hittable(currentHealth, Hittable.Team.PLAYER, gameObject);
@@ -78,8 +76,7 @@ public class PlayerController : MonoBehaviour
         GameManager.Instance.state = GameManager.GameState.GAMEOVER;
     }
 
-    public JObject ReadClassesJson(string class_name)
-    {
+    public JObject ReadClassesJson(string class_name) {
         var classtext = Resources.Load<TextAsset>("classes");
         JObject classes = JObject.Parse(classtext.text);
         return (JObject)classes[class_name];

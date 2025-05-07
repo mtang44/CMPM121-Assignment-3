@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using TMPro;
@@ -17,7 +18,10 @@ public class Spell
     public string damage;
     public Damage.Type damage_type;
     public string cooldown;
-    public Projectile projectile;
+
+    public string trajectory;
+    public string speed;
+    public int sprite;
     public bool isModifier = false;
     public ValueModifier mods;
     public Spell(SpellCaster owner)
@@ -25,40 +29,52 @@ public class Spell
         this.owner = owner;
     }
 
-    public string GetName()
+    public virtual string GetName()
     {
         return this.name;
         // return this.name;
     }
 
-    public int GetManaCost()
-    {
-        return 1;
-        // return int.Parse(this.mana_cost);
+
+
+    public virtual int GetManaCost(ValueModifier mods) {
+        Debug.Log("Final Mana Cost: " + (int)Math.Ceiling(ApplyStatMods(mods, this.mana_cost, "mana_cost")));
+        return (int)Math.Ceiling(ApplyStatMods(mods, this.mana_cost, "mana_cost"));
     }
 
-    public int GetDamage()
-    {
-        // need some calculateDamage()
-        // return calculateDamage();
-        return 100;
+    public virtual int GetDamage(ValueModifier mods) {
+        Debug.Log("Final Damage: " + (int)Math.Ceiling(ApplyStatMods(mods, this.damage, "damage")));
+        return (int)Math.Ceiling(ApplyStatMods(mods, this.damage, "damage"));
     }
 
-    public float GetCooldown()
-    {
-        return 0.75f;
+    public virtual float GetCooldown(ValueModifier mods) {
+        Debug.Log("Final Cooldown: " + ApplyStatMods(mods, this.cooldown, "cooldown"));
+        return ApplyStatMods(mods, this.cooldown, "cooldown");
     }
 
-    public virtual int GetIcon()
-    {
-        return 1;
+    public virtual float GetSpeed(ValueModifier mods) {
+        Debug.Log("Final Speed: " + ApplyStatMods(mods, this.speed, "speed"));
+        return ApplyStatMods(mods, this.speed, "speed");
+    }
+
+    public virtual string GetTrajectory(ValueModifier mods) {
+        string currentTrajectory = this.trajectory;
+        if (mods.modifiers.ContainsKey("trajectory")) {
+            List<string> trajectoryMods = mods.modifiers["trajectory"];
+            currentTrajectory = trajectoryMods[trajectoryMods.Count - 1];
+        }
+        return currentTrajectory;
+    }
+
+    public virtual int GetIcon() {
+        return icon;
     }
     public virtual bool IsModifierSpell() // able to be overrided by modifier spell
     {
        return false;
     }
 
-    public bool IsReady()
+    public virtual bool IsReady()
     {
         return (last_cast + GetCooldown() < Time.time);
     }
@@ -69,38 +85,83 @@ public class Spell
         this.icon = attributes["icon"].ToObject<int>();
         this.damage = attributes["damage"]["amount"].ToString();
         this.damage_type = Damage.TypeFromString(attributes["damage"]["type"].ToString());
+        this.mana_cost = attributes["mana_cost"].ToString();
         this.cooldown = attributes["cooldown"].ToString();
-        this.projectile = attributes["projectile"].ToObject<Projectile>();
+        this.trajectory = attributes["projectile"]["trajectory"].ToString();
+        this.speed = attributes["projectile"]["speed"].ToString();
+        this.sprite = attributes["projectile"]["sprite"].ToObject<int>();
     }
 
     public virtual IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
-        ApplyMods(mods);
-        CoroutineManager.Instance.Run((Cast(where, target, team)));
+        this.team = team;
+        last_cast = Time.time;
+        GameManager.Instance.projectileManager.CreateProjectile(sprite, GetTrajectory(mods), where, target - where, GetSpeed(mods), MakeOnHit(mods));
         yield return new WaitForEndOfFrame();
     }
 
     public virtual IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team) {
-
-        this.team = team;
-        GameManager.Instance.projectileManager.CreateProjectile(0, "straight", where, target - where, 15f, OnHit);
+        CoroutineManager.Instance.Run(Cast(where, target, team, new ValueModifier()));
         yield return new WaitForEndOfFrame();
     }
 
+ 
+    public virtual Action<Hittable,Vector3> MakeOnHit(ValueModifier mods)
+    {
+        void OnHit(Hittable other, Vector3 impact) {
+            if (other.team != team) {
+                other.Damage(new Damage(GetDamage(mods), damage_type));
+            }
+        }
+        return OnHit;
+    }
+    
     void OnHit(Hittable other, Vector3 impact) {
         if (other.team != team) {
-            other.Damage(new Damage(GetDamage(), Damage.Type.ARCANE));
-        }
-
-    }
-    public void ApplyMods (ValueModifier mods) {
-        
-    }
-
-    public void ApplyMod (string stat, List<string> stat_mods) {
-        float value = RPN.calculateRPNFloat(stat, new Dictionary<string, float> {{"wave", GameManager.Instance.currentWave}});
-        for (int i = 0; i < stat_mods.Count; i++) {
-
+            other.Damage(new Damage(GetDamage(), damage_type));
         }
     }
+
+    public float ApplyStatMods (ValueModifier mods, string stat, string stat_name) {
+        float value = GetRPNFloat(stat);
+        value = ApplyAdd(mods, value, stat_name + "_add");
+        value = ApplyMult(mods, value, stat_name + "_mult");
+        return value;
+    }
+
+    public float ApplyAdd (ValueModifier mods, float val, string mod_name) {
+        float value = val;
+        if (mods.modifiers.ContainsKey(mod_name)) {
+            for (int i = 0; i < mods.modifiers[mod_name].Count; i++) {
+                Debug.Log("ApplyAdd Current Mod to Add: " + mods.modifiers[mod_name][i]);
+                value += GetRPNFloat(mods.modifiers[mod_name][i]);
+            }
+        }
+        return value;
+    }
+
+    public float ApplyMult (ValueModifier mods, float val, string mod_name) {
+        float value = val;
+         if (mods.modifiers.ContainsKey(mod_name)) {
+            for (int i = 0; i < mods.modifiers[mod_name].Count; i++) {
+                Debug.Log("ApplyMult Current Mod to Mult: " + mods.modifiers[mod_name][i]);
+                value *= GetRPNFloat(mods.modifiers[mod_name][i]);
+            }
+        }
+        return value;
+    }
+
+    public float GetRPNFloat (string stat) {
+        return RPN.calculateRPNFloat(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}, {"power", owner.power}});
+    }
+    public int GetRPN (string stat) {
+        return RPN.calculateRPN(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}, {"power", owner.power}});
+    }
+
+    
+    public int GetManaCost() { return GetManaCost(new ValueModifier()); }
+    public int GetDamage() { return GetDamage(new ValueModifier()); }
+    public float GetCooldown() { return GetCooldown(new ValueModifier()); }
+    public float GetSpeed() { return GetSpeed(new ValueModifier()); }
+    public string GetTrajectory() { return GetTrajectory(new ValueModifier()); }
 
 }
