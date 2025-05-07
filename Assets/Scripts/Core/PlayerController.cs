@@ -50,7 +50,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+    
+        if(Keyboard.current[Key.Tab].wasPressedThisFrame)
+        {
+            spellCycle();
+        }
     }
 
     void OnAttack(InputValue value)
@@ -79,5 +83,15 @@ public class PlayerController : MonoBehaviour
         return (JObject)classes[class_name];
 
     }
+    void spellCycle()
+{
+    if (activeSpells.Count > 0)
+    {
+        int nextSpell = ((activeSpells.IndexOf(spellcaster.spell)) + 1) % activeSpells.Count;
+        spellcaster.SetSpell(activeSpells[nextSpell]);
+        spellui.SetSpell(spellcaster.spell);
+    }
+    else return;
+}
 
 }

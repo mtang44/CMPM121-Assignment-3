@@ -12,6 +12,7 @@ public class RewardScreenManager : MonoBehaviour
     public GameObject rewardUI;
     public TMP_Text SpellDescription;
     public TMP_Text SpellName;
+    public TMP_Text spellAcquiredTxt;
     public GameObject icon;
     public GameObject DisplayIcon1;
     public GameObject DisplayIcon2;
@@ -24,6 +25,8 @@ public class RewardScreenManager : MonoBehaviour
     public GameObject spell_2_drop;
     public GameObject spell_3_drop;
     public GameObject spell_4_drop;
+   
+    public GameObject acquiredButton;
     public bool running = false;
     public List<GameObject> spellDisplayIcons = new List<GameObject>();
     
@@ -40,10 +43,12 @@ public class RewardScreenManager : MonoBehaviour
         if (GameManager.Instance.state == GameManager.GameState.WAVEEND)
         {   
             rewardUI.SetActive(true);
+            
             Debug.Log("Current state" + running);
             if(!running)
             {
-                
+                spellAcquiredTxt.SetActive(false);
+                acquiredButton.SetActive(true);
                 running = true;
                 
                 // enemiesKilledLabel.text = "Enemies Killed: " + GameManager.Instance.numEnemiesKilled;
@@ -80,9 +85,20 @@ public class RewardScreenManager : MonoBehaviour
     {   
         if(GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Count < 4){
             GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Add(newRewardSpell);
+            spellAcquiredTxt.SetActive(true);
+            acquiredButton.SetActive(false);
+             var activeSpells = GameManager.Instance.player.GetComponent<PlayerController>().activeSpells;
+             for (int i = 0; i < Mathf.Min(activeSpells.Count, spellDisplayIcons.Count); i++)
+                {
+                    Spell spell = activeSpells[i];
+                    Image iconImage = spellDisplayIcons[i].GetComponent<Image>();
+                    GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), iconImage);
+                }
+
             Debug.Log(GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Count);
         }
         else{
+            spellAcquiredTxt.text = "Too many spells In Inventory Must drop one";
 
             spell_1_drop.SetActive(true);
             spell_2_drop.SetActive(true);
@@ -99,8 +115,14 @@ public class RewardScreenManager : MonoBehaviour
     public void dropSpell(int i)
     {
        GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.RemoveAt(i);
-        //GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Remove(removed);
-            // figure out drop specific spell. 
+       var activeSpells = GameManager.Instance.player.GetComponent<PlayerController>().activeSpells;
+       for (int j = 0; j < Mathf.Min(activeSpells.Count, spellDisplayIcons.Count); j++)
+                {
+                    Spell spell = activeSpells[j];
+                    Image iconImage = spellDisplayIcons[j].GetComponent<Image>();
+                    GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), iconImage);
+                }
+
     }
     
 }
