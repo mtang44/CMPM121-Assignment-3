@@ -29,13 +29,11 @@ public class Doubler : ModifierSpell {
     }
 
     public override IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
+        this.team = team;
         ValueModifier new_mods = AddMods(mods);
         CoroutineManager.Instance.Run(this.child.Cast(where, target, team, new_mods));
         yield return new WaitForSeconds(GetRPNFloat(delay));
         CoroutineManager.Instance.Run(this.child.Cast(where, target, team, new_mods));
         yield return new WaitForEndOfFrame();
-        // this.team = team;
-        // GameManager.Instance.projectileManager.CreateProjectile(0, "straight", where, target - where, 15f, OnHit);
-        // yield return new WaitForEndOfFrame();
     }
 }
