@@ -26,11 +26,12 @@ public class Splitter : ModifierSpell {
 
     public override IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
         Vector3 direction = target - where;
+        ValueModifier new_mods = AddMods(mods);
         float angle = Mathf.Atan2(direction.y, direction.x);
         float split1 = Random.value * GetRPNFloat(this.angle) * Mathf.Deg2Rad;
         float split2 = Random.value * GetRPNFloat(this.angle) * Mathf.Deg2Rad;
-        CoroutineManager.Instance.Run(this.child.Cast(where, where + new Vector3(Mathf.Cos(angle + split1), Mathf.Sin(angle + split1), 0), team, AddMods(mods)));
-        CoroutineManager.Instance.Run(this.child.Cast(where, where + new Vector3(Mathf.Cos(angle - split2), Mathf.Sin(angle - split2), 0), team, AddMods(mods)));
+        CoroutineManager.Instance.Run(this.child.Cast(where, where + new Vector3(Mathf.Cos(angle + split1), Mathf.Sin(angle + split1), 0), team, new_mods));
+        CoroutineManager.Instance.Run(this.child.Cast(where, where + new Vector3(Mathf.Cos(angle - split2), Mathf.Sin(angle - split2), 0), team, new_mods));
         yield return new WaitForEndOfFrame();
     }
 }
