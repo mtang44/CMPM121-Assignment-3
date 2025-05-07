@@ -5842,7 +5842,7 @@ MonoBehaviour:
   manaui: {fileID: 71109453}
   class_name: 
   spellui: {fileID: 2085212185}
-  speed: 25
+  speed: 5
   unit: {fileID: 0}
 --- !u!4 &1718273953
 Transform:
