@@ -80,6 +80,7 @@ public class PlayerController : MonoBehaviour
 
     void Die()
     {
+        activeSpells.Clear();
         GameManager.Instance.state = GameManager.GameState.GAMEOVER;
     }
 

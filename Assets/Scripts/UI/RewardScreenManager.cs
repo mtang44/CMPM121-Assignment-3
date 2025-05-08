@@ -12,7 +12,9 @@ public class RewardScreenManager : MonoBehaviour
     public GameObject rewardUI;
     public TMP_Text SpellDescription;
     public TMP_Text SpellName;
-    public TMP_Text spellAcquiredTxt;
+
+    public GameObject spellAcquiredTxt;
+    public GameObject spellDeniedTxt;
     public GameObject icon;
     public GameObject DisplayIcon1;
     public GameObject DisplayIcon2;
@@ -47,20 +49,14 @@ public class RewardScreenManager : MonoBehaviour
             Debug.Log("Current state" + running);
             if(!running)
             {
-                spellAcquiredTxt.text = "";
+                spellDeniedTxt.SetActive(false);
+                spellAcquiredTxt.SetActive(false);
                 acquiredButton.SetActive(true);
                 running = true;
                 
                 // enemiesKilledLabel.text = "Enemies Killed: " + GameManager.Instance.numEnemiesKilled;
                 // Then, in your method:
-                var activeSpells = GameManager.Instance.player.GetComponent<PlayerController>().activeSpells;
-                // sets existing spell icons in bottom left
-                for (int i = 0; i < Mathf.Min(activeSpells.Count, spellDisplayIcons.Count); i++)
-                {
-                    Spell spell = activeSpells[i];
-                    Image iconImage = spellDisplayIcons[i].GetComponent<Image>();
-                    GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), iconImage);
-                }
+                display();
                 
                 newRewardSpell =  new SpellBuilder().MakeRandomSpell(GameManager.Instance.player.GetComponent<PlayerController>().spellcaster); 
                 
@@ -94,18 +90,12 @@ public class RewardScreenManager : MonoBehaviour
             //  SpellUI rewardSpellUI = new SpellUI();
             // rewardSpellUI.SetSpell(newRewardSpell);
             // GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Add(rewardSpellUI);
-            spellAcquiredTxt.text = "Spell Acquired";
+            spellAcquiredTxt.SetActive(true);
             acquiredButton.SetActive(false);
-             var activeSpells = GameManager.Instance.player.GetComponent<PlayerController>().activeSpells;
-             for (int i = 0; i < Mathf.Min(activeSpells.Count, spellDisplayIcons.Count); i++)
-                {
-                    Spell spell = activeSpells[i];
-                    Image iconImage = spellDisplayIcons[i].GetComponent<Image>();
-                    GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), iconImage);
-                }
+            display();
         }
         else{
-            spellAcquiredTxt.text = "Too many spells In Inventory Must drop one";
+            spellDeniedTxt.SetActive(true);
 
             spell_1_drop.SetActive(true);
             spell_2_drop.SetActive(true);
@@ -122,15 +112,20 @@ public class RewardScreenManager : MonoBehaviour
     public void dropSpell(int i)
     {
        GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.RemoveAt(i);
-       var activeSpells = GameManager.Instance.player.GetComponent<PlayerController>().activeSpells;
-       for (int j = 0; j < Mathf.Min(activeSpells.Count, spellDisplayIcons.Count); j++)
+       display();
+        spellDeniedTxt.SetActive(false);
+
+    }
+    
+    public void display()
+    {
+        var activeSpells = GameManager.Instance.player.GetComponent<PlayerController>().activeSpells;
+        for (int j = 0; j < Mathf.Min(activeSpells.Count, spellDisplayIcons.Count); j++)
         {
             Spell spell = activeSpells[j];
             Image iconImage = spellDisplayIcons[j].GetComponent<Image>();
             GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), iconImage);
         }
-
     }
-    
 }
 
