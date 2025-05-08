@@ -66,15 +66,22 @@ public class RewardScreenManager : MonoBehaviour
                 
                 
                 Spell printSpell = newRewardSpell;
-                while (printSpell is ModifierSpell modifierSpell) {
+                if(printSpell is Spell)
+                {
+                     spellname += printSpell.GetName() ;
+                }
+                else{
+                    while (printSpell is ModifierSpell modifierSpell) {
                     spellname = modifierSpell.GetName() + " ";
                     printSpell = modifierSpell.GetChild();
                 }
-                spellname += printSpell.GetName() ;
+                }
+              
+             
 
                 printSpell = newRewardSpell;
                 while (printSpell is ModifierSpell modifierSpell) {
-                    spelldescription = modifierSpell.GetName() + ": " + modifierSpell.GetDescription() + "\n";
+                    spelldescription += modifierSpell.GetName() + ": " + modifierSpell.GetDescription() + "\n";
                     printSpell = modifierSpell.child;
                 }
                 spelldescription += printSpell.GetName() + ": " + printSpell.GetDescription() + "\n";
@@ -130,13 +137,19 @@ public class RewardScreenManager : MonoBehaviour
     public void dropSpell(int i)
     {
        GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.RemoveAt(i);
-       display();
+   
         spellDeniedTxt.SetActive(false);
+        spell_1_drop.SetActive(false);
+        spell_2_drop.SetActive(false);
+        spell_3_drop.SetActive(false);
+        spell_4_drop.SetActive(false);
+        display();
 
     }
     
     public void display()
     {
+        
         var activeSpells = GameManager.Instance.player.GetComponent<PlayerController>().activeSpells;
         for (int j = 0; j < Mathf.Min(activeSpells.Count, spellDisplayIcons.Count); j++)
         {
@@ -145,5 +158,6 @@ public class RewardScreenManager : MonoBehaviour
             GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), iconImage);
         }
     }
+   
 }
 
