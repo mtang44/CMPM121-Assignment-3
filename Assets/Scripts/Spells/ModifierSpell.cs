@@ -6,7 +6,7 @@ using TMPro;
 
 public class ModifierSpell : Spell {
     public Spell child;
-    public int child_count = 0;
+    public int child_count = 1;
 
     public ModifierSpell (SpellCaster owner) : base(owner) {
 
@@ -58,12 +58,16 @@ public class ModifierSpell : Spell {
         return mods;
     }
 
-    public int GetChildCount () {
+    public override int GetChildCount () {
         int count = child_count;
         if (child != null && child is ModifierSpell modifierSpell) {
             count += modifierSpell.GetChildCount();
         }
         return count;
+    }
+
+    public override Spell GetChild () {
+        return child;
     }
 
     public override IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team, ValueModifier current_mods) {
