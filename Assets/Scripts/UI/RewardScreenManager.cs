@@ -31,6 +31,8 @@ public class RewardScreenManager : MonoBehaviour
     public GameObject acquiredButton;
     public bool running = false;
     public List<GameObject> spellDisplayIcons = new List<GameObject>();
+    public string spellname;
+    public string spelldescription;
     
     public int counter = 1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -61,11 +63,32 @@ public class RewardScreenManager : MonoBehaviour
                 newRewardSpell =  new SpellBuilder().MakeRandomSpell(GameManager.Instance.player.GetComponent<PlayerController>().spellcaster); 
                 
 
+                
+                
+                Spell printSpell = newRewardSpell;
+                if(printSpell is Spell)
+                {
+                     spellname += printSpell.GetName() ;
+                }
+                else{
+                    while (printSpell is ModifierSpell modifierSpell) {
+                    spellname = modifierSpell.GetName() + " ";
+                    printSpell = modifierSpell.GetChild();
+                }
+                }
+              
+             
 
+                printSpell = newRewardSpell;
+                while (printSpell is ModifierSpell modifierSpell) {
+                    spelldescription += modifierSpell.GetName() + ": " + modifierSpell.GetDescription() + "\n";
+                    printSpell = modifierSpell.child;
+                }
+                spelldescription += printSpell.GetName() + ": " + printSpell.GetDescription() + "\n";
 
                 Debug.Log(newRewardSpell.description);
-                SpellDescription.text = "Spell Description " + newRewardSpell.description;
-                SpellName.text = "Spell Name " + newRewardSpell.name;
+                SpellDescription.text = "Spell Description: " + spelldescription;
+                SpellName.text = "Spell Name: " + spellname;
                 GameManager.Instance.spellIconManager.PlaceSprite(newRewardSpell.GetIcon(), icon.GetComponent<Image>());
                 // deactivates spell drop button if spell is 
                 if(GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Count < 4){
@@ -92,6 +115,8 @@ public class RewardScreenManager : MonoBehaviour
             // GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Add(rewardSpellUI);
             spellAcquiredTxt.SetActive(true);
             acquiredButton.SetActive(false);
+            spellname = "";
+            spelldescription = "";
             display();
         }
         else{
@@ -112,13 +137,19 @@ public class RewardScreenManager : MonoBehaviour
     public void dropSpell(int i)
     {
        GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.RemoveAt(i);
-       display();
+   
         spellDeniedTxt.SetActive(false);
+        spell_1_drop.SetActive(false);
+        spell_2_drop.SetActive(false);
+        spell_3_drop.SetActive(false);
+        spell_4_drop.SetActive(false);
+        display();
 
     }
     
     public void display()
     {
+        
         var activeSpells = GameManager.Instance.player.GetComponent<PlayerController>().activeSpells;
         for (int j = 0; j < Mathf.Min(activeSpells.Count, spellDisplayIcons.Count); j++)
         {
@@ -127,5 +158,6 @@ public class RewardScreenManager : MonoBehaviour
             GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), iconImage);
         }
     }
+   
 }
 

@@ -72,9 +72,22 @@ public class Spell
     public virtual int GetIcon() {
         return icon;
     }
+
+    public virtual string GetDescription() {
+        return description;
+    }
+
     public virtual bool IsModifierSpell() // able to be overrided by modifier spell
     {
        return false;
+    }
+
+    public virtual int GetChildCount () {
+        return 0;
+    }
+
+    public virtual Spell GetChild () {
+        return null;
     }
 
     public virtual bool IsReady()

@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public SpellUI spellui; // need a list of spellUI
     public SpellUIContainer spellContainer;
     public GameObject activeSpell;
+    public RewardScreenManager rewardscreen;
 
     public int speed;
 
@@ -81,6 +82,7 @@ public class PlayerController : MonoBehaviour
     void Die()
     {
         activeSpells.Clear();
+        
         GameManager.Instance.state = GameManager.GameState.GAMEOVER;
     }
 

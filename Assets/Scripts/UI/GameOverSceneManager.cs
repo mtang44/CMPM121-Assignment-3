@@ -16,6 +16,7 @@ public class GameOverSceneManager : MonoBehaviour
     {
         if (GameManager.Instance.state == GameManager.GameState.GAMEOVER)
         {  
+            
             gameOverUI.SetActive(true);
         }
         else
