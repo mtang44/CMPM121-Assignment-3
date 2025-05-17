@@ -25,7 +25,6 @@ public class Relic
     {
         SetEffect(attributes);
         SetTrigger(attributes);
-        effect.SetUntil();
     }
 
     public virtual void SetEffect(JObject attributes)
@@ -43,6 +42,7 @@ public class Relic
                 effect = new RelicEffect(attributes);
                 break;
         }
+        effect.SetUntil();
     }
 
     public virtual void SetTrigger(JObject attributes)
