@@ -13,6 +13,7 @@ public class ValueModifier {
         cooldown_mult
         speed_mult
         angle_add
+        pierce_add
 
         Behavior Mods (mods that alter projectile):
         trajectory

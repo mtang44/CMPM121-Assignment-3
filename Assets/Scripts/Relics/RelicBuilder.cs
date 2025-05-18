@@ -28,32 +28,7 @@ public class RelicBuilder
     }
     public Relic BuildRelic(string name)
     {
-        Relic newRelic = MakeRelic(name);
-        newRelic.SetAttributes((JObject)relic_attributes[name]);
-        return newRelic;
-    }
-    private Relic MakeRelic(string name)
-    {
-        // need implementation of relic classes relic classes folder already created
-
-        // if(name == "Green Gem")
-        // {
-        //       return new GreenGem();
-        // }
-        // if(name == "Jade Elephant")
-        // {
-        //     return new JadeElephant();
-        // }
-        // if(name == "Golden Mask")
-        // {
-        //     return new GoldenMask();
-        // }
-        // if(name == "Cursed Scroll")
-        // {
-        //     return new CursedScroll();
-        // }
-        return null;
-
+        return new Relic((JObject)relic_attributes[name]);
     }
 
     public JObject ReadRelicsJson()
@@ -65,7 +40,7 @@ public class RelicBuilder
                 relic_names.Add(a.Key);
             }
             return relic_types;
-        }
+    }
 
         
 

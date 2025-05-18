@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class EventBus 
+public class EventBus
 {
     private static EventBus theInstance;
     public static EventBus Instance
@@ -15,10 +15,32 @@ public class EventBus
     }
 
     public event Action<Vector3, Damage, Hittable> OnDamage;
-    
+
     public void DoDamage(Vector3 where, Damage dmg, Hittable target)
     {
         OnDamage?.Invoke(where, dmg, target);
     }
+
+    public event Action<Vector3, Hittable> OnMove;
+
+    public void DoMove(Vector3 where, Hittable who)
+    {
+        OnMove?.Invoke(where, who);
+    }
+
+    public event Action<Vector3, Hittable> OnKill;
+
+    public void DoKill(Vector3 where, Hittable target)
+    {
+        OnKill?.Invoke(where, target);
+    }
+
+    public event Action<SpellCaster, Spell> OnCast;
+
+    public void DoCast(SpellCaster who, Spell spell)
+    {
+        OnCast?.Invoke(who, spell);
+    }
+
 
 }
