@@ -10,6 +10,7 @@ public class Relic
 {
     public string name;
     public int sprite;
+    
     public Trigger trigger;
     public Effect effect; 
 
@@ -38,6 +39,10 @@ public class Relic
     {
         return this.sprite;
     } 
+    public string GetDescription()
+    {
+        return "" +this.trigger.description +" " + this.effect.description;
+    }
 
 
 

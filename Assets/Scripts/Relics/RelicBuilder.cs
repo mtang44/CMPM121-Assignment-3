@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using TMPro;
+using Unity.VisualScripting;
 
 public class RelicBuilder
 {
@@ -15,7 +16,7 @@ public class RelicBuilder
         relic_attributes = ReadRelicsJson();
     }
 
-    public Relic MakeRandomRelic(SpellCaster owner) {
+    public Relic MakeRandomRelic(GameObject owner) {
         System.Random rnd = new System.Random();
         int index = rnd.Next(relic_names.Count);
 
@@ -35,28 +36,29 @@ public class RelicBuilder
     {
         // need implementation of relic classes relic classes folder already created
 
-        if(name == "Green Gem")
-        {
-              return new GreenGem();
-        }
-        if(name == "Jade Elephant")
-        {
-            return new JadeElephant();
-        }
-        if(name == "Golden Mask")
-        {
-            return new GoldenMask();
-        }
-        if(name == "Cursed Scroll")
-        {
-            return new CursedScroll();
-        }
+        // if(name == "Green Gem")
+        // {
+        //       return new GreenGem();
+        // }
+        // if(name == "Jade Elephant")
+        // {
+        //     return new JadeElephant();
+        // }
+        // if(name == "Golden Mask")
+        // {
+        //     return new GoldenMask();
+        // }
+        // if(name == "Cursed Scroll")
+        // {
+        //     return new CursedScroll();
+        // }
+        return null;
 
     }
 
     public JObject ReadRelicsJson()
     {
-            var relic_text = Resources.Load<TextAsset>("relic");
+            var relic_text = Resources.Load<TextAsset>("relics");
             JObject relic_types = JObject.Parse(relic_text.text);
             foreach(var a in relic_types)
             {

@@ -12,29 +12,45 @@ public class RewardScreenManager : MonoBehaviour
     public GameObject rewardUI;
     public TMP_Text SpellDescription;
     public TMP_Text SpellName;
+    public TMP_Text RelicDescription1;
+    public TMP_Text RelicDescription2;
+    public TMP_Text RelicDescription3;
+    
 
+    public GameObject relicUIDisplay;
     public GameObject spellAcquiredTxt;
     public GameObject spellDeniedTxt;
     public GameObject icon;
-    public GameObject DisplayIcon1;
-    public GameObject DisplayIcon2;
-    public GameObject DisplayIcon3;
-    public GameObject DisplayIcon4;
-    
-    public Spell spell;
-    public Spell newRewardSpell;
+    public GameObject relicAcquiredTxt;
+
     public GameObject spell_1_drop;
     public GameObject spell_2_drop;
     public GameObject spell_3_drop;
     public GameObject spell_4_drop;
-   
+
+    public GameObject relic_1_take;
+    public GameObject relic_2_take;
+    public GameObject relic_3_take;
     public GameObject acquiredButton;
-    public bool running = false;
+
+    public GameObject RelicDisplayIcon1;
+    public GameObject RelicDisplayIcon2;
+    public GameObject RelicDisplayIcon3;
+
+    public Spell spell;
+    public Spell newRewardSpell;
+    
+    public Relic newRewardRelic1;
+    public Relic newRewardRelic2;
+    public Relic newRewardRelic3;
+
     public List<GameObject> spellDisplayIcons = new List<GameObject>();
+    //public List<GameObject> relicDisplayIcons = new List<GameObject>(); might need later
+
     public string spellname;
     public string spelldescription;
+    public bool running = false;
     
-    public int counter = 1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -47,58 +63,23 @@ public class RewardScreenManager : MonoBehaviour
         if (GameManager.Instance.state == GameManager.GameState.WAVEEND)
         {   
             rewardUI.SetActive(true);
-            
-            Debug.Log("Current state" + running);
             if(!running)
             {
+                // turns off/on certain UI game Objects
                 spellDeniedTxt.SetActive(false);
                 spellAcquiredTxt.SetActive(false);
                 acquiredButton.SetActive(true);
-                running = true;
-                
-                // enemiesKilledLabel.text = "Enemies Killed: " + GameManager.Instance.numEnemiesKilled;
-                // Then, in your method:
+                running = true; // makes it so that game does not keep regenerating new spells every update
                 display();
-                
-                newRewardSpell =  new SpellBuilder().MakeRandomSpell(GameManager.Instance.player.GetComponent<PlayerController>().spellcaster); 
-                
-
-                
-                
-                Spell printSpell = newRewardSpell;
-                if(printSpell is Spell)
+                spellDisplay();
+                if(GameManager.Instance.currentWave % 1 == 0) // every thid wave spawn relics // change back to 3, set to 1 for testing
                 {
-                     spellname += printSpell.GetName() ;
+                    relicDisplay();
                 }
-                else{
-                    while (printSpell is ModifierSpell modifierSpell) {
-                    spellname = modifierSpell.GetName() + " ";
-                    printSpell = modifierSpell.GetChild();
-                }
-                }
-              
-             
-
-                printSpell = newRewardSpell;
-                while (printSpell is ModifierSpell modifierSpell) {
-                    spelldescription += modifierSpell.GetName() + ": " + modifierSpell.GetDescription() + "\n";
-                    printSpell = modifierSpell.child;
-                }
-                spelldescription += printSpell.GetName() + ": " + printSpell.GetDescription() + "\n";
-
-                Debug.Log(newRewardSpell.description);
-                SpellDescription.text = "Spell Description: " + spelldescription;
-                SpellName.text = "Spell Name: " + spellname;
-                GameManager.Instance.spellIconManager.PlaceSprite(newRewardSpell.GetIcon(), icon.GetComponent<Image>());
-                // deactivates spell drop button if spell is 
-                if(GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Count < 4){
-                spell_1_drop.SetActive(false);
-                spell_2_drop.SetActive(false);
-                spell_3_drop.SetActive(false);
-                spell_4_drop.SetActive(false);
+                else{ 
+                    relicUIDisplay.SetActive(false);
                 }
             }
-           
         }
         else
         {
@@ -118,6 +99,7 @@ public class RewardScreenManager : MonoBehaviour
             spellname = "";
             spelldescription = "";
             display();
+       
         }
         else{
             spellDeniedTxt.SetActive(true);
@@ -130,7 +112,6 @@ public class RewardScreenManager : MonoBehaviour
     } 
     public void nextWave()
     {
-        Debug.Log("Setting running to false");
         running = false;
     }
 
@@ -146,7 +127,7 @@ public class RewardScreenManager : MonoBehaviour
         display();
 
     }
-    
+    // updates spell inventory UI display
     public void display()
     {
         
@@ -158,6 +139,102 @@ public class RewardScreenManager : MonoBehaviour
             GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), iconImage);
         }
     }
-   
+     // create new spell and displays it to Reward Screen UI
+    public void spellDisplay()
+    {
+        newRewardSpell =  new SpellBuilder().MakeRandomSpell(GameManager.Instance.player.GetComponent<PlayerController>().spellcaster); 
+        // gets spell's name:
+        Spell printSpell = newRewardSpell;
+        if(printSpell is Spell)
+        {
+                spellname += printSpell.GetName() ;
+        }
+        else{
+            while (printSpell is ModifierSpell modifierSpell) {
+            spellname = modifierSpell.GetName() + " ";
+            printSpell = modifierSpell.GetChild();
+        }
+        }
+        // get spell's description
+        printSpell = newRewardSpell;
+        while (printSpell is ModifierSpell modifierSpell) {
+            spelldescription += modifierSpell.GetName() + ": " + modifierSpell.GetDescription() + "\n";
+            printSpell = modifierSpell.child;
+        }
+        spelldescription += printSpell.GetName() + ": " + printSpell.GetDescription() + "\n";
+
+        SpellDescription.text = "Spell Description: " + spelldescription;
+        SpellName.text = "Spell Name: " + spellname;
+        GameManager.Instance.spellIconManager.PlaceSprite(newRewardSpell.GetIcon(), icon.GetComponent<Image>());
+
+        // deactivates spell drop button if spell count < 4 
+        if(GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Count < 4){
+        spell_1_drop.SetActive(false);
+        spell_2_drop.SetActive(false);
+        spell_3_drop.SetActive(false);
+        spell_4_drop.SetActive(false);
+        }
+    }
+    // gets three new relics and displays the to the screen. 
+    public void relicDisplay()
+    {  
+        Image iconImage;
+
+
+        relicUIDisplay.SetActive(true);
+        // creates / displays new relic in slot 1
+        newRewardSpell =  new SpellBuilder().MakeRandomSpell(GameManager.Instance.player.GetComponent<PlayerController>().spellcaster); // delete later
+        // 
+        newRewardRelic1 = new RelicBuilder().MakeRandomRelic(GameManager.Instance.player);
+        RelicDescription1.text = newRewardRelic1.GetDescription();
+        iconImage = RelicDisplayIcon1.GetComponent<Image>();
+        //GameManager.Instance.spellIconManager.PlaceSprite(newRewardRelic1.GetSprite(), iconImage);
+        GameManager.Instance.spellIconManager.PlaceSprite(newRewardSpell.GetIcon(), iconImage);
+
+        // creates / displays new relic in slot 2
+        newRewardSpell =  new SpellBuilder().MakeRandomSpell(GameManager.Instance.player.GetComponent<PlayerController>().spellcaster); // delete later
+        //
+        newRewardRelic2 = new RelicBuilder().MakeRandomRelic(GameManager.Instance.player);
+        RelicDescription2.text = newRewardRelic2.GetDescription();
+        iconImage = RelicDisplayIcon2.GetComponent<Image>();
+        //GameManager.Instance.spellIconManager.PlaceSprite(newRewardRelic1.GetSprite(), iconImage);
+        GameManager.Instance.spellIconManager.PlaceSprite(newRewardSpell.GetIcon(), iconImage);
+
+
+        // creates / displays new relic in slot 3
+        newRewardSpell =  new SpellBuilder().MakeRandomSpell(GameManager.Instance.player.GetComponent<PlayerController>().spellcaster); // delete later
+        //
+        newRewardRelic3 = new RelicBuilder().MakeRandomRelic(GameManager.Instance.player);
+        RelicDescription3.text = newRewardRelic3.GetDescription();
+        iconImage = RelicDisplayIcon3.GetComponent<Image>();
+        //GameManager.Instance.spellIconManager.PlaceSprite(newRewardRelic1.GetSprite(), iconImage);
+        GameManager.Instance.spellIconManager.PlaceSprite(newRewardSpell.GetIcon(), iconImage);
+        
+
+      
+    }
+    // when a relic is taken, it's button assigns that relic to the player's relic inventory
+    public void acceptRelic(int index)
+    {
+        if(index == 1)
+        {
+            GameManager.Instance.player.GetComponent<PlayerController>().activeRelics.Add(newRewardRelic1);
+        }
+        if(index == 2)
+        {
+            GameManager.Instance.player.GetComponent<PlayerController>().activeRelics.Add(newRewardRelic2);
+        }
+        if(index == 3)
+        {
+            GameManager.Instance.player.GetComponent<PlayerController>().activeRelics.Add(newRewardRelic3);
+        }
+        // on relic accept, UI for buttons disabled.
+        relic_1_take.SetActive(false);
+        relic_2_take.SetActive(false);
+        relic_3_take.SetActive(false);
+        relicAcquiredTxt.SetActive(true);
+
+    }
+
 }
 
