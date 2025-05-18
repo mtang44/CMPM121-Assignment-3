@@ -70,8 +70,8 @@ public class RewardScreenManager : MonoBehaviour
                 spellAcquiredTxt.SetActive(false);
                 acquiredButton.SetActive(true);
                 running = true; // makes it so that game does not keep regenerating new spells every update
-                display();
-                spellDisplay();
+                display(); // updates spell inventory display on reward screen.
+                spellDisplay(); // updates and creates a new spell to display
                 if(GameManager.Instance.currentWave % 1 == 0) // every thid wave spawn relics // change back to 3, set to 1 for testing
                 {
                     relicDisplay();
