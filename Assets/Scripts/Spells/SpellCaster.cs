@@ -6,18 +6,16 @@ public class SpellCaster
 {
     public int mana;
     public string max_mana_data;
-    public int max_mana { get { return GetRPN(max_mana_data);}}
+    public int max_mana { get { return GetRPN(max_mana_data) + max_mana_mods; } }
+    public int max_mana_mods = 0;
     public string mana_reg_data;
-    public int mana_reg { get { return GetRPN(mana_reg_data);}}
+    public int mana_reg { get { return GetRPN(mana_reg_data) + mana_reg_mods; } }
+    public int mana_reg_mods = 0;
     public string power_data;
-    public int power { get { return GetRPN(power_data);}}
+    public int power { get { return GetRPN(power_data) + power_mods; } }
+    public int power_mods = 0;
     public Hittable.Team team;
     public Spell spell;
-
-    public void SetSpell(Spell spell)
-    {
-        this.spell = spell;
-    }
 
     public IEnumerator ManaRegeneration()
     {
@@ -46,7 +44,7 @@ public class SpellCaster
         //  GameManager.Instance.player.GetComponent<SpellUIContainer>().spellUIs[i] = UIspell;
         // }
         // GameManager.Instance.player.GetComponent<SpellUI>().SetSpell(spell);
-       
+
     }
     public void SetSpell(Spell spell)
     {
@@ -61,10 +59,25 @@ public class SpellCaster
         }
         yield break;
     }
-    public float GetRPNFloat (string stat) {
-        return RPN.calculateRPNFloat(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}});
+
+    public void GainMana(int amount)
+    {
+        mana = (mana + amount >= amount ? max_mana : mana + amount);
     }
-    public int GetRPN (string stat) {
-        return RPN.calculateRPN(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}});
+
+    public void GainPower(int amount)
+    {
+        power_mods += amount;
+    }
+
+
+
+    public float GetRPNFloat(string stat)
+    {
+        return RPN.calculateRPNFloat(stat, new Dictionary<string, int> { { "wave", GameManager.Instance.currentWave } });
+    }
+    public int GetRPN(string stat)
+    {
+        return RPN.calculateRPN(stat, new Dictionary<string, int> { { "wave", GameManager.Instance.currentWave } });
     }
 }
