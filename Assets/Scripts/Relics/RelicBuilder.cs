@@ -33,13 +33,18 @@ public class RelicBuilder
 
     public JObject ReadRelicsJson()
     {
-            var relic_text = Resources.Load<TextAsset>("relics");
-            JObject relic_types = JObject.Parse(relic_text.text);
-            foreach(var a in relic_types)
-            {
-                relic_names.Add(a.Key);
-            }
-            return relic_types;
+        var relic_text = Resources.Load<TextAsset>("relics");
+        JArray relic_types = JArray.Parse(relic_text.text);
+        JObject relicObject = new JObject();
+        foreach (var r in relic_types)
+        {
+
+            relic_names.Add(r["name"].ToString());
+            string name = r["name"].ToString();
+            relicObject[name] = r;
+
+        }
+        return relicObject;
     }
 
         
