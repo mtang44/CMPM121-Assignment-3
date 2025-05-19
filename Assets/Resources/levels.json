@@ -125,7 +125,7 @@
        "spawns": [
             {
                 "enemy": "giant",
-                "count": "5 wave +",
+                "count": "1 wave +",
                 "hp": "base 5 wave * +",
                 "delay": "5",
                 "sequence": [1,2,3],

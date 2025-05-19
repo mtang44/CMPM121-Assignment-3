@@ -4,6 +4,8 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.IO;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,13 +17,19 @@ public class PlayerController : MonoBehaviour
     public JObject class_stats;
 
     public SpellCaster spellcaster;
-    public SpellUI spellui;
+    public SpellUI spellui; // need a list of spellUI
+    public SpellUIContainer spellContainer;
+    public GameObject activeSpell;
+    public RewardScreenManager rewardscreen;
 
     public int speed;
 
     public Unit unit;
-     
-    public List<Spell> activeSpells = new List<Spell>();
+    
+
+    // public List<SpellUI> activeSpellsUI = new List<SpellUI>();// stores spell for UI display while playing
+
+    public List<Spell> activeSpells = new List<Spell>(); // this list stores for RewardScreen Manager
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -44,7 +52,6 @@ public class PlayerController : MonoBehaviour
         // tell UI elements what to show
         healthui.SetHealth(hp);
         manaui.SetSpellCaster(spellcaster);
-        spellui.SetSpell(spellcaster.spell);
     }
 
     // Update is called once per frame
@@ -55,6 +62,7 @@ public class PlayerController : MonoBehaviour
             spellCycle();
         }
     }
+    
 
     void OnAttack(InputValue value)
     {
@@ -73,6 +81,8 @@ public class PlayerController : MonoBehaviour
 
     void Die()
     {
+        activeSpells.Clear();
+        
         GameManager.Instance.state = GameManager.GameState.GAMEOVER;
     }
 
@@ -83,14 +93,19 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void spellCycle()
+void spellCycle()
+{
+    if (activeSpells.Count > 0)
     {
-        if (activeSpells.Count > 0)
-        {
-            int nextSpell = ((activeSpells.IndexOf(spellcaster.spell)) + 1) % activeSpells.Count;
-            spellcaster.SetSpell(activeSpells[nextSpell]);
-            spellui.SetSpell(spellcaster.spell);
-        }
-        else return;
+        int nextSpell = ((activeSpells.IndexOf(spellcaster.spell)) + 1) % activeSpells.Count;
+        spellcaster.SetSpell(activeSpells[nextSpell]);
+        spellui.SetSpell(spellcaster.spell);
+        Image iconImage = activeSpell.GetComponent<Image>();
+        GameManager.Instance.spellIconManager.PlaceSprite(activeSpells[nextSpell].GetIcon(), iconImage);
+        
+        
+
     }
+    else return;
+}
 }
