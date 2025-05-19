@@ -65,6 +65,9 @@ public class SpellBuilder
         if (name == "caffeinate") {
             return new Caffeinated(owner);
         }
+        if (name == "piercing") {
+            return new Piercing(owner);
+        }
         return null;
 
     }

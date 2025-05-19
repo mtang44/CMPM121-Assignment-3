@@ -29,7 +29,8 @@ public class PlayerController : MonoBehaviour
 
     // public List<SpellUI> activeSpellsUI = new List<SpellUI>();// stores spell for UI display while playing
 
-    public List<Spell> activeSpells = new List<Spell>(); // this list stores for RewardScreen Manager
+    public List<Spell> activeSpells = new List<Spell>(); // this list stores the active spells in the player's inventory
+    public List<Relic> activeRelics = new List<Relic>(); // this list stores the active relics in the player's inventory
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

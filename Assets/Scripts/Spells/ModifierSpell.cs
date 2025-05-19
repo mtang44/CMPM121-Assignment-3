@@ -66,13 +66,9 @@ public class ModifierSpell : Spell {
         return count;
     }
 
-    public override Spell GetChild () {
-        return child;
-    }
-
-    public override IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team, ValueModifier current_mods) {
+    public override IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
         Debug.Log(GetName());
-        CoroutineManager.Instance.Run(this.child.Cast(where, target, team, AddMods(current_mods)));
+        CoroutineManager.Instance.Run(this.child.Cast(where, target, team, AddMods(mods)));
         yield return new WaitForEndOfFrame();
         // this.team = team;
         // GameManager.Instance.projectileManager.CreateProjectile(0, "straight", where, target - where, 15f, OnHit);
