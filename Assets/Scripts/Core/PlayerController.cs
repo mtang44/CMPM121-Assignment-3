@@ -13,8 +13,8 @@ public class PlayerController : MonoBehaviour
     public HealthBar healthui;
     public ManaBar manaui;
 
-    public string class_name;
-    public JObject class_stats;
+    public PlayerClass player_class;
+    public Dictionary<string, PlayerClass> class_stats = new Dictionary<string, PlayerClass>();
 
     public SpellCaster spellcaster;
     public SpellUI spellui; // need a list of spellUI
@@ -36,19 +36,22 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         unit = GetComponent<Unit>();
+        
         GameManager.Instance.player = gameObject;
     }
 
     public void StartLevel()
     {
-        class_stats = ReadClassesJson("mage");
-        spellcaster = new SpellCaster(class_stats["mana"].ToString(), class_stats["mana_regeneration"].ToString(), class_stats["spellpower"].ToString(), Hittable.Team.PLAYER);
+        player_class = class_stats["mage"]; // TODO: Work with Michael to integrate UI elements to select class
+        spellcaster = new SpellCaster(player_class.getMana(), player_class.getManaRegeneration(), player_class.getSpellpower(), Hittable.Team.PLAYER);
         StartCoroutine(spellcaster.ManaRegeneration());
 
-        int currentHealth = RPN.calculateRPN(class_stats["health"].ToString(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave });
-        hp = new Hittable(currentHealth, Hittable.Team.PLAYER, gameObject);
+        hp = new Hittable(RPN.calculateRPN(player_class.getHealth(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave }), Hittable.Team.PLAYER, gameObject);  // Move this to class selection function
+        hp.SetMaxHP(RPN.calculateRPN(player_class.getHealth(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave })); // Replaces line above so that health updates correctly scaling with wave
         hp.OnDeath += Die;
         hp.team = Hittable.Team.PLAYER;
+
+        unit.distance += RPN.calculateRPN(player_class.getSpeed(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave });
 
         // tell UI elements what to show
         healthui.SetHealth(hp);
@@ -87,14 +90,31 @@ public class PlayerController : MonoBehaviour
         GameManager.Instance.state = GameManager.GameState.GAMEOVER;
     }
 
-    public JObject ReadClassesJson(string class_name) {
+    public void ReadClassesJson()
+    {
         var classtext = Resources.Load<TextAsset>("classes");
-        JObject classes = JObject.Parse(classtext.text);
-        return (JObject)classes[class_name];
 
+        JObject classes = JObject.Parse(classtext.text);
+
+        foreach (var pair in classes)
+        {
+            var className = pair.Key;
+            var classObj = pair.Value;
+
+            string name = classObj["name"].ToString();
+            int sprite = classObj["sprite"].ToObject<int>();
+            string health = classObj["health"].ToString();
+            string mana_regeneration = classObj["mana_regeneration"].ToString();
+            string mana = classObj["mana"]?.ToString();
+            string spellpower = classObj["spellpower"].ToString();
+            string speed = classObj["speed"].ToString();
+
+            var playerClass = new PlayerClass(name, sprite, health, mana_regeneration, mana, spellpower, speed);
+            class_stats[className] = playerClass;
+        }
     }
 
-void spellCycle()
+    void spellCycle()
 {
     if (activeSpells.Count > 0)
     {
