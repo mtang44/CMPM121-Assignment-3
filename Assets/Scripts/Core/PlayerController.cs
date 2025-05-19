@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public ManaBar manaui;
 
     public PlayerClass player_class;
-    public Dictionary<string, PlayerClass> class_stats = new Dictionary<string, PlayerClass>();
+    public List<PlayerClass> player_classes = new List<PlayerClass>();
 
     public SpellCaster spellcaster;
     public SpellUI spellui; // need a list of spellUI
@@ -36,13 +36,13 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         unit = GetComponent<Unit>();
-        
+        ReadClassesJson();
         GameManager.Instance.player = gameObject;
     }
 
     public void StartLevel()
     {
-        player_class = class_stats["mage"]; // TODO: Work with Michael to integrate UI elements to select class
+        player_class = player_classes[0]; // TODO: Work with Michael to integrate UI elements to select class
         spellcaster = new SpellCaster(player_class.getMana(), player_class.getManaRegeneration(), player_class.getSpellpower(), Hittable.Team.PLAYER);
         StartCoroutine(spellcaster.ManaRegeneration());
 
@@ -93,24 +93,38 @@ public class PlayerController : MonoBehaviour
     public void ReadClassesJson()
     {
         var classtext = Resources.Load<TextAsset>("classes");
+        JObject jo = JObject.Parse(classtext.text);
 
-        JObject classes = JObject.Parse(classtext.text);
+        player_classes.Clear();
 
-        foreach (var pair in classes)
+        foreach (var prop in jo.Properties())
         {
-            var className = pair.Key;
-            var classObj = pair.Value;
+            string name = prop.Name;
+            JObject data = (JObject)prop.Value;
 
-            string name = classObj["name"].ToString();
-            int sprite = classObj["sprite"].ToObject<int>();
-            string health = classObj["health"].ToString();
-            string mana_regeneration = classObj["mana_regeneration"].ToString();
-            string mana = classObj["mana"]?.ToString();
-            string spellpower = classObj["spellpower"].ToString();
-            string speed = classObj["speed"].ToString();
+            int sprite = data["sprite"] != null ? data["sprite"].ToObject<int>() : 0;
+            string health = data["health"] != null ? data["health"].ToString() : "";
+            string mana_regeneration = data["mana_regeneration"] != null ? data["mana_regeneration"].ToString() : "";
+            string mana = data["mana"] != null ? data["mana"].ToString() : "";
+            string spellpower = data["spellpower"] != null ? data["spellpower"].ToString() : "";
+            string speed = data["speed"] != null ? data["speed"].ToString() : "";
 
-            var playerClass = new PlayerClass(name, sprite, health, mana_regeneration, mana, spellpower, speed);
-            class_stats[className] = playerClass;
+            PlayerClass pcc = new PlayerClass(
+                name,
+                sprite,
+                health,
+                mana_regeneration,
+                mana,
+                spellpower,
+                speed
+            );
+            player_classes.Add(pcc);
+        }
+
+        Debug.Log("Classes loaded: " + player_classes.Count);
+        foreach (var pcc in player_classes)
+        {
+            Debug.Log($"Class: {pcc.getName()}, Speed: {pcc.getSpeed()}, Spellpower: {pcc.getSpellpower()}");
         }
     }
 
