@@ -19,6 +19,7 @@ public class Relic
         this.attributes = attributes;
         this.name = attributes["name"].ToString();
         this.sprite = attributes["sprite"].ToObject<int>();
+        this.trigger_desc = "" + attributes["trigger"]["description"] + attributes["effect"]["description"];
     }
 
     public virtual void Pickup()
@@ -82,7 +83,6 @@ public class Relic
 
     public string GetDescription()
     {
-        //this.trigger_desc = "" + attributes["trigger"]["description"] + attributes["effects"]["description"];
         return trigger_desc;
     }
 
