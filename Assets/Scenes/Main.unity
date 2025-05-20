@@ -13107,11 +13107,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthui: {fileID: 765025204}
   manaui: {fileID: 71109453}
-  class_name: 
   spellui: {fileID: 268231454}
   spellContainer: {fileID: 1982188287}
   activeSpell: {fileID: 268231452}
   rewardscreen: {fileID: 1709288115}
+  sprite: {fileID: 232596022}
   speed: 5
   unit: {fileID: 0}
 --- !u!4 &1718273953

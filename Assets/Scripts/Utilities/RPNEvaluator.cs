@@ -43,7 +43,7 @@ public class RPN
                 float b = stack.Pop();
                 stack.Push(applyOperatorFloat(token, b, a));
             } else {
-                Debug.Log("trying to parse " + token);
+                //Debug.Log("trying to parse " + token);
                 stack.Push(float.Parse(token));
             }
         }
