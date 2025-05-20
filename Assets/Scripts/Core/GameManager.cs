@@ -8,6 +8,7 @@ public class GameManager
     public enum GameState
     {
         PREGAME,
+        LEVELSELECT,
         INWAVE,
         WAVEEND,
         COUNTDOWN,

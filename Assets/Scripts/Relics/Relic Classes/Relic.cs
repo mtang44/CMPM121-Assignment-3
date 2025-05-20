@@ -82,7 +82,7 @@ public class Relic
 
     public string GetDescription()
     {
-        //this.trigger_desc = "" + attributes["trigger"]["description"] + attributes["effects"]["description"];
+        this.trigger_desc = "" + attributes["trigger"]["description"] + attributes["effect"]["description"];
         return trigger_desc;
     }
 

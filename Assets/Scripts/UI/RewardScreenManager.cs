@@ -66,10 +66,8 @@ public class RewardScreenManager : MonoBehaviour
             if(!running)
             {
                 // turns off/on certain UI game Objects
-                spellDeniedTxt.SetActive(false);
-                spellAcquiredTxt.SetActive(false);
-                acquiredButton.SetActive(true);
                 running = true; // makes it so that game does not keep regenerating new spells every update
+                adjustUIElements();
                 display(); // updates spell inventory display on reward screen.
                 spellDisplay(); // updates and creates a new spell to display
                 if(GameManager.Instance.currentWave % 1 == 0) // every thid wave spawn relics // change back to 3, set to 1 for testing
@@ -86,10 +84,18 @@ public class RewardScreenManager : MonoBehaviour
             rewardUI.SetActive(false);
         }
     }
+    public void adjustUIElements()
+    {
+        spellDeniedTxt.SetActive(false);
+        spellAcquiredTxt.SetActive(false);
+        acquiredButton.SetActive(true);
+        relicAcquiredTxt.SetActive(false);
+    }
     // when button is pressed spell is stored in spell list, and updated to reward screen display
     public void gainSpell()
-    {   
-        if(GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Count < 4){
+    {
+        if (GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Count < 4)
+        {
             GameManager.Instance.player.GetComponent<PlayerController>().activeSpells.Add(newRewardSpell);
             //  SpellUI rewardSpellUI = new SpellUI();
             // rewardSpellUI.SetSpell(newRewardSpell);
@@ -99,9 +105,10 @@ public class RewardScreenManager : MonoBehaviour
             spellname = "";
             spelldescription = "";
             display();
-       
+
         }
-        else{
+        else
+        {
             spellDeniedTxt.SetActive(true);
 
             spell_1_drop.SetActive(true);
@@ -209,6 +216,9 @@ public class RewardScreenManager : MonoBehaviour
     // when a relic is taken, it's button assigns that relic to the player's relic inventory
     public void acceptRelic(int index)
     {
+        relic_1_take.SetActive(true);
+        relic_2_take.SetActive(true);
+        relic_3_take.SetActive(true);
         if (index == 1)
         {
             GameManager.Instance.player.GetComponent<PlayerController>().activeRelics.Add(newRewardRelic1);
