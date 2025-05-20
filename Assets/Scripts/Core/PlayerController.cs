@@ -35,10 +35,8 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        GameManager.Instance.playerController = this;
         unit = GetComponent<Unit>();
         ReadClassesJson();
-        Debug.Log("Read JSON");
         GameManager.Instance.player = gameObject;
     }
 
