@@ -8,6 +8,7 @@ public class MenuSelectorController : MonoBehaviour
     public EnemySpawner spawner;
     public string my_class_name;
     public int my_class_index;
+    public ClassSelectorManager class_manager;
  
 
     

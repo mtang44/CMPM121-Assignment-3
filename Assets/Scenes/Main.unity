@@ -4697,13 +4697,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4ef5265fce1b544c872205988919fb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthui: {fileID: 0}
-  manaui: {fileID: 0}
-  spellui: {fileID: 0}
-  spellContainer: {fileID: 0}
-  activeSpell: {fileID: 0}
-  rewardscreen: {fileID: 0}
-  speed: 0
+  healthui: {fileID: 765025204}
+  manaui: {fileID: 71109453}
+  spellui: {fileID: 268231454}
+  spellContainer: {fileID: 1982188287}
+  activeSpell: {fileID: 268231452}
+  rewardscreen: {fileID: 1709288115}
+  speed: 5
   unit: {fileID: 0}
 --- !u!1 &521465533
 GameObject:

@@ -26,6 +26,7 @@ public class EnemySpawner : MonoBehaviour
     private int spawnsRunning = 0;
     private int wave_count;
     private string location;
+    private bool running = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -53,13 +54,17 @@ public class EnemySpawner : MonoBehaviour
     {
         if (GameManager.Instance.state == GameManager.GameState.LEVELSELECT)
         {
-            Debug.Log("GAME STATE = LEVELSELECT");
-            level_selector.gameObject.SetActive(true);
-            LoadLevelSelector();
+            if (!running)
+            {
+                running = true;
+                level_selector.gameObject.SetActive(true);
+                LoadLevelSelector();
+            }
         }
         else
         {
-            level_selector.gameObject.SetActive(false);
+            running = false;
+                level_selector.gameObject.SetActive(false);
         }
        
     }

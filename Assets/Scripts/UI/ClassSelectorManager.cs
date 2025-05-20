@@ -19,6 +19,7 @@ public class ClassSelectorManager : MonoBehaviour
             class_button = Instantiate(button, class_selector.transform);
             class_button.transform.localPosition = new Vector3(0, 100 + (40 * i));
             class_button.GetComponent<MenuSelectorController>().SetClass(GameManager.Instance.player.GetComponent<PlayerController>().player_classes[i].getName(), i);
+            class_button.GetComponent<MenuSelectorController>().class_manager = this;
             classButtons.Add(class_button);
         }
     }
@@ -26,7 +27,7 @@ public class ClassSelectorManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance.state == GameManager.GameState.PREGAME)
+        if (GameManager.Instance.state == GameManager.GameState.PREGAME )
         {
             classSelectorUI.SetActive(true);
         }
@@ -34,9 +35,5 @@ public class ClassSelectorManager : MonoBehaviour
         {
            classSelectorUI.SetActive(false);
         }
-    }
-    public void LoadClassSelector()
-    {
-        GameManager.Instance.state = GameManager.GameState.PREGAME;
     }
 }

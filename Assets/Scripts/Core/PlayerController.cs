@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     public SpellUIContainer spellContainer;
     public GameObject activeSpell;
     public RewardScreenManager rewardscreen;
-
+   
     public int speed;
 
     public Unit unit;
@@ -42,7 +42,8 @@ public class PlayerController : MonoBehaviour
 
     public void StartLevel()
     {
-        player_class = player_classes[0]; // TODO: Work with Michael to integrate UI elements to select class
+        Debug.Log("Our class is: " + player_class.getName());
+        //player_class = player_classes[0]; // TODO: Work with Michael to integrate UI elements to select class
         spellcaster = new SpellCaster(player_class.getMana(), player_class.getManaRegeneration(), player_class.getSpellpower(), Hittable.Team.PLAYER);
         StartCoroutine(spellcaster.ManaRegeneration());
 
