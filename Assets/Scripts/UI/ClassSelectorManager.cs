@@ -13,7 +13,6 @@ public class ClassSelectorManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GameManager.Instance.player.GetComponent<PlayerController>().ReadClassesJson();
         for (int i = 0; i < GameManager.Instance.player.GetComponent<PlayerController>().player_classes.Count; i++)
         {
             GameObject class_button = new GameObject();

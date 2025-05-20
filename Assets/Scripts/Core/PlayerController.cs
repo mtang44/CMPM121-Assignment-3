@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         unit = GetComponent<Unit>();
-        //ReadClassesJson();
+        ReadClassesJson();
         GameManager.Instance.player = gameObject;
     }
 
