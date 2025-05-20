@@ -34,8 +34,11 @@ public class GameManager
     public EnemySpriteManager enemySpriteManager;
     public PlayerSpriteManager playerSpriteManager;
     public RelicIconManager relicIconManager;
+    
+       public PlayerController playerController;
     public ClassSelectorManager class_Selector_Manager;
     public EnemySpawner enemySpawner;
+ 
     
 
 

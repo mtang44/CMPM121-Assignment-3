@@ -33,10 +33,12 @@ public class PlayerController : MonoBehaviour
     public List<Relic> activeRelics = new List<Relic>(); // this list stores the active relics in the player's inventory
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
+        GameManager.Instance.playerController = this;
         unit = GetComponent<Unit>();
         ReadClassesJson();
+        Debug.Log("Read JSON");
         GameManager.Instance.player = gameObject;
     }
 

@@ -13,6 +13,24 @@ public class ClassSelectorManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        GameManager.Instance.player.GetComponent<PlayerController>().ReadClassesJson();
+        CreateButtons();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (GameManager.Instance.state == GameManager.GameState.PREGAME)
+        {
+            classSelectorUI.SetActive(true);
+        }
+        else
+        {
+            classSelectorUI.SetActive(false);
+        }
+    }
+    void CreateButtons()
+    {
         for (int i = 0; i < GameManager.Instance.player.GetComponent<PlayerController>().player_classes.Count; i++)
         {
             GameObject class_button = new GameObject();
@@ -21,19 +39,6 @@ public class ClassSelectorManager : MonoBehaviour
             class_button.GetComponent<MenuSelectorController>().SetClass(GameManager.Instance.player.GetComponent<PlayerController>().player_classes[i].getName(), i);
             class_button.GetComponent<MenuSelectorController>().class_manager = this;
             classButtons.Add(class_button);
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (GameManager.Instance.state == GameManager.GameState.PREGAME )
-        {
-            classSelectorUI.SetActive(true);
-        }
-        else
-        {
-           classSelectorUI.SetActive(false);
         }
     }
 }
