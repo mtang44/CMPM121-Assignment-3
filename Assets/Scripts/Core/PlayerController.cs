@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             hp.SetMaxHP(RPN.calculateRPN(player_class.getHealth(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave }));
-        } // Replaces line above so that health updates correctly scaling with wave
+        }
         hp.OnDeath += Die;
         hp.team = Hittable.Team.PLAYER;
 
