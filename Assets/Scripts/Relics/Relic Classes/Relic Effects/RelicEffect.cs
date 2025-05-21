@@ -20,7 +20,7 @@ public class RelicEffect
         this.description = attributes["effect"]["description"].ToString();
         this.type = attributes["effect"]["type"].ToString();
         this.amount = attributes["effect"]["amount"].ToString();
-        this.until = attributes["effect"]["until"].ToString();
+        this.until = attributes["effect"]["until"]?.ToString();
         this.caster = GameManager.Instance.player.GetComponent<PlayerController>().spellcaster;
     }
 
