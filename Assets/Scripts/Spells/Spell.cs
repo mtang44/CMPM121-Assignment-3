@@ -37,22 +37,18 @@ public class Spell
 
 
     public virtual int GetManaCost(ValueModifier mods) {
-        Debug.Log("Final Mana Cost: " + (int)Math.Ceiling(ApplyStatMods(mods, this.mana_cost, "mana_cost")));
         return (int)Math.Ceiling(ApplyStatMods(mods, this.mana_cost, "mana_cost"));
     }
 
     public virtual int GetDamage(ValueModifier mods) {
-        Debug.Log("Final Damage: " + (int)Math.Ceiling(ApplyStatMods(mods, this.damage, "damage")));
         return (int)Math.Ceiling(ApplyStatMods(mods, this.damage, "damage"));
     }
 
     public virtual float GetCooldown(ValueModifier mods) {
-        Debug.Log("Final Cooldown: " + ApplyStatMods(mods, this.cooldown, "cooldown"));
         return ApplyStatMods(mods, this.cooldown, "cooldown");
     }
 
     public virtual float GetSpeed(ValueModifier mods) {
-        Debug.Log("Final Speed: " + ApplyStatMods(mods, this.speed, "speed"));
         return ApplyStatMods(mods, this.speed, "speed");
     }
 
@@ -159,7 +155,7 @@ public class Spell
         float value = val;
          if (mods.modifiers.ContainsKey(mod_name)) {
             for (int i = 0; i < mods.modifiers[mod_name].Count; i++) {
-                Debug.Log("ApplyMult Current Mod to Mult: " + mods.modifiers[mod_name][i]);
+                //Debug.Log("ApplyMult Current Mod to Mult: " + mods.modifiers[mod_name][i]);
                 value *= GetRPNFloat(mods.modifiers[mod_name][i]);
             }
         }

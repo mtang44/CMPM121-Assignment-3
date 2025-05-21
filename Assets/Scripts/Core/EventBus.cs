@@ -35,11 +35,11 @@ public class EventBus
         OnKill?.Invoke(where, target);
     }
 
-    public event Action<SpellCaster, Spell> OnCast;
+    public event Action<SpellCaster, Spell> OnEndCast;
 
-    public void DoCast(SpellCaster who, Spell spell)
+    public void DoEndCast(SpellCaster who, Spell spell)
     {
-        OnCast?.Invoke(who, spell);
+        OnEndCast?.Invoke(who, spell);
     }
     public event Action<Relic> OnRelicPickup;
 

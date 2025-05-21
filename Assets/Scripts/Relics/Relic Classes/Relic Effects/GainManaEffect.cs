@@ -6,11 +6,9 @@ using System;
 public class GainManaEffect : RelicEffect
 {
 
-    SpellCaster caster;
-
     public GainManaEffect(JObject attributes) : base(attributes)
     {
-        this.caster = GameManager.Instance.player.GetComponent<PlayerController>().spellcaster;
+
     }
     
     public override void SetUntil()
@@ -21,7 +19,7 @@ public class GainManaEffect : RelicEffect
     public override void ApplyEffect()
     {
         base.ApplyEffect();
-        this.caster.GainMana(GetRPN(amount));
+        caster.GainMana(GetRPN(amount));
     }
 
     public override void RemoveEffect()

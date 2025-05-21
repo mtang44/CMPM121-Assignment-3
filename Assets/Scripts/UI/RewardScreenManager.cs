@@ -231,7 +231,6 @@ public class RewardScreenManager : MonoBehaviour
             GameManager.Instance.player.GetComponent<PlayerController>().activeRelics.Add(newRewardRelic2);
             EventBus.Instance.DoRelicPickup(newRewardRelic2);
             newRewardRelic2.Pickup();
-            
         }
         if (index == 3)
         {
