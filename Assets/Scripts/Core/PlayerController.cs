@@ -21,7 +21,9 @@ public class PlayerController : MonoBehaviour
     public SpellUIContainer spellContainer;
     public GameObject activeSpell;
     public RewardScreenManager rewardscreen;
-   
+
+    public SpriteRenderer sprite;
+
     public int speed;
 
     public Unit unit;
@@ -42,13 +44,19 @@ public class PlayerController : MonoBehaviour
 
     public void StartLevel()
     {
-        Debug.Log("Our class is: " + player_class.getName());
-        //player_class = player_classes[0]; // TODO: Work with Michael to integrate UI elements to select class
+        player_class = player_classes[2]; // TODO: Work with Michael to integrate UI elements to select class
+        sprite.sprite = GameManager.Instance.playerSpriteManager.Get(player_class.getSprite());
+
         spellcaster = new SpellCaster(player_class.getMana(), player_class.getManaRegeneration(), player_class.getSpellpower(), Hittable.Team.PLAYER);
         StartCoroutine(spellcaster.ManaRegeneration());
-
-        hp = new Hittable(RPN.calculateRPN(player_class.getHealth(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave }), Hittable.Team.PLAYER, gameObject);  // Move this to class selection function
-        hp.SetMaxHP(RPN.calculateRPN(player_class.getHealth(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave })); // Replaces line above so that health updates correctly scaling with wave
+        if (GameManager.Instance.currentWave <= 1)
+        {
+            hp = new Hittable(RPN.calculateRPN(player_class.getHealth(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave }), Hittable.Team.PLAYER, gameObject);  // Move this to class selection function
+        }
+        else
+        {
+            hp.SetMaxHP(RPN.calculateRPN(player_class.getHealth(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave }));
+        } // Replaces line above so that health updates correctly scaling with wave
         hp.OnDeath += Die;
         hp.team = Hittable.Team.PLAYER;
 
