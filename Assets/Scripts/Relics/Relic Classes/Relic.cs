@@ -38,6 +38,9 @@ public class Relic
             case "gain-spellpower":
                 effect = new GainSpellPowerEffect(attributes);
                 break;
+            case "gain-health":
+                effect = new GainHealthEffect(attributes);
+                break;
             default:
                 effect = new RelicEffect(attributes);
                 break;

@@ -76,7 +76,7 @@
         },
         "effect": {
             "description": "but damages the caster 2 (+2/wave) hp per second. What a cute little bloodsucker!",
-            "type": "take-damage",
+            "type": "gain-health",
             "amount": "10 wave *"
         }
     }

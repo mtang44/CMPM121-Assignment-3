@@ -21,10 +21,7 @@ public class GainManaEffect : RelicEffect
     public override void ApplyEffect()
     {
         base.ApplyEffect();
-        Debug.Log("Mana before: " + caster.mana);
         this.caster.GainMana(GetRPN(amount));
-        Debug.Log("Gained mana: " + GetRPN(amount));
-        Debug.Log("Mana after: " + caster.mana);
     }
 
     public override void RemoveEffect()
