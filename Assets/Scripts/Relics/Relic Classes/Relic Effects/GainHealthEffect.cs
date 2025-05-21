@@ -13,6 +13,7 @@ public class GainHealthEffect : RelicEffect
     {
         this.hp = GameManager.Instance.player.GetComponent<PlayerController>().hp;
         this.healthui = GameManager.Instance.player.GetComponent<PlayerController>().healthui;
+        GameManager.Instance.player.GetComponent<PlayerController>().vampire = true;
     }
 
     public override void SetUntil()

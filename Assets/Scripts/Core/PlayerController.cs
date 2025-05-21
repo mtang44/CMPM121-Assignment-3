@@ -1,10 +1,11 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.IO;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
@@ -22,14 +23,16 @@ public class PlayerController : MonoBehaviour
     public GameObject activeSpell;
     public RewardScreenManager rewardscreen;
 
-    
+
     public SpriteRenderer sprite;
     public Unit unit;
 
 
     // Relic shit. God help us.
+    private Coroutine vampireCoroutine;
     public float speedMult = 1f;
     public bool vampire = false;
+    public int baseDamage = 0;
 
     // public List<SpellUI> activeSpellsUI = new List<SpellUI>();// stores spell for UI display while playing
 
@@ -42,6 +45,7 @@ public class PlayerController : MonoBehaviour
         unit = GetComponent<Unit>();
         ReadClassesJson();
         GameManager.Instance.player = gameObject;
+        EventBus.Instance.OnDamage += OnPlayerDamaged;
     }
 
     public void StartLevel()
@@ -70,12 +74,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Keyboard.current[Key.Tab].wasPressedThisFrame)
+        if (Keyboard.current[Key.Tab].wasPressedThisFrame)
         {
             spellCycle();
         }
+        if (vampire)
+        {
+            vampireCoroutine = StartCoroutine(VampireDamageRoutine());
+        }
     }
-    
+
 
     void OnAttack(InputValue value)
     {
@@ -102,7 +110,7 @@ public class PlayerController : MonoBehaviour
     void Die()
     {
         activeSpells.Clear();
-        
+
         GameManager.Instance.state = GameManager.GameState.GAMEOVER;
     }
 
@@ -140,23 +148,40 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("Classes loaded: " + player_classes.Count);
         //foreach (var pcc in player_classes)
         //{
-            //Debug.Log($"Class: {pcc.getName()}, Speed: {pcc.getSpeed()}, Spellpower: {pcc.getSpellpower()}");
+        //Debug.Log($"Class: {pcc.getName()}, Speed: {pcc.getSpeed()}, Spellpower: {pcc.getSpellpower()}");
         //}
     }
 
     void spellCycle()
-{
-    if (activeSpells.Count > 0)
     {
-        int nextSpell = ((activeSpells.IndexOf(spellcaster.spell)) + 1) % activeSpells.Count;
-        spellcaster.SetSpell(activeSpells[nextSpell]);
-        spellui.SetSpell(spellcaster.spell);
-        Image iconImage = activeSpell.GetComponent<Image>();
-        GameManager.Instance.spellIconManager.PlaceSprite(activeSpells[nextSpell].GetIcon(), iconImage);
-        
-        
+        if (activeSpells.Count > 0)
+        {
+            int nextSpell = ((activeSpells.IndexOf(spellcaster.spell)) + 1) % activeSpells.Count;
+            spellcaster.SetSpell(activeSpells[nextSpell]);
+            spellui.SetSpell(spellcaster.spell);
+            Image iconImage = activeSpell.GetComponent<Image>();
+            GameManager.Instance.spellIconManager.PlaceSprite(activeSpells[nextSpell].GetIcon(), iconImage);
 
+
+
+        }
+        else return;
     }
-    else return;
-}
+
+    private void OnPlayerDamaged(Vector3 where, Damage dmg, Hittable target)
+    {
+        if (target == this.hp)
+        {
+            baseDamage = dmg.amount;
+        }
+    }
+    private IEnumerator VampireDamageRoutine()
+    {
+        while (vampire)
+        {
+            int dmg = 2 * GameManager.Instance.currentWave;
+            hp.Damage(new Damage(dmg, Damage.Type.FIRE));
+            yield return new WaitForSeconds(1f);
+        }
+    }
 }
