@@ -66,5 +66,18 @@
             "type": "take-damage",
             "amount": "0.5 baseDamage *"
         }
+    },
+    {
+        "name": "Vampiric Kitty",
+        "sprite": 15,
+        "trigger": {
+            "description": "Grants the caster 10 (+10/wave) hp on kill",
+            "type": "on-kill"
+        },
+        "effect": {
+            "description": "but damages the caster 2 (+2/wave) hp per second. What a cute little bloodsucker!",
+            "type": "gain-health",
+            "amount": "10 wave *"
+        }
     }
 ]

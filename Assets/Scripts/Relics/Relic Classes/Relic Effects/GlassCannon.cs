@@ -3,17 +3,19 @@ using Newtonsoft.Json.Linq;
 using UnityEngine;
 using System;
 
-public class GlassCannonBuff : RelicEffect
+public class GlassCannon : RelicEffect
 {
 
     Hittable hp;
     HealthBar healthui;
+    int baseDamage;
 
-    public GlassCannonBuff(JObject attributes) : base(attributes)
+    public GlassCannon(JObject attributes) : base(attributes)
     {
         this.hp = GameManager.Instance.player.GetComponent<PlayerController>().hp;
         this.healthui = GameManager.Instance.player.GetComponent<PlayerController>().healthui;
         GameManager.Instance.player.GetComponent<PlayerController>().speedMult *= 1.5f;
+        this.baseDamage = GameManager.Instance.player.GetComponent<PlayerController>().baseDamage;
     }
 
 
@@ -25,8 +27,8 @@ public class GlassCannonBuff : RelicEffect
     public override void ApplyEffect()
     {
         base.ApplyEffect();
-        float damageNum = GetRPNFloat(amount);
-        Damage additionalDamage = new Damage((int)damageNum, Damage.Type.DARK);
+        int damageNum = RPN.calculateRPN(amount, new Dictionary<string, int> { ["baseDamage"] = this.baseDamage});
+        Damage additionalDamage = new Damage(damageNum, Damage.Type.DARK);
         hp.Damage(additionalDamage);
         healthui.SetHealth(hp);
     }
