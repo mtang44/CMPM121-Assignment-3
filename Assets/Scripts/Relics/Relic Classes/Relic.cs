@@ -41,6 +41,9 @@ public class Relic
             case "gain-health":
                 effect = new GainHealthEffect(attributes);
                 break;
+            case "take-damage":
+                effect = new GlassCannon(attributes);
+                break;
             default:
                 effect = new RelicEffect(attributes);
                 break;

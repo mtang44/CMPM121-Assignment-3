@@ -179,9 +179,17 @@ public class PlayerController : MonoBehaviour
     {
         while (vampire)
         {
-            int dmg = 2 * GameManager.Instance.currentWave;
-            hp.Damage(new Damage(dmg, Damage.Type.FIRE));
-            yield return new WaitForSeconds(1f);
+            if (GameManager.Instance.state == GameManager.GameState.INWAVE) // So the player doesn't just randomly die in between waves
+            {
+                int dmg = 2 * GameManager.Instance.currentWave;
+                hp.Damage(new Damage(dmg, Damage.Type.FIRE));
+                yield return new WaitForSeconds(1f);
+            }
+            else
+            {
+                yield return new WaitForSeconds(1f);
+            }
+        }
         }
     }
 }

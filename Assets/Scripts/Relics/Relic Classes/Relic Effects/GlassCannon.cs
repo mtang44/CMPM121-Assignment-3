@@ -3,14 +3,14 @@ using Newtonsoft.Json.Linq;
 using UnityEngine;
 using System;
 
-public class GlassCannonBuff : RelicEffect
+public class GlassCannon : RelicEffect
 {
 
     Hittable hp;
     HealthBar healthui;
     int baseDamage;
 
-    public GlassCannonBuff(JObject attributes) : base(attributes)
+    public GlassCannon(JObject attributes) : base(attributes)
     {
         this.hp = GameManager.Instance.player.GetComponent<PlayerController>().hp;
         this.healthui = GameManager.Instance.player.GetComponent<PlayerController>().healthui;
