@@ -13,6 +13,7 @@ public class Relic
     public RelicEffect effect;
     public string trigger_desc;
     public JObject attributes;
+    public bool status;
 
     public Relic(JObject attributes)
     {
@@ -79,10 +80,14 @@ public class Relic
     {
         return this.sprite;
     }
+    public bool IsActive()
+    {
+        return status;
+    }
 
     public string GetDescription()
     {
-        this.trigger_desc = "" + attributes["trigger"]["description"] +" " + attributes["effect"]["description"];
+        this.trigger_desc = "" + attributes["trigger"]["description"] + " " + attributes["effect"]["description"];
         return trigger_desc;
     }
 

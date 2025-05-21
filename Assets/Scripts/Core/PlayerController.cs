@@ -95,6 +95,7 @@ public class PlayerController : MonoBehaviour
     void Die()
     {
         activeSpells.Clear();
+        activeRelics.Clear();
         
         GameManager.Instance.state = GameManager.GameState.GAMEOVER;
     }

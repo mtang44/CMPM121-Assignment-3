@@ -224,16 +224,20 @@ public class RewardScreenManager : MonoBehaviour
         {
             GameManager.Instance.player.GetComponent<PlayerController>().activeRelics.Add(newRewardRelic1);
             EventBus.Instance.DoRelicPickup(newRewardRelic1);
+            newRewardRelic1.Pickup();
         }
         if (index == 2)
         {
             GameManager.Instance.player.GetComponent<PlayerController>().activeRelics.Add(newRewardRelic2);
             EventBus.Instance.DoRelicPickup(newRewardRelic2);
+            newRewardRelic2.Pickup();
+            
         }
         if (index == 3)
         {
             GameManager.Instance.player.GetComponent<PlayerController>().activeRelics.Add(newRewardRelic3);
             EventBus.Instance.DoRelicPickup(newRewardRelic3);
+            newRewardRelic1.Pickup();
         }
         // on relic accept, UI for buttons disabled.
         relic_1_take.SetActive(false);

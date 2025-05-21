@@ -61,10 +61,16 @@ public class RelicEffect
     public virtual void RemoveEffect()
     {
         applied = false;
-    }  
+    }
+    public bool IsApplied()
+    {
+        Debug.Log("returning " + applied);
+        return applied;
+    }
     
-    public virtual float GetRPNFloat (string stat) {
-        return RPN.calculateRPNFloat(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}});
+    public virtual float GetRPNFloat(string stat)
+    {
+        return RPN.calculateRPNFloat(stat, new Dictionary<string, int> { { "wave", GameManager.Instance.currentWave } });
     }
     public virtual int GetRPN (string stat) {
         return RPN.calculateRPN(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}});

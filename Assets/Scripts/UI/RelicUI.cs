@@ -23,15 +23,20 @@ public class RelicUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        // Relics could have labels and/or an active-status
-        Debug.Log("index :" + index);
-        Relic r = player.activeRelics[index];
-        GameManager.Instance.relicIconManager.PlaceSprite(r.sprite, icon);
-        label.fontSize = 10;
-        label.text = r.GetName();
-        label.transform.localScale = new Vector3(1.5f, 2, 0);
-        //highlight.SetActive(r.IsActive());
+        if (GameManager.Instance.state != GameManager.GameState.GAMEOVER && GameManager.Instance.state != GameManager.GameState.PREGAME && GameManager.Instance.state != GameManager.GameState.LEVELSELECT)
+        {
+            if (index >= 0)
+            {
+                // Relics could have labels and/or an active-status
+                Relic r = player.activeRelics[index];
+                GameManager.Instance.relicIconManager.PlaceSprite(r.sprite, icon);
+                //label.text = r.GetName();
+                //label.transform.localScale = new Vector3(0, 2, 0);
+                label.fontSize = 8;
+            }
+            
+            //highlight.SetActive(r.IsActive());
+        }
 
     }
 }
