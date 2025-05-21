@@ -26,9 +26,10 @@ public class Relic
 
     public virtual void Pickup()
     {
+        this.caster = GameManager.Instance.player.GetComponent<PlayerController>().spellcaster;
+        Debug.Log("spell caster is" + this.caster);
         SetEffect(attributes);
         SetTrigger(attributes);
-        this.caster = GameManager.Instance.player.GetComponent<PlayerController>().spellcaster;
     }
 
     public virtual void SetEffect(JObject attributes)
@@ -137,10 +138,12 @@ public class Relic
     }
 
     public float GetRPNFloat (string stat) {
-        return RPN.calculateRPNFloat(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}, {"power", caster.power}});
+        Debug.Log($"Caster's power: {caster.power}");
+        return RPN.calculateRPNFloat(stat, new Dictionary<string, int> { { "wave", GameManager.Instance.currentWave }, { "power", caster.power } });
     }
     public int GetRPN (string stat) {
-        return RPN.calculateRPN(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}, {"power", caster.power}});
+        Debug.Log($"Caster's power: {caster.power}");
+        return RPN.calculateRPN(stat, new Dictionary<string, int> { { "wave", GameManager.Instance.currentWave }, { "power", caster.power } });
     }
 
 
