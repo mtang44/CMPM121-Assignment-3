@@ -22,10 +22,14 @@ public class PlayerController : MonoBehaviour
     public GameObject activeSpell;
     public RewardScreenManager rewardscreen;
 
-    public SpriteRenderer sprite;
-    public int speed;
-    public Unit unit;
     
+    public SpriteRenderer sprite;
+    public Unit unit;
+
+
+    // Relic shit. God help us.
+    public float speedMult = 1f;
+    public bool vampire = false;
 
     // public List<SpellUI> activeSpellsUI = new List<SpellUI>();// stores spell for UI display while playing
 
@@ -42,8 +46,8 @@ public class PlayerController : MonoBehaviour
 
     public void StartLevel()
     {
-
         Debug.Log("Our class is: " + player_class.getName());
+        sprite.sprite = GameManager.Instance.playerSpriteManager.Get(player_class.getSprite());
         //player_class = player_classes[0]; // TODO: Work with Michael to integrate UI elements to select class
         spellcaster = new SpellCaster(player_class.getMana(), player_class.getManaRegeneration(), player_class.getSpellpower(), Hittable.Team.PLAYER);
         StartCoroutine(spellcaster.ManaRegeneration());
@@ -57,8 +61,6 @@ public class PlayerController : MonoBehaviour
         } // Replaces line above so that health updates correctly scaling with wave
         hp.OnDeath += Die;
         hp.team = Hittable.Team.PLAYER;
-
-        unit.distance += RPN.calculateRPN(player_class.getSpeed(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave });
 
         // tell UI elements what to show
         healthui.SetHealth(hp);
@@ -87,7 +89,14 @@ public class PlayerController : MonoBehaviour
     void OnMove(InputValue value)
     {
         if (GameManager.Instance.state == GameManager.GameState.PREGAME || GameManager.Instance.state == GameManager.GameState.GAMEOVER) return;
-        unit.movement = value.Get<Vector2>() * speed;
+
+        Vector2 input = value.Get<Vector2>();
+        float inputMagnitude = input.magnitude;
+        float speed = RPN.calculateRPN(player_class.getSpeed(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave }) * speedMult;
+
+        // Add speed to the magnitude, then apply direction
+        float newMagnitude = inputMagnitude + speed;
+        unit.movement = input.normalized * newMagnitude;
     }
 
     void Die()
@@ -128,11 +137,11 @@ public class PlayerController : MonoBehaviour
             player_classes.Add(pcc);
         }
 
-        Debug.Log("Classes loaded: " + player_classes.Count);
-        foreach (var pcc in player_classes)
-        {
-            Debug.Log($"Class: {pcc.getName()}, Speed: {pcc.getSpeed()}, Spellpower: {pcc.getSpellpower()}");
-        }
+        //Debug.Log("Classes loaded: " + player_classes.Count);
+        //foreach (var pcc in player_classes)
+        //{
+            //Debug.Log($"Class: {pcc.getName()}, Speed: {pcc.getSpeed()}, Spellpower: {pcc.getSpellpower()}");
+        //}
     }
 
     void spellCycle()
