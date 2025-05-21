@@ -66,8 +66,8 @@ public class RewardScreenManager : MonoBehaviour
             if(!running)
             {
                 // turns off/on certain UI game Objects
-                adjustActiveUI();
                 running = true; // makes it so that game does not keep regenerating new spells every update
+                adjustUIElements();
                 display(); // updates spell inventory display on reward screen.
                 spellDisplay(); // updates and creates a new spell to display
                 if(GameManager.Instance.currentWave % 1 == 0) // every thid wave spawn relics // change back to 3, set to 1 for testing
@@ -84,13 +84,12 @@ public class RewardScreenManager : MonoBehaviour
             rewardUI.SetActive(false);
         }
     }
-    public void adjustActiveUI()
+    public void adjustUIElements()
     {
         spellDeniedTxt.SetActive(false);
         spellAcquiredTxt.SetActive(false);
         acquiredButton.SetActive(true);
         relicAcquiredTxt.SetActive(false);
-
     }
     // when button is pressed spell is stored in spell list, and updated to reward screen display
     public void gainSpell()
@@ -186,10 +185,6 @@ public class RewardScreenManager : MonoBehaviour
     // gets three new relics and displays the to the screen. 
     public void relicDisplay()
     {  
-        relic_1_take.SetActive(true);
-        relic_2_take.SetActive(true);
-        relic_3_take.SetActive(true);
-
         Image iconImage;
         relicUIDisplay.SetActive(true);
 
@@ -198,22 +193,32 @@ public class RewardScreenManager : MonoBehaviour
         RelicDescription1.text = newRewardRelic1.GetDescription();
         iconImage = RelicDisplayIcon1.GetComponent<Image>();
         GameManager.Instance.relicIconManager.PlaceSprite(newRewardRelic1.GetSprite(), iconImage);
+        //GameManager.Instance.spellIconManager.PlaceSprite(newRewardSpell.GetIcon(), iconImage);
 
         // creates / displays new relic in slot 2
         newRewardRelic2 = new RelicBuilder().MakeRandomRelic(GameManager.Instance.player);
         RelicDescription2.text = newRewardRelic2.GetDescription();
         iconImage = RelicDisplayIcon2.GetComponent<Image>();
         GameManager.Instance.relicIconManager.PlaceSprite(newRewardRelic2.GetSprite(), iconImage);
+        //GameManager.Instance.spellIconManager.PlaceSprite(newRewardSpell.GetIcon(), iconImage);
+
 
         // creates / displays new relic in slot 3
         newRewardRelic3 = new RelicBuilder().MakeRandomRelic(GameManager.Instance.player);
         RelicDescription3.text = newRewardRelic3.GetDescription();
         iconImage = RelicDisplayIcon3.GetComponent<Image>();
         GameManager.Instance.relicIconManager.PlaceSprite(newRewardRelic3.GetSprite(), iconImage);
+        //GameManager.Instance.spellIconManager.PlaceSprite(newRewardSpell.GetIcon(), iconImage);
+        
+
+      
     }
     // when a relic is taken, it's button assigns that relic to the player's relic inventory
     public void acceptRelic(int index)
     {
+        relic_1_take.SetActive(true);
+        relic_2_take.SetActive(true);
+        relic_3_take.SetActive(true);
         if (index == 1)
         {
             GameManager.Instance.player.GetComponent<PlayerController>().activeRelics.Add(newRewardRelic1);

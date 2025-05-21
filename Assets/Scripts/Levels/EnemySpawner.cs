@@ -26,14 +26,54 @@ public class EnemySpawner : MonoBehaviour
     private int spawnsRunning = 0;
     private int wave_count;
     private string location;
- 
+    private bool running = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         enemies = readEnemiesJson();
         levels = readLevelsJson();
+         //int i = 0;
+        /* moved into LoadLevelSelector()
+        foreach (var l in levels)
+        {
+            Debug.Log(l);
+            GameObject level_button = new GameObject();
+            level_button = Instantiate(button, level_selector.transform);
+            level_button.transform.localPosition = new Vector3(0, 100 + (40 * i));
+            level_button.GetComponent<MenuSelectorController>().spawner = this;
+            level_button.GetComponent<MenuSelectorController>().SetLevel(l.Key);
+            levelButtons.Add(level_button);
+            i++;
+        }*/
+       
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (GameManager.Instance.state == GameManager.GameState.LEVELSELECT)
+        {
+            if (!running)
+            {
+                running = true;
+                level_selector.gameObject.SetActive(true);
+                LoadLevelSelector();
+            }
+        }
+        else
+        {
+            running = false;
+                level_selector.gameObject.SetActive(false);
+        }
+       
+    }
+    // moved into l
+    public void LoadLevelSelector()
+    {
         int i = 0;
-        foreach (var l in levels){
+        foreach (var l in levels)
+        {
             Debug.Log(l);
             GameObject level_button = new GameObject();
             level_button = Instantiate(button, level_selector.transform);
@@ -43,30 +83,6 @@ public class EnemySpawner : MonoBehaviour
             levelButtons.Add(level_button);
             i++;
         }
-        
-        // GameObject easy_selector =
-        // easy_selector
-        // GameObject medium_selector = Instantiate(button, level_selector.transform);
-        // medium_selector.transform.localPosition = new Vector3(0, 70);
-        // GameObject endless_selector = Instantiate(button, level_selector.transform);
-        // endless_selector.transform.localPosition = new Vector3(0, 190);
-       
-        // medium_selector.GetComponent<MenuSelectorController>().spawner = this;
-        // endless_selector.GetComponent<MenuSelectorController>().spawner = this;
-        // easy_selector.GetComponent<MenuSelectorController>().SetLevel("Easy");
-       
-        // endless_selector.GetComponent<MenuSelectorController>().SetLevel("Endless");
-       
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-       if (GameManager.Instance.state == GameManager.GameState.PREGAME)
-        {   
-           level_selector.gameObject.SetActive(true);
-        }
-       
     }
 
     public void StartLevel(string level_name)

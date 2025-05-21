@@ -23,9 +23,7 @@ public class PlayerController : MonoBehaviour
     public RewardScreenManager rewardscreen;
 
     public SpriteRenderer sprite;
-
     public int speed;
-
     public Unit unit;
     
 
@@ -35,7 +33,7 @@ public class PlayerController : MonoBehaviour
     public List<Relic> activeRelics = new List<Relic>(); // this list stores the active relics in the player's inventory
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         unit = GetComponent<Unit>();
         ReadClassesJson();
@@ -44,9 +42,9 @@ public class PlayerController : MonoBehaviour
 
     public void StartLevel()
     {
-        player_class = player_classes[2]; // TODO: Work with Michael to integrate UI elements to select class
-        sprite.sprite = GameManager.Instance.playerSpriteManager.Get(player_class.getSprite());
 
+        Debug.Log("Our class is: " + player_class.getName());
+        //player_class = player_classes[0]; // TODO: Work with Michael to integrate UI elements to select class
         spellcaster = new SpellCaster(player_class.getMana(), player_class.getManaRegeneration(), player_class.getSpellpower(), Hittable.Team.PLAYER);
         StartCoroutine(spellcaster.ManaRegeneration());
         if (GameManager.Instance.currentWave <= 1)
@@ -79,7 +77,7 @@ public class PlayerController : MonoBehaviour
 
     void OnAttack(InputValue value)
     {
-        if (GameManager.Instance.state == GameManager.GameState.PREGAME || GameManager.Instance.state == GameManager.GameState.GAMEOVER) return;
+        if (GameManager.Instance.state == GameManager.GameState.PREGAME || GameManager.Instance.state == GameManager.GameState.GAMEOVER || GameManager.Instance.state == GameManager.GameState.LEVELSELECT) return;
         Vector2 mouseScreen = Mouse.current.position.value;
         Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(mouseScreen);
         mouseWorld.z = 0;
