@@ -83,6 +83,7 @@ public class PlayerController : MonoBehaviour
         Vector2 mouseScreen = Mouse.current.position.value;
         Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(mouseScreen);
         mouseWorld.z = 0;
+        
         StartCoroutine(spellcaster.Cast(transform.position, mouseWorld));
     }
 
@@ -92,6 +93,9 @@ public class PlayerController : MonoBehaviour
 
         Vector2 input = value.Get<Vector2>();
         float inputMagnitude = input.magnitude;
+        if (inputMagnitude > Mathf.Epsilon) {
+            EventBus.Instance.DoMove(transform.position, hp);
+        }
         float speed = RPN.calculateRPN(player_class.getSpeed(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave }) * speedMult;
 
         // Add speed to the magnitude, then apply direction

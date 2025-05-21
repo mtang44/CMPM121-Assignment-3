@@ -57,6 +57,9 @@ public class SpellCaster
             mana -= spell.GetManaCost();
             yield return spell.Cast(where, target, team);
         }
+        if (this.team == Hittable.Team.PLAYER) {
+            EventBus.Instance.DoEndCast(this, this.spell);
+        }
         yield break;
     }
 

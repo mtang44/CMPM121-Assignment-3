@@ -11,7 +11,7 @@ public class RelicEffect
     public string amount;
     public string until;
 
-    SpellCaster caster;
+    public SpellCaster caster;
 
     public bool applied = false;
 
@@ -20,8 +20,7 @@ public class RelicEffect
         this.description = attributes["effect"]["description"].ToString();
         this.type = attributes["effect"]["type"].ToString();
         this.amount = attributes["effect"]["amount"].ToString();
-        this.until = attributes["effect"]["until"].ToString();
-        this.caster = GameManager.Instance.player.GetComponent<PlayerController>().spellcaster;
+        this.until = attributes["effect"]["until"]?.ToString();
     }
 
     public virtual void SetUntil()
@@ -44,18 +43,23 @@ public class RelicEffect
                 void OnKillUntil(Vector3 where, Hittable target) => RemoveEffect();
                 EventBus.Instance.OnKill += OnKillUntil;
                 break;
-            case "cast-spell":
-                void OnCastUntil(SpellCaster caster, Spell spell) => RemoveEffect();
-                EventBus.Instance.OnCast += OnCastUntil;
+            case "end-cast":
+                void OnEndCastUntil(SpellCaster caster, Spell spell) => RemoveEffect();
+                EventBus.Instance.OnEndCast += OnEndCastUntil;
                 break;
             default:
                 break;
         }
     }
 
+    public void SetCaster(SpellCaster caster) {
+        this.caster = caster;
+    }
+
     public virtual void ApplyEffect()
     {
         applied = true;
+        Debug.Log("Effect Applied!");
     }
 
     public virtual void RemoveEffect()
@@ -63,12 +67,11 @@ public class RelicEffect
         applied = false;
     }  
     
-    public virtual float GetRPNFloat (string stat) {
-        return RPN.calculateRPNFloat(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}});
+    public float GetRPNFloat (string stat) {
+        return RPN.calculateRPNFloat(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}, {"power", caster.power}});
     }
-    public virtual int GetRPN (string stat) {
-        return RPN.calculateRPN(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}});
+    public int GetRPN (string stat) {
+        return RPN.calculateRPN(stat, new Dictionary<string, int> {{"wave", GameManager.Instance.currentWave}, {"power", caster.power}});
     }
-
 
 }
