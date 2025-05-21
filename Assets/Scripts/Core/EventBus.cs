@@ -41,6 +41,11 @@ public class EventBus
     {
         OnCast?.Invoke(who, spell);
     }
+    public event Action<Relic> OnRelicPickup;
 
+    public void DoRelicPickup(Relic relic)
+    {
+        OnRelicPickup?.Invoke(relic);
+    }
 
 }

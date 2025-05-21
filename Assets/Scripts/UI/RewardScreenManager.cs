@@ -185,6 +185,10 @@ public class RewardScreenManager : MonoBehaviour
     // gets three new relics and displays the to the screen. 
     public void relicDisplay()
     {  
+        relic_1_take.SetActive(true);
+        relic_2_take.SetActive(true);
+        relic_3_take.SetActive(true);
+
         Image iconImage;
         relicUIDisplay.SetActive(true);
 
@@ -193,14 +197,14 @@ public class RewardScreenManager : MonoBehaviour
         RelicDescription1.text = newRewardRelic1.GetDescription();
         iconImage = RelicDisplayIcon1.GetComponent<Image>();
         GameManager.Instance.relicIconManager.PlaceSprite(newRewardRelic1.GetSprite(), iconImage);
-        //GameManager.Instance.spellIconManager.PlaceSprite(newRewardSpell.GetIcon(), iconImage);
+        
 
         // creates / displays new relic in slot 2
         newRewardRelic2 = new RelicBuilder().MakeRandomRelic(GameManager.Instance.player);
         RelicDescription2.text = newRewardRelic2.GetDescription();
         iconImage = RelicDisplayIcon2.GetComponent<Image>();
         GameManager.Instance.relicIconManager.PlaceSprite(newRewardRelic2.GetSprite(), iconImage);
-        //GameManager.Instance.spellIconManager.PlaceSprite(newRewardSpell.GetIcon(), iconImage);
+         
 
 
         // creates / displays new relic in slot 3
@@ -208,7 +212,7 @@ public class RewardScreenManager : MonoBehaviour
         RelicDescription3.text = newRewardRelic3.GetDescription();
         iconImage = RelicDisplayIcon3.GetComponent<Image>();
         GameManager.Instance.relicIconManager.PlaceSprite(newRewardRelic3.GetSprite(), iconImage);
-        //GameManager.Instance.spellIconManager.PlaceSprite(newRewardSpell.GetIcon(), iconImage);
+ 
         
 
       
@@ -216,23 +220,20 @@ public class RewardScreenManager : MonoBehaviour
     // when a relic is taken, it's button assigns that relic to the player's relic inventory
     public void acceptRelic(int index)
     {
-        relic_1_take.SetActive(true);
-        relic_2_take.SetActive(true);
-        relic_3_take.SetActive(true);
         if (index == 1)
         {
             GameManager.Instance.player.GetComponent<PlayerController>().activeRelics.Add(newRewardRelic1);
-            Debug.Log("Relic 1 accepted");
+            EventBus.Instance.DoRelicPickup(newRewardRelic1);
         }
         if (index == 2)
         {
             GameManager.Instance.player.GetComponent<PlayerController>().activeRelics.Add(newRewardRelic2);
-            Debug.Log("Relic 2 accepted");
+            EventBus.Instance.DoRelicPickup(newRewardRelic2);
         }
         if (index == 3)
         {
             GameManager.Instance.player.GetComponent<PlayerController>().activeRelics.Add(newRewardRelic3);
-            Debug.Log("Relic 3 accepted");
+            EventBus.Instance.DoRelicPickup(newRewardRelic3);
         }
         // on relic accept, UI for buttons disabled.
         relic_1_take.SetActive(false);
