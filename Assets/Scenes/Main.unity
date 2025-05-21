@@ -4703,6 +4703,7 @@ MonoBehaviour:
   spellContainer: {fileID: 1982188287}
   activeSpell: {fileID: 268231452}
   rewardscreen: {fileID: 1709288115}
+  sprite: {fileID: 232596022}
   speed: 5
   unit: {fileID: 0}
 --- !u!1 &521465533

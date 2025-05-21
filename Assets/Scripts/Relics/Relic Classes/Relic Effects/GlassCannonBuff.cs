@@ -3,19 +3,21 @@ using Newtonsoft.Json.Linq;
 using UnityEngine;
 using System;
 
-public class GainHealthEffect : RelicEffect
+public class GlassCannonBuff : RelicEffect
 {
 
     Hittable hp;
     HealthBar healthui;
 
-    public GainHealthEffect(JObject attributes) : base(attributes)
+    public GlassCannonBuff(JObject attributes) : base(attributes)
     {
         this.hp = GameManager.Instance.player.GetComponent<PlayerController>().hp;
         this.healthui = GameManager.Instance.player.GetComponent<PlayerController>().healthui;
+        GameManager.Instance.player.GetComponent<PlayerController>().speedMult *= 1.5f;
     }
 
-    public override void SetUntil()
+
+    public override void SetUntil() // This is a permanent buff! There is no escape :)
     {
         base.SetUntil();
     }
@@ -23,8 +25,9 @@ public class GainHealthEffect : RelicEffect
     public override void ApplyEffect()
     {
         base.ApplyEffect();
-        int amountToGain = GetRPN(amount);
-        hp.hp += amountToGain;
+        float damageNum = GetRPNFloat(amount);
+        Damage additionalDamage = new Damage((int)damageNum, Damage.Type.DARK);
+        hp.Damage(additionalDamage);
         healthui.SetHealth(hp);
     }
 

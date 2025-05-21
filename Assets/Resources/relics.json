@@ -53,5 +53,18 @@
             "type": "gain-mana",
             "amount": "25"
         }
+    },
+    {
+        "name": "Magnum Magnifier",
+        "sprite": 12,
+        "trigger": {
+            "description": "You move 50% faster",
+            "type": "take-damage",
+        },
+        "effect": {
+            "description": "but you take 50% more damage.",
+            "type": "take-damage",
+            "amount": "0.5 baseDamage *",
+        }
     }
 ]
