@@ -10,6 +10,7 @@ public class Hittable
     public int hp;
     public int max_hp;
     public int min_hp;
+    public int d_taken = 0;
 
     public GameObject owner;
 

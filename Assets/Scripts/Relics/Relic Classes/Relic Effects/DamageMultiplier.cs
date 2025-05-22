@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class GlassCannon : RelicEffect
+public class DamageMultiplier : RelicEffect
 {
 
     Hittable hp;
-    public GlassCannon(JObject attributes) : base(attributes)
+    public DamageMultiplier(JObject attributes) : base(attributes)
     {
-        this.hp = GameManager.Instance.player.GetComponent<PlayerController>().hp;
+        hp = GameManager.Instance.player.GetComponent<PlayerController>().hp;
         GameManager.Instance.player.GetComponent<PlayerController>().speedMult *= 1.5f;
     }
     public override void SetUntil()
@@ -21,9 +21,10 @@ public class GlassCannon : RelicEffect
     public override void ApplyEffect()
     {
         base.ApplyEffect();
-        //int calcDamage = RPN.calculateRPN(amount, new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave });
-        Damage damage = new Damage(2, Damage.Type.DARK);
-        hp.Damage(damage);
+        int calcDamage = RPN.calculateRPN(amount, new Dictionary<string, int> { ["baseDamage"] = hp.d_taken });
+        Debug.Log("Additional damage: " + calcDamage);
+        calcDamage *= -1;
+        hp.Heal(calcDamage);
     }
 
     public override void RemoveEffect()

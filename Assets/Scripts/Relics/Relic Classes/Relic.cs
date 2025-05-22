@@ -48,7 +48,10 @@ public class Relic
                 this.effect = new GainHealthEffect(attributes);
                 break;
             case "take-damage":
-                this.effect = new GlassCannon(attributes);
+                this.effect = new DamageMultiplier(attributes);
+                break;
+            case "ignore-damage":
+                this.effect = new IgnoreDamageEffect(attributes);
                 break;
             default:
                 this.effect = new RelicEffect(attributes);
@@ -66,10 +69,14 @@ public class Relic
         {
             case "take-damage":
                 void OnDamageTrigger(Vector3 where, Damage dmg, Hittable target) {
-                    if (!string.IsNullOrEmpty(trigger_amount))
-                        CountTrigger(trigger_amount);
-                    else
-                        this.effect.ApplyEffect();
+                    if (target == GameManager.Instance.player.GetComponent<PlayerController>().hp)
+                    {
+                        GameManager.Instance.player.GetComponent<PlayerController>().hp.d_taken = dmg.amount;
+                        if (!string.IsNullOrEmpty(trigger_amount))
+                            CountTrigger(trigger_amount);
+                        else
+                            this.effect.ApplyEffect();
+                    }
                 }
                 EventBus.Instance.OnDamage += OnDamageTrigger;
                 break;

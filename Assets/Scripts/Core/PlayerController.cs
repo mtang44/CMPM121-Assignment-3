@@ -108,6 +108,7 @@ public class PlayerController : MonoBehaviour
 
     void Die()
     {
+        vampire = false;
         activeSpells.Clear();
         activeRelics.Clear();
         GameManager.Instance.state = GameManager.GameState.GAMEOVER;
@@ -182,9 +183,9 @@ public class PlayerController : MonoBehaviour
         {
             if (GameManager.Instance.state == GameManager.GameState.INWAVE) // So the player doesn't just randomly die in between waves
             {
-                int dmg = 4 * GameManager.Instance.currentWave;
+                int dmg = 2 * GameManager.Instance.currentWave;
                 var damage = new Damage(dmg, Damage.Type.FIRE);
-                EventBus.Instance.DoDamage(transform.position, damage, hp);
+                hp.Damage(damage);
                 yield return new WaitForSeconds(1f);
             }
             else

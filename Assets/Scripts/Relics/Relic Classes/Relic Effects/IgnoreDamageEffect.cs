@@ -1,17 +1,14 @@
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using UnityEngine;
-using System;
 
-public class GainHealthEffect : RelicEffect
+public class IgnoreDamageEffect : RelicEffect
 {
 
     Hittable hp;
 
-    public GainHealthEffect(JObject attributes) : base(attributes)
+    public IgnoreDamageEffect(JObject attributes) : base(attributes)
     {
         this.hp = GameManager.Instance.player.GetComponent<PlayerController>().hp;
-        GameManager.Instance.player.GetComponent<PlayerController>().EnableVampire();
     }
 
     public override void SetUntil()
@@ -21,9 +18,12 @@ public class GainHealthEffect : RelicEffect
 
     public override void ApplyEffect()
     {
-        base.ApplyEffect();
-        int amountToGain = GetRPN(amount);
-        hp.Heal(amountToGain);
+        if (UnityEngine.Random.value < 0.5f)
+        {
+            base.ApplyEffect();
+            int amountToGain = RPN.calculateRPN(amount, new Dictionary<string, int> { ["base"] = hp.d_taken });
+            hp.Heal(amountToGain);
+        }
     }
 
     public override void RemoveEffect()
