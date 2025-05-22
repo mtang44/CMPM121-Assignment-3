@@ -144,7 +144,7 @@ public class Spell
         float value = val;
         if (mods.modifiers.ContainsKey(mod_name)) {
             for (int i = 0; i < mods.modifiers[mod_name].Count; i++) {
-                Debug.Log("ApplyAdd Current Mod to Add: " + mods.modifiers[mod_name][i]);
+                //Debug.Log("ApplyAdd Current Mod to Add: " + mods.modifiers[mod_name][i]);
                 value += GetRPNFloat(mods.modifiers[mod_name][i]);
             }
         }

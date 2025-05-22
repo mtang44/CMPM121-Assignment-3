@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
 
 
     // Relic shit. God help us.
-    private Coroutine vampireCoroutine;
+    private Coroutine vampireCoroutine = null;
     public float speedMult = 1f;
     public bool vampire = false;
     public int baseDamage = 0;
@@ -45,12 +45,10 @@ public class PlayerController : MonoBehaviour
         unit = GetComponent<Unit>();
         ReadClassesJson();
         GameManager.Instance.player = gameObject;
-        EventBus.Instance.OnDamage += OnPlayerDamaged;
     }
 
     public void StartLevel()
     {
-        Debug.Log("Our class is: " + player_class.getName());
         sprite.sprite = GameManager.Instance.playerSpriteManager.Get(player_class.getSprite());
         //player_class = player_classes[0]; // TODO: Work with Michael to integrate UI elements to select class
         spellcaster = new SpellCaster(player_class.getMana(), player_class.getManaRegeneration(), player_class.getSpellpower(), Hittable.Team.PLAYER);
@@ -78,10 +76,6 @@ public class PlayerController : MonoBehaviour
         {
             spellCycle();
         }
-        if (vampire)
-        {
-            vampireCoroutine = StartCoroutine(VampireDamageRoutine());
-        }
     }
 
 
@@ -91,7 +85,7 @@ public class PlayerController : MonoBehaviour
         Vector2 mouseScreen = Mouse.current.position.value;
         Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(mouseScreen);
         mouseWorld.z = 0;
-        
+
         StartCoroutine(spellcaster.Cast(transform.position, mouseWorld));
     }
 
@@ -101,7 +95,8 @@ public class PlayerController : MonoBehaviour
 
         Vector2 input = value.Get<Vector2>();
         float inputMagnitude = input.magnitude;
-        if (inputMagnitude > Mathf.Epsilon) {
+        if (inputMagnitude > Mathf.Epsilon)
+        {
             EventBus.Instance.DoMove(transform.position, hp);
         }
         float speed = RPN.calculateRPN(player_class.getSpeed(), new Dictionary<string, int> { ["wave"] = GameManager.Instance.currentWave }) * speedMult;
@@ -172,11 +167,13 @@ public class PlayerController : MonoBehaviour
         else return;
     }
 
-    private void OnPlayerDamaged(Vector3 where, Damage dmg, Hittable target)
+    public void EnableVampire()
     {
-        if (target == this.hp)
+        if (!vampire)
         {
-            baseDamage = dmg.amount;
+            vampire = true;
+            if (vampireCoroutine == null)
+                vampireCoroutine = StartCoroutine(VampireDamageRoutine());
         }
     }
     private IEnumerator VampireDamageRoutine()
@@ -185,8 +182,9 @@ public class PlayerController : MonoBehaviour
         {
             if (GameManager.Instance.state == GameManager.GameState.INWAVE) // So the player doesn't just randomly die in between waves
             {
-                int dmg = 2 * GameManager.Instance.currentWave;
-                hp.Damage(new Damage(dmg, Damage.Type.FIRE));
+                int dmg = 4 * GameManager.Instance.currentWave;
+                var damage = new Damage(dmg, Damage.Type.FIRE);
+                EventBus.Instance.DoDamage(transform.position, damage, hp);
                 yield return new WaitForSeconds(1f);
             }
             else
@@ -194,5 +192,5 @@ public class PlayerController : MonoBehaviour
                 yield return new WaitForSeconds(1f);
             }
         }
-        }
+    }
 }

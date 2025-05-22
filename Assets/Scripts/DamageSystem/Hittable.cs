@@ -9,6 +9,7 @@ public class Hittable
 
     public int hp;
     public int max_hp;
+    public int min_hp;
 
     public GameObject owner;
 
@@ -16,11 +17,24 @@ public class Hittable
     {
         EventBus.Instance.DoDamage(owner.transform.position, damage, this);
         hp -= damage.amount;
+        if (hp < min_hp)
+        {
+            min_hp = hp;
+        }
         if (hp <= 0)
         {
             hp = 0;
             OnDeath();
         }
+    }
+
+    public void Heal(int amount)
+    {
+        if (hp <= 0) return;
+        if ((max_hp - hp) < amount) amount = max_hp - hp;
+        if (amount == 0) return;
+        EventBus.Instance.DoHeal(owner.transform.position, amount, this);
+        hp += amount;
     }
 
     public event Action OnDeath;
@@ -29,6 +43,7 @@ public class Hittable
     {
         this.hp = hp;
         this.max_hp = hp;
+        this.min_hp = hp;
         this.team = team;
         this.owner = owner;
     }
@@ -37,6 +52,7 @@ public class Hittable
     {
         float perc = this.hp * 1.0f / this.max_hp;
         this.max_hp = max_hp;
+        this.min_hp = max_hp;
         this.hp = Mathf.RoundToInt(perc * max_hp);
     }
 }

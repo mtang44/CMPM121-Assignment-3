@@ -74,7 +74,7 @@ public class EnemySpawner : MonoBehaviour
         int i = 0;
         foreach (var l in levels)
         {
-            Debug.Log(l);
+            //Debug.Log(l);
             GameObject level_button = new GameObject();
             level_button = Instantiate(button, level_selector.transform);
             level_button.transform.localPosition = new Vector3(0, 100 + (40 * i));
@@ -92,7 +92,7 @@ public class EnemySpawner : MonoBehaviour
 
         wave_count = 1;
         GameManager.Instance.currentWave = wave_count;
-        Debug.Log(level_name);
+        //Debug.Log(level_name);
         currentLevel = levels[level_name];
         GameManager.Instance.player.GetComponent<PlayerController>().StartLevel();
         StartCoroutine(SpawnWave());
@@ -101,7 +101,7 @@ public class EnemySpawner : MonoBehaviour
     public void NextWave() {
         wave_count++;
         GameManager.Instance.currentWave++;
-        Debug.Log("wave: " + wave_count);
+        //Debug.Log("wave: " + wave_count);
         StartCoroutine(SpawnWave());
     }
     IEnumerator SpawnWave()
@@ -157,10 +157,10 @@ public class EnemySpawner : MonoBehaviour
     IEnumerator SpawnEnemyType(Spawn waveSpawn) {
         spawnsRunning++;
         Enemy toSpawn = enemies[waveSpawn.enemy];
-        Debug.Log("Name: " + toSpawn.name);
+        //Debug.Log("Name: " + toSpawn.name);
         Dictionary<string, int> spawnAttributes = new Dictionary<string, int>();
         int toSpawn_count = RPN.calculateRPN(waveSpawn.count, new Dictionary<string, int> {{"wave", wave_count}});
-        Debug.Log("Count: " + toSpawn_count);
+        //Debug.Log("Count: " + toSpawn_count);
         spawnAttributes["hp"] = RPN.calculateRPN(waveSpawn.hp, new Dictionary<string, int> {{"wave", wave_count}, {"base", toSpawn.hp}});
         // toSpawn.location = enemies[waveSpawn.enemy].location;
         toSpawn.speed = enemies[waveSpawn.enemy].speed;
@@ -199,7 +199,7 @@ public class EnemySpawner : MonoBehaviour
 
         new_enemy.GetComponent<SpriteRenderer>().sprite = GameManager.Instance.enemySpriteManager.Get(toSpawn.sprite);
         EnemyController en = new_enemy.GetComponent<EnemyController>();
-        Debug.Log("with hp of: " + spawnAttributes["hp"]);
+        //Debug.Log("with hp of: " + spawnAttributes["hp"]);
         en.hp = new Hittable(spawnAttributes.ContainsKey("hp") ? spawnAttributes["hp"] : toSpawn.hp, Hittable.Team.MONSTERS, new_enemy);
         en.speed = spawnAttributes.ContainsKey("speed") ? spawnAttributes["speed"] : toSpawn.speed;
         

@@ -27,7 +27,7 @@ public class RelicUI : MonoBehaviour
         {
             if (index >= 0)
             {
-                Debug.Log("Index = " + index);
+                //Debug.Log("Index = " + index);
                 // Relics could have labels and/or an active-status
                 
                 Relic r = player.activeRelics[index];

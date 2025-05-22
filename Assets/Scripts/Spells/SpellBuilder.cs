@@ -81,7 +81,7 @@ public class SpellBuilder
         if (s is ModifierSpell modifierSpell) {
             modifierSpell.AddChild(MakeRandomSpell(owner));
         }
-        Debug.Log("Our new spell's name: " + s.GetName());
+        //Debug.Log("Our new spell's name: " + s.GetName());
         return s;
     }
 

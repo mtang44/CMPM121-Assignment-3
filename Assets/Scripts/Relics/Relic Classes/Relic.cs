@@ -28,7 +28,7 @@ public class Relic
     public virtual void Pickup()
     {
         this.caster = GameManager.Instance.player.GetComponent<PlayerController>().spellcaster;
-        Debug.Log("spell caster is" + this.caster);
+        //Debug.Log("spell caster is" + this.caster);
         SetEffect(attributes);
         SetTrigger(attributes);
     }
@@ -45,10 +45,10 @@ public class Relic
                 this.effect = new GainSpellPowerEffect(attributes);
                 break;
             case "gain-health":
-                effect = new GainHealthEffect(attributes);
+                this.effect = new GainHealthEffect(attributes);
                 break;
             case "take-damage":
-                effect = new GlassCannon(attributes);
+                this.effect = new GlassCannon(attributes);
                 break;
             default:
                 this.effect = new RelicEffect(attributes);

@@ -7,13 +7,11 @@ public class GainHealthEffect : RelicEffect
 {
 
     Hittable hp;
-    HealthBar healthui;
 
     public GainHealthEffect(JObject attributes) : base(attributes)
     {
         this.hp = GameManager.Instance.player.GetComponent<PlayerController>().hp;
-        this.healthui = GameManager.Instance.player.GetComponent<PlayerController>().healthui;
-        GameManager.Instance.player.GetComponent<PlayerController>().vampire = true;
+        GameManager.Instance.player.GetComponent<PlayerController>().EnableVampire();
     }
 
     public override void SetUntil()
@@ -25,8 +23,7 @@ public class GainHealthEffect : RelicEffect
     {
         base.ApplyEffect();
         int amountToGain = GetRPN(amount);
-        hp.hp += amountToGain;
-        healthui.SetHealth(hp);
+        EventBus.Instance.DoHeal(hp.owner.transform.position, amountToGain, hp);
     }
 
     public override void RemoveEffect()

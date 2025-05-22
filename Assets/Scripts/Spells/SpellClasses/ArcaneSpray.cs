@@ -22,7 +22,7 @@ public class ArcaneSpray : Spell {
     }
 
     public override int GetDamage(ValueModifier mods) {
-        Debug.Log("Final Damage: " + (int)Math.Ceiling(ApplyStatMods(mods, this.damage, "damage")) * GetRPN(N));
+        //Debug.Log("Final Damage: " + (int)Math.Ceiling(ApplyStatMods(mods, this.damage, "damage")) * GetRPN(N));
         return (int)Math.Ceiling(ApplyStatMods(mods, this.damage, "damage") * GetRPN(N));
     }
 

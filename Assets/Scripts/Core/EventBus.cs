@@ -48,4 +48,10 @@ public class EventBus
         OnRelicPickup?.Invoke(relic);
     }
 
+    public event Action<Vector3, int, Hittable> OnHeal;
+    public void DoHeal(Vector3 where, int amount, Hittable target)
+    {
+        OnHeal?.Invoke(where, amount, target);
+    }
+
 }
