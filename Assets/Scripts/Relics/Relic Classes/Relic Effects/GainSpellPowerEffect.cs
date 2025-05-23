@@ -14,12 +14,16 @@ public class GainSpellPowerEffect : RelicEffect
     {
         base.ApplyEffect();
         caster.GainPower(GetRPN(amount));
+        
     }
 
     public override void RemoveEffect()
     {
-        base.RemoveEffect();
-        caster.GainPower(-GetRPN(amount));
+        if (base.applied == true)
+        {
+            caster.GainPower(-GetRPN(amount)); // was - GetRPN
+        }
+         base.RemoveEffect();
     }  
 
 

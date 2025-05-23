@@ -69,6 +69,7 @@ public class Relic
         {
             case "take-damage":
                 void OnDamageTrigger(Vector3 where, Damage dmg, Hittable target) {
+                    Debug.Log("relic here!!");
                     if (target == GameManager.Instance.player.GetComponent<PlayerController>().hp)
                     {
                         GameManager.Instance.player.GetComponent<PlayerController>().hp.d_taken = dmg.amount;
@@ -118,7 +119,8 @@ public class Relic
 
     public virtual void CountTrigger (string amount) {
         triggerCounter++;
-        if (triggerCounter >= GetRPNFloat(amount)) {
+        if (triggerCounter >= GetRPNFloat(amount))
+        {
             triggerCounter = 0;
             this.effect.ApplyEffect();
         }
@@ -132,7 +134,7 @@ public class Relic
         }
 
         triggerTimer = new RelicTriggerTimer(GetRPNFloat(amount));
-        Debug.Log("HIII!!");
+        //Debug.Log("HIII!!");
         triggerTimer.OnTimerFinished += this.effect.ApplyEffect;
     }
 

@@ -70,7 +70,7 @@ public class RewardScreenManager : MonoBehaviour
                 adjustUIElements();
                 display(); // updates spell inventory display on reward screen.
                 spellDisplay(); // updates and creates a new spell to display
-                if(GameManager.Instance.currentWave % 1 == 0) // every thid wave spawn relics // change back to 3, set to 1 for testing
+                if(GameManager.Instance.currentWave % 3 == 0) // every thid wave spawn relics // change back to 3, set to 1 for testing
                 {
                     relicDisplay();
                 }
