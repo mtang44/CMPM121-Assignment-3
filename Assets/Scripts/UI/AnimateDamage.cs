@@ -37,10 +37,12 @@ public class AnimateDamage : MonoBehaviour
         float progress = (Time.time - fadeStartTime) / fadeDuration;
         if (progress <= 1)
         {
-           
-            transform.position = Vector3.Lerp(initialPosition, finalPosition, progress) + new Vector3(Mathf.Sin((Time.time+timeoffset)*10)/3, 0, 0);
+            transform.position = Vector3.Lerp(initialPosition, finalPosition, progress) + new Vector3(Mathf.Sin((Time.time + timeoffset) * 7) / 4, 0, 0);
             GetComponent<TMP_Text>().fontSize = Mathf.RoundToInt(progress * font_f + (1 - progress) * font_i);
+            GetComponent<TMP_Text>().overrideColorTags = false;
+            GetComponent<TMP_Text>().color = Color.Lerp(color_i, color_f, progress);
             GetComponent<TMP_Text>().fontMaterial.color = Color.Lerp(color_i, color_f, progress);
+            timeoffset += Random.value / 25;
         }
         else Destroy(gameObject);
     }

@@ -18,7 +18,7 @@ public class Spell
     public string damage;
     public Damage.Type damage_type;
     public string cooldown;
-
+    public string pierce = "0";
     public string trajectory;
     public string speed;
     public int sprite;
@@ -37,23 +37,23 @@ public class Spell
 
 
     public virtual int GetManaCost(ValueModifier mods) {
-        Debug.Log("Final Mana Cost: " + (int)Math.Ceiling(ApplyStatMods(mods, this.mana_cost, "mana_cost")));
         return (int)Math.Ceiling(ApplyStatMods(mods, this.mana_cost, "mana_cost"));
     }
 
     public virtual int GetDamage(ValueModifier mods) {
-        Debug.Log("Final Damage: " + (int)Math.Ceiling(ApplyStatMods(mods, this.damage, "damage")));
         return (int)Math.Ceiling(ApplyStatMods(mods, this.damage, "damage"));
     }
 
     public virtual float GetCooldown(ValueModifier mods) {
-        Debug.Log("Final Cooldown: " + ApplyStatMods(mods, this.cooldown, "cooldown"));
         return ApplyStatMods(mods, this.cooldown, "cooldown");
     }
 
     public virtual float GetSpeed(ValueModifier mods) {
-        Debug.Log("Final Speed: " + ApplyStatMods(mods, this.speed, "speed"));
         return ApplyStatMods(mods, this.speed, "speed");
+    }
+
+    public virtual int GetPierce(ValueModifier mods) {
+        return (int)Math.Ceiling(ApplyStatMods(mods, this.pierce, "pierce"));
     }
 
     public virtual string GetTrajectory(ValueModifier mods) {
@@ -107,7 +107,7 @@ public class Spell
     public virtual IEnumerator Cast (Vector3 where, Vector3 target, Hittable.Team team, ValueModifier mods) {
         this.team = team;
         last_cast = Time.time;
-        GameManager.Instance.projectileManager.CreateProjectile(sprite, GetTrajectory(mods), where, target - where, GetSpeed(mods), MakeOnHit(mods));
+        GameManager.Instance.projectileManager.CreateProjectile(sprite, GetTrajectory(mods), where, target - where, GetSpeed(mods), MakeOnHit(mods), pierce: GetPierce(mods));
         yield return new WaitForEndOfFrame();
     }
 
@@ -144,7 +144,7 @@ public class Spell
         float value = val;
         if (mods.modifiers.ContainsKey(mod_name)) {
             for (int i = 0; i < mods.modifiers[mod_name].Count; i++) {
-                Debug.Log("ApplyAdd Current Mod to Add: " + mods.modifiers[mod_name][i]);
+                //Debug.Log("ApplyAdd Current Mod to Add: " + mods.modifiers[mod_name][i]);
                 value += GetRPNFloat(mods.modifiers[mod_name][i]);
             }
         }
@@ -155,7 +155,7 @@ public class Spell
         float value = val;
          if (mods.modifiers.ContainsKey(mod_name)) {
             for (int i = 0; i < mods.modifiers[mod_name].Count; i++) {
-                Debug.Log("ApplyMult Current Mod to Mult: " + mods.modifiers[mod_name][i]);
+                //Debug.Log("ApplyMult Current Mod to Mult: " + mods.modifiers[mod_name][i]);
                 value *= GetRPNFloat(mods.modifiers[mod_name][i]);
             }
         }
