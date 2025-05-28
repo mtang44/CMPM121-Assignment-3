@@ -92,5 +92,45 @@
       "type": "ignore-damage",
       "amount": "base"
     }
+  },
+  {
+    "name": "Shriveled Skull",
+    "sprite": 4,
+    "trigger": {
+      "description": "When you damage an enemy",
+      "type": "deal-damage"
+    },
+    "effect": {
+      "description": "you gain 2 health.",
+      "type": "gain-health2",
+      "amount": "2"
+    }
+  },
+  {
+    "name": "Holy Shield",
+    "sprite": 5,
+    "trigger": {
+      "description": "When you take damage",
+      "type": "take-damage"
+    },
+    "effect": {
+      "description": "you gain 3 health.",
+      "type": "gain-health2",
+      "amount": "3"
+    }
+  },
+  {
+    "name": "Ouroboros",
+    "sprite": 14,
+    "trigger": {
+      "description": "When you damage an enemy",
+      "type": "deal-damage"
+    },
+    "effect": {
+      "description": "you permanently gain 1 additional spellpower.",
+      "type": "gain-spellpower2",
+      "amount": "1",
+      "until": "permanent"
+    }
   }
 ]
