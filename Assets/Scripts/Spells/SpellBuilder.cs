@@ -35,6 +35,10 @@ public class SpellBuilder
         if (name == "arcane_railgun") {
             return new ArcaneRailgun(owner);
         }
+        if (name == "chain_lightning")
+        {
+            return new ChainLightning(owner);
+        }
         if (name == "arcane_spray") {
             return new ArcaneSpray(owner);
         }
