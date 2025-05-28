@@ -1,38 +1,45 @@
 [
-   {
-       "name": "zombie",
-       "sprite": 0,
-       "hp": 20,
-       "speed": 5,
-       "damage": 5
-   },
-   {
-       "name": "skeleton",
-       "sprite": 1,
-       "hp": 30,
-       "speed": 7,
-       "damage": 10
-   },  
-   {
-       "name": "warlock",
-       "sprite": 19,
-       "hp": 30,
-       "speed": 7,
-       "damage": 10
-    },
-    {
-        "name": "leprechaun",
-        "sprite": 9,
-        "hp": 10,
-        "speed": 10,
-        "damage": 15
-    },
-    {
-        "name": "giant",
-        "sprite": 14,
-        "hp": 50,
-        "speed": 2,
-        "damage": 20
-    }
- 
+  {
+    "name": "zombie",
+    "sprite": 0,
+    "hp": 20,
+    "speed": 5,
+    "damage": 5
+  },
+  {
+    "name": "skeleton",
+    "sprite": 1,
+    "hp": 30,
+    "speed": 7,
+    "damage": 10
+  },
+  {
+    "name": "warlock",
+    "sprite": 19,
+    "hp": 30,
+    "speed": 7,
+    "damage": 10
+  },
+  {
+    "name": "leprechaun",
+    "sprite": 9,
+    "hp": 10,
+    "speed": 10,
+    "damage": 15
+  },
+  {
+    "name": "giant",
+    "sprite": 14,
+    "hp": 50,
+    "speed": 2,
+    "damage": 20
+  },
+  {
+    "name": "eyeball",
+    "sprite": 5,
+    "hp": 15,
+    "speed": 15,
+    "damage": 10
+  }
+
 ]

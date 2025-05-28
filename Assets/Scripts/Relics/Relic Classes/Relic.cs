@@ -44,8 +44,14 @@ public class Relic
             case "gain-spellpower":
                 this.effect = new GainSpellPowerEffect(attributes);
                 break;
+            case "gain-spellpower2":
+                this.effect = new GainSpellPowerPermenantEffect(attributes);
+                break;
             case "gain-health":
                 this.effect = new GainHealthEffect(attributes);
+                break;
+            case "gain-health2":
+                this.effect = new GainHealthUnfuckedEffect(attributes);
                 break;
             case "take-damage":
                 this.effect = new DamageMultiplier(attributes);
