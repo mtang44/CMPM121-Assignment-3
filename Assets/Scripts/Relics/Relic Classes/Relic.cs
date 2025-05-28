@@ -74,8 +74,8 @@ public class Relic
         switch (trigger_type)
         {
             case "take-damage":
-                void OnDamageTrigger(Vector3 where, Damage dmg, Hittable target) {
-                    Debug.Log("relic here!!");
+                void OnPlayerDamageTrigger(Vector3 where, Damage dmg, Hittable target) {
+                    //Debug.Log("relic here!!");
                     if (target == GameManager.Instance.player.GetComponent<PlayerController>().hp)
                     {
                         GameManager.Instance.player.GetComponent<PlayerController>().hp.d_taken = dmg.amount;
@@ -85,7 +85,22 @@ public class Relic
                             this.effect.ApplyEffect();
                     }
                 }
-                EventBus.Instance.OnDamage += OnDamageTrigger;
+                EventBus.Instance.OnDamage += OnPlayerDamageTrigger;
+                break;
+            case "deal-damage":
+                void OnNPCDamageTrigger(Vector3 where, Damage dmg, Hittable target)
+                {
+                    //Debug.Log("relic here!!");
+                    if (target != GameManager.Instance.player.GetComponent<PlayerController>().hp)
+                    {
+                        target.d_taken = dmg.amount;
+                        if (!string.IsNullOrEmpty(trigger_amount))
+                            CountTrigger(trigger_amount);
+                        else
+                            this.effect.ApplyEffect();
+                    }
+                }
+                EventBus.Instance.OnDamage += OnNPCDamageTrigger;
                 break;
             case "stand-still":
                 void OnMoveTrigger(Vector3 where, Hittable who) {
