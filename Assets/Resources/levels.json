@@ -1,21 +1,28 @@
 [
-   {   
-       "name": "Easy",
-       "waves": 10,
-       "spawns": [
+    {
+        "name": "Easy",
+        "waves": 10,
+        "spawns": [
             {
                 "enemy": "zombie",
                 "count": "5 wave +",
                 "hp": "base 5 wave * +",
                 "delay": "5",
-                "sequence": [1,2,3],
+                "sequence": [
+                    1,
+                    2,
+                    3
+                ],
                 "location": "random"
             },
-            {   
+            {
                 "enemy": "skeleton",
                 "count": "wave 3 /",
                 "hp": "30 wave *",
-                "sequence": [2, 2],
+                "sequence": [
+                    2,
+                    2
+                ],
                 "location": "random red"
             },
             {
@@ -29,33 +36,45 @@
                 "count": "wave 7 / 1 wave 7 % - *",
                 "hp": "100 30 wave *",
                 "location": "random"
-            }, 
+            },
             {
                 "enemy": "giant",
                 "count": "wave 6 / 1 wave 6 % - *",
                 "hp": "100 30 wave *",
                 "location": "random"
+            },
+            {
+                "enemy": "eyeball",
+                "count": "wave 2 %",
+                "hp": "base 5 wave * +",
+                "location": "random"
             }
-
         ]
-   },
-   {   
-       "name": "Medium",
-       "waves": 15,
-       "spawns": [
+    },
+    {
+        "name": "Medium",
+        "waves": 15,
+        "spawns": [
             {
                 "enemy": "zombie",
                 "count": "5 wave 2 * +",
                 "hp": "25 wave *",
                 "delay": "5",
-                "sequence": [1,2,3],
+                "sequence": [
+                    1,
+                    2,
+                    3
+                ],
                 "location": "random"
             },
-            {   
+            {
                 "enemy": "skeleton",
                 "count": "wave 2 /",
                 "hp": "25 wave *",
-                "sequence": [2, 2],
+                "sequence": [
+                    2,
+                    2
+                ],
                 "location": "random red"
             },
             {
@@ -64,7 +83,7 @@
                 "hp": "75 50 wave *",
                 "damage": "base 10 +",
                 "location": "random bone"
-            },   
+            },
             {
                 "enemy": "leprechaun",
                 "count": "wave 7 / 1 wave 7 % - *",
@@ -76,25 +95,38 @@
                 "count": "wave 10 / 1 wave 10 % - *",
                 "hp": "100 40 wave *",
                 "location": "random"
+            },
+            {
+                "enemy": "eyeball",
+                "count": "wave 2 %",
+                "hp": "base 5 wave * +",
+                "location": "random"
             }
         ]
-   },
-   {   
-       "name": "Endless",
-       "spawns": [
+    },
+    {
+        "name": "Endless",
+        "spawns": [
             {
                 "enemy": "zombie",
                 "count": "5 wave 3 * +",
                 "hp": "15 wave *",
                 "delay": "5",
-                "sequence": [1,2,3],
+                "sequence": [
+                    1,
+                    2,
+                    3
+                ],
                 "location": "random"
             },
-            {   
+            {
                 "enemy": "skeleton",
                 "count": "wave 4 /",
                 "hp": "20 wave *",
-                "sequence": [2, 2],
+                "sequence": [
+                    2,
+                    2
+                ],
                 "location": "random red"
             },
             {
@@ -109,33 +141,45 @@
                 "count": "wave 14 / 1 wave 14 % - *",
                 "hp": "100 30 wave * +",
                 "location": "random"
-            }, 
+            },
             {
                 "enemy": "giant",
                 "count": "wave 11 / 1 wave 11 % - *",
                 "hp": "100 45 wave * +",
                 "location": "random"
+            },
+            {
+                "enemy": "eyeball",
+                "count": "wave 2 %",
+                "hp": "base 5 wave * +",
+                "location": "random"
             }
-        
         ]
-   },
-   {   
-       "name": "Test Level",
-       "waves": 10,
-       "spawns": [
+    },
+    {
+        "name": "Test Level",
+        "waves": 10,
+        "spawns": [
             {
                 "enemy": "giant",
                 "count": "1 wave +",
                 "hp": "base 5 wave * +",
                 "delay": "5",
-                "sequence": [1,2,3],
+                "sequence": [
+                    1,
+                    2,
+                    3
+                ],
                 "location": "random"
             },
-            {   
+            {
                 "enemy": "zombie",
                 "count": "wave 3 /",
                 "hp": "30 wave *",
-                "sequence": [2, 2],
+                "sequence": [
+                    2,
+                    2
+                ],
                 "location": "random red"
             },
             {
@@ -143,7 +187,13 @@
                 "count": "wave 5 / 1 wave 5 % - *",
                 "hp": "100 25 wave *",
                 "location": "random bone"
-            }      
+            },
+            {
+                "enemy": "eyeball",
+                "count": "wave 2 %",
+                "hp": "base 5 wave * +",
+                "location": "random"
+            }
         ]
-   }
+    }
 ]
