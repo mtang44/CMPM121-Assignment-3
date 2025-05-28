@@ -72,6 +72,10 @@ public class SpellBuilder
         if (name == "piercing") {
             return new Piercing(owner);
         }
+        if (name == "recoiling")
+        {
+            return new Recoiling(owner);
+        }
         return null;
 
     }
@@ -81,8 +85,10 @@ public class SpellBuilder
 
         // create random spell
         Spell s = BuildSpell(spell_names[index], owner);
+        
         // if spell is modifier then loop to create random spell again until we get a base spell
-        if (s is ModifierSpell modifierSpell) {
+        if (s is ModifierSpell modifierSpell)
+        {
             modifierSpell.AddChild(MakeRandomSpell(owner));
         }
         //Debug.Log("Our new spell's name: " + s.GetName());
