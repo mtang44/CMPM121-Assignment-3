@@ -33,7 +33,7 @@
             },
             {
                 "enemy": "leprechaun",
-                "count": "wave 7 / 1 wave 7 % - *",
+                "count": "wave 2 / 1 wave 3 % - *",
                 "hp": "100 30 wave *",
                 "location": "random"
             },
@@ -86,7 +86,7 @@
             },
             {
                 "enemy": "leprechaun",
-                "count": "wave 7 / 1 wave 7 % - *",
+                "count": "wave 2 / 1 wave 3 % - *",
                 "hp": "100 30 wave *",
                 "location": "random"
             },
@@ -138,7 +138,7 @@
             },
             {
                 "enemy": "leprechaun",
-                "count": "wave 14 / 1 wave 14 % - *",
+                "count": "wave 3 / 1 wave 3 % - *",
                 "hp": "100 30 wave * +",
                 "location": "random"
             },
