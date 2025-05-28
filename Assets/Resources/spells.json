@@ -1,109 +1,166 @@
 {
-   "arcane_bolt":  {
-       "name": "Arcane Bolt",
-       "description": "A straight-flying bolt.",
-       "icon": 0,
-       "damage": {"amount": "25 power 5 / +", "type": "arcane"},
-       "mana_cost": "10",
-       "cooldown": "2",
-       "projectile": {"trajectory": "straight", "speed": "8 power 5 / +", "sprite": 0}
-   },
-   "magic_missile":  {
-       "name": "Magic Missile",
-       "description": "A homing bolt.",
-       "icon": 5,
-       "damage": {"amount": "10 power 3 / +", "type": "arcane"},
-       "mana_cost": "20",
-       "cooldown": "3",
-       "projectile": {"trajectory": "homing", "speed": "10", "sprite": 0}
-   },
-   "arcane_railgun": {
+    "arcane_bolt": {
+        "name": "Arcane Bolt",
+        "description": "A straight-flying bolt.",
+        "icon": 0,
+        "damage": {
+            "amount": "25 power 5 / +",
+            "type": "arcane"
+        },
+        "mana_cost": "10",
+        "cooldown": "2",
+        "projectile": {
+            "trajectory": "straight",
+            "speed": "8 power 5 / +",
+            "sprite": 0
+        }
+    },
+    "magic_missile": {
+        "name": "Magic Missile",
+        "description": "A homing bolt.",
+        "icon": 5,
+        "damage": {
+            "amount": "10 power 3 / +",
+            "type": "arcane"
+        },
+        "mana_cost": "20",
+        "cooldown": "3",
+        "projectile": {
+            "trajectory": "homing",
+            "speed": "10",
+            "sprite": 0
+        }
+    },
+    "arcane_railgun": {
         "name": "Arcane Railgun",
-        "description":"A bolt that when shot can travels through multiple enemies, piercing each one in it's path. Does less damage and costs more",
+        "description": "A bolt that when shot can travels through multiple enemies, piercing each one in it's path. Does less damage and costs more",
         "icon": 13,
-        "damage": {"amount": "10 power 3 / +", "type": "arcane"},
+        "damage": {
+            "amount": "10 power 3 / +",
+            "type": "arcane"
+        },
         "mana_cost": "10",
         "cooldown": "0.5",
         "pierce": "4",
-        "projectile": {"trajectory": "straight", "speed": "15 power 5 / +", "sprite": 0}
-   },
-   "arcane_blast":  {
-       "name": "Arcane Blast",
-       "description": "A bolt that explodes into smaller bolts on impact.",
-       "icon": 1,
-       "N": "8 power 5 / +",
-       "damage": {"amount": "20 power 3 / +", "type": "arcane"},
-       "secondary_damage": "5 power 10 / +",
-       "mana_cost": "15 power 5 / +",
-       "cooldown": "1.5",
-       "projectile": {"trajectory": "straight", "speed": "12", "sprite": 0},
-       "secondary_projectile": {"trajectory": "straight", "speed": "20", "lifetime": "0.1", "sprite": 0}
-   },
-   "arcane_spray":  {
-       "name": "Arcane Spray",
-       "description": "A large number of short-range bolts in a cone.",
-       "icon": 8,
-       "N": "7 power 25 / +",
-       "spray": "0.3",
-       "damage": {"amount": "3 power 5 / +", "type": "arcane"},
-       "mana_cost": "15",
-       "cooldown": "0.5",
-       "projectile": {"trajectory": "straight", "speed": "8", "sprite": 0, "lifetime": "0.1 power 100 / +"}
-   },
-   "damage_amp": {
-       "name": "Damage-amplified",
-       "description": "Increased damage and increased mana cost.",
-       "damage_multiplier": "1.5",
-       "mana_multiplier": "1.5"
-   },
-   "speed_amp": {
-       "name": "Speed-amplified",
-       "description": "Faster projectile speed",
-       "speed_multiplier": "1.5"
-   },
-   "doubler": {
-       "name": "Doubled",
-       "description": "Spell is cast a second time after a small delay; increased mana cost and cooldown.",
-       "delay": "0.5",
-       "mana_multiplier": "1.5",
-       "cooldown_multiplier": "1.5"
-   },
-   "splitter": {
-       "name": "Split",
-       "description": "Spell is cast twice in slightly different directions; increased mana cost.",
-       "angle": "10",
-       "mana_multiplier": "1.5"
-   },
-   "chaos": {
-       "name": "Chaotic",
-       "description": "Significantly increased damage, but projectile is spiraling.",
-       "damage_multiplier": "1.5 wave 5 / +",
-       "projectile_trajectory": "spiraling"
-   },
-   "homing": {
-       "name": "Homing",
-       "description": "Homing projectile, with decreased damage and increased mana cost.",
-       "damage_multiplier": "0.75",
-       "mana_adder": "10",
-       "projectile_trajectory": "homing"
-   },
-   "heavy": {
+        "projectile": {
+            "trajectory": "straight",
+            "speed": "15 power 5 / +",
+            "sprite": 0
+        }
+    },
+    "arcane_blast": {
+        "name": "Arcane Blast",
+        "description": "A bolt that explodes into smaller bolts on impact.",
+        "icon": 1,
+        "N": "8 power 5 / +",
+        "damage": {
+            "amount": "20 power 3 / +",
+            "type": "arcane"
+        },
+        "secondary_damage": "5 power 10 / +",
+        "mana_cost": "15 power 5 / +",
+        "cooldown": "1.5",
+        "projectile": {
+            "trajectory": "straight",
+            "speed": "12",
+            "sprite": 0
+        },
+        "secondary_projectile": {
+            "trajectory": "straight",
+            "speed": "20",
+            "lifetime": "0.1",
+            "sprite": 0
+        }
+    },
+    "chain_lightning": {
+        "name": "Chain Lightning",
+        "description": "A bolt that summons follow-up strikes after it hits an enemy.",
+        "icon": 17,
+        "damage": {
+            "amount": "10 power 3 / +",
+            "type": "arcane"
+        },
+        "mana_cost": "5 power 5 / +",
+        "cooldown": "0.5",
+        "projectile": {
+            "trajectory": "straight",
+            "speed": "15",
+            "sprite": 0
+        },
+        "recast_offset_max": 10
+    },
+    "arcane_spray": {
+        "name": "Arcane Spray",
+        "description": "A large number of short-range bolts in a cone.",
+        "icon": 8,
+        "N": "7 power 25 / +",
+        "spray": "0.3",
+        "damage": {
+            "amount": "3 power 5 / +",
+            "type": "arcane"
+        },
+        "mana_cost": "15",
+        "cooldown": "0.5",
+        "projectile": {
+            "trajectory": "straight",
+            "speed": "8",
+            "sprite": 0,
+            "lifetime": "0.1 power 100 / +"
+        }
+    },
+    "damage_amp": {
+        "name": "Damage-amplified",
+        "description": "Increased damage and increased mana cost.",
+        "damage_multiplier": "1.5",
+        "mana_multiplier": "1.5"
+    },
+    "speed_amp": {
+        "name": "Speed-amplified",
+        "description": "Faster projectile speed",
+        "speed_multiplier": "1.5"
+    },
+    "doubler": {
+        "name": "Doubled",
+        "description": "Spell is cast a second time after a small delay; increased mana cost and cooldown.",
+        "delay": "0.5",
+        "mana_multiplier": "1.5",
+        "cooldown_multiplier": "1.5"
+    },
+    "splitter": {
+        "name": "Split",
+        "description": "Spell is cast twice in slightly different directions; increased mana cost.",
+        "angle": "10",
+        "mana_multiplier": "1.5"
+    },
+    "chaos": {
+        "name": "Chaotic",
+        "description": "Significantly increased damage, but projectile is spiraling.",
+        "damage_multiplier": "1.5 wave 5 / +",
+        "projectile_trajectory": "spiraling"
+    },
+    "homing": {
+        "name": "Homing",
+        "description": "Homing projectile, with decreased damage and increased mana cost.",
+        "damage_multiplier": "0.75",
+        "mana_adder": "10",
+        "projectile_trajectory": "homing"
+    },
+    "heavy": {
         "name": "Heavy",
         "description": "Sluggish but has increased damage.",
         "damage_multiplier": "2",
         "speed_multiplier": "0.5"
-   },
-   "caffeinate": {
+    },
+    "caffeinate": {
         "name": "Caffeinated",
         "description": "Dramatically lower damage and mana cost. Slightly increased speed",
         "damage_multiplier": "0.4",
         "mana_multiplier": "0.5",
         "speed_multiplier": "1.25"
-   },
-   "piercing": {
+    },
+    "piercing": {
         "name": "Piercing",
         "description": "Allows the spell to pierce through an enemy. Can stack.",
         "pierce_adder": "1"
-   }
-
+    }
 }
