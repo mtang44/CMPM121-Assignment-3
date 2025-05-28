@@ -104,6 +104,11 @@
         "name": "Piercing",
         "description": "Allows the spell to pierce through an enemy. Can stack.",
         "pierce_adder": "1"
+   },
+   "recoiling": {
+        "name": "Recoiling",
+        "description": "Increases the damage of the spell, adding recoil.",
+        "damage_multiplier": "1.25 wave 2.5 / +"
    }
 
 }
